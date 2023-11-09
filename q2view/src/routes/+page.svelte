@@ -1,2 +1,7 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<script lang="ts">
+	import DropZone from "$lib/DropZone.svelte";
+</script>
+
+<div class="bg-gray-200 rounded-2xl p-2 border-gray-300 border">
+	<DropZone/>
+</div>
