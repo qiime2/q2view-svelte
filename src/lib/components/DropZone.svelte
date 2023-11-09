@@ -12,9 +12,16 @@
 	}
 
 	function onDrop(event: DragEvent) {
+		let items = event.dataTransfer?.items;
 		isDragging = false;
-		console.log(event);
+
+		if (!items) {
+			return;
+		}
+
 		event.preventDefault();
+		console.log(event);
+		console.log(items);
 	}
 </script>
 
