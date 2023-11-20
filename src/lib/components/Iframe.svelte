@@ -6,6 +6,7 @@
 
 <div>
    <iframe
+        id="iframe"
         frameborder="0"
         src={indexPath}
     />

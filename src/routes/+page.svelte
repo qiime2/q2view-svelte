@@ -11,11 +11,11 @@
 
 <div class="bg-gray-200 rounded-2xl p-2 border-gray-300 border">
 	<DropZone {fileModel}/>
-	{#await viewModel.initModelFromFile($fileModel)}
-		<p>Loading...</p>
-	{:then}
-		{#if viewModel.indexPath}
-			<Iframe indexPath={viewModel.indexPath}/>
-		{/if}
-	{/await}
 </div>
+{#await viewModel.initModelFromFile($fileModel)}
+	<p>Loading...</p>
+{:then}
+	{#if viewModel.indexPath}
+		<Iframe indexPath={viewModel.indexPath}/>
+	{/if}
+{/await}

@@ -21,17 +21,16 @@ export default class ViewModel {
 
   initModelFromFile(fileModel) {
     let file = fileModel.file;
-    console.log("HERE");
     if (file === null) {
-      console.log("NULL");
       return;
     }
-    console.log("SOMETHING");
+
+    // TODO: This needs to go in an actual place lol
+    this.attachToServiceWorker();
+    fetch('/_/wakeup');
 
     const jsZip = new JSZip();
     return jsZip.loadAsync(file).then((zip) => {
-      console.log("ZIP: ");
-      console.log(zip);
       const error = new Error("Not a valid QIIME 2 archive.");
       // Verify layout:
       // 1) Root dir named with UUID, only object in zip root
@@ -91,6 +90,7 @@ export default class ViewModel {
 
   attachToServiceWorker() {
     window.navigator.serviceWorker.onmessage = (event) => {
+      console.log('HERE');
       if (event.data.session !== this.session) {
         return; // This message is meant for another tab.
       }

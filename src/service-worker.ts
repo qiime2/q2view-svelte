@@ -21,14 +21,20 @@ self.addEventListener("fetch", (fetchEvent) => {
   }
 
   if (url.pathname.toString() === "/_/wakeup") {
+    console.log('wakeup')
     fetchEvent.respondWith(Promise.resolve(new Response("OK")));
     return; // end of fetch
   }
 
+  console.log(url);
   const components = url.pathname.split("/").slice(2); // discard '' and '_'
   const session = components[0];
   const uuid = components[1];
   const filename = components.slice(2).join("/"); // everything but session/uuid
+  console.log(components)
+  console.log(session)
+  console.log(uuid)
+  console.log(filename)
 
   fetchEvent.respondWith(
     new Promise((resolve, reject) => {
