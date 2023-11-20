@@ -10,7 +10,7 @@
 		event.preventDefault();
 	}
 
-	function onDragExit(event: DragEvent) {
+	function onDragLeave(event: DragEvent) {
 		isDragging = false;
 	}
 
@@ -19,7 +19,6 @@
 // URLs that start with _ are intercepted by the service worker. The next bit is the session id
 
 	function onDrop(event: DragEvent) {
-		event.preventDefault();
 		let items = event.dataTransfer?.files;
 		isDragging = false;
 
@@ -27,6 +26,8 @@
 		if (!items) {
 			return;
 		}
+
+		event.preventDefault();
 
 		fileModel.setFile(items[0]);
 	}
@@ -36,7 +37,7 @@
 	id="dropzone"
 	class:isDragging
 	on:dragover={onDragOver}
-	on:dragexit={onDragExit}
+	on:dragleave={onDragLeave}
 	on:drop={onDrop}
 >
 	<div id="boxtitle" class="text-2xl text-gray-700">Drop Files Here</div>
