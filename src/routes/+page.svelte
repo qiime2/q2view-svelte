@@ -6,7 +6,7 @@
 	import FileModel from "$lib/models/fileModel";
 
 	let viewModel: ViewModel = new ViewModel();
-	let fileModel: FileModel = new FileModel() ;
+	let fileModel: FileModel = new FileModel();
 </script>
 
 <div class="bg-gray-200 rounded-2xl p-2 border-gray-300 border">
