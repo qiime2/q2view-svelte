@@ -90,7 +90,6 @@ export default class ViewModel {
 
   attachToServiceWorker() {
     window.navigator.serviceWorker.onmessage = (event) => {
-      console.log('HERE');
       if (event.data.session !== this.session) {
         return; // This message is meant for another tab.
       }
