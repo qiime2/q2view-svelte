@@ -21,7 +21,6 @@ self.addEventListener("fetch", (fetchEvent) => {
   }
 
   if (url.pathname.toString() === "/_/wakeup") {
-    console.log('wakeup')
     fetchEvent.respondWith(Promise.resolve(new Response("OK")));
     return; // end of fetch
   }
