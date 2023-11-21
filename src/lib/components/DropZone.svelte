@@ -3,6 +3,7 @@
 
 	export let fileModel: FileModel;
 
+	let files: FileList;
 	let isDragging = false;
 
 	function onDragOver(event: DragEvent) {
@@ -19,28 +20,41 @@
 // URLs that start with _ are intercepted by the service worker. The next bit is the session id
 
 	function onDrop(event: DragEvent) {
-		let items = event.dataTransfer?.files;
 		isDragging = false;
-
-		// TODO: Ensure we actually just have one file here not a dir or something
-		if (!items) {
-			return;
-		}
-
 		event.preventDefault();
 
-		fileModel.setFile(items[0]);
+		let items = event.dataTransfer?.files;
+
+		if (items !== undefined) {
+			files = items;
+		}
+	}
+
+	$: if (files) {
+		if (files.length > 1) {
+			alert("Please only provide a single file.");
+		}
+
+		fileModel.setFile(files[0]);
 	}
 </script>
 
+<!-- I couldn't find a good answer for what ARIA role to give this, but the linter told me I needed one -->
 <div
 	id="dropzone"
+	class="absolute"
 	class:isDragging
 	on:dragover={onDragOver}
 	on:dragleave={onDragLeave}
 	on:drop={onDrop}
+	role="button"
+	tabindex="0"
 >
-	<div id="boxtitle" class="text-2xl text-gray-700">Drop Files Here</div>
+	<input bind:files type="file" accept=".qza, .qzv" class="opacity-0 absolute top-0 right-0 bottom-0 left-0 w-full h-full"/>
+	<div class="text-xl text-gray-700 text-center">
+		<h1 class="mt-2.5 text-2xl">Drag and drop or click here</h1>
+		to view a QIIME 2 Artifact or Visualization (.qza/.qzv) from your computer.
+	</div>
 </div>
 
 <style lang="postcss">
