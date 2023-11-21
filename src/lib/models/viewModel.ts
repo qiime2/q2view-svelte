@@ -1,9 +1,9 @@
-// import yaml from 'js-yaml';
+import yaml from 'js-yaml';
 import JSZip from "jszip";
 
 import { readBlobAsText } from "$lib/scripts/util";
 import extmap from "$lib/scripts/extmap";
-// import schema from '$lib/scripts/yaml-schema';
+import schema from '$lib/scripts/yaml-schema';
 
 export default class ViewModel {
   uuid: string = "";
@@ -12,6 +12,10 @@ export default class ViewModel {
   frameworkVersion: string = "";
   zipReader: JSZip | null = null;
   port: string | null = null;
+  name: string = "";
+
+  citations: string | null = "";
+  metadata: object | undefined;
 
   session: string;
 
@@ -24,6 +28,8 @@ export default class ViewModel {
     if (file === null) {
       return;
     }
+
+    this.name = file.name;
 
     // TODO: This needs to go in an actual place lol
     this.attachToServiceWorker();
@@ -126,14 +132,18 @@ export default class ViewModel {
     }));
   }
 
-  // _getYAML(relpath) {
-  //     return this._getFile(relpath)
-  //         .then(data => new Blob([data.byteArray], { type: data.type }))
-  //         .then(readBlobAsText)
-  //         .then(text => yaml.safeLoad(text, { schema }));
-  // }
+  _getYAML(relpath) {
+      return this._getFile(relpath)
+          .then(data => new Blob([data.byteArray], { type: data.type }))
+          .then(readBlobAsText)
+          .then(text => yaml.safeLoad(text, { schema }));
+  }
 
   getCitations() {
+    this._getCitations().then((citations) => {this.citations = this.dedup(citations)});
+  }
+
+  _getCitations() {
     if (this.zipReader.file(`${this.uuid}/provenance/citations.bib`) === null) {
       return Promise.resolve(null);
     }
@@ -149,13 +159,38 @@ export default class ViewModel {
     return Promise.all(promises).then((array) => array.join(""));
   }
 
+  dedup(bibtex) {
+    const store = {};
+    const dedup = [];
+
+    let skip = false;
+    for (const line of bibtex.split('\n')) {
+        if (line.startsWith('@')) {
+            skip = false;
+            const id = /@.*{(.*),\w*/.exec(line)[0];
+
+            if (id in store) {
+                skip = true;
+            } else {
+                store[id] = true;
+            }
+        }
+
+        if (!skip) {
+            dedup.push(line);
+        }
+    }
+    return dedup.join('\n');
+};
+
+
   getURLOfPath(relpath) {
     return `/_/${this.session}/${this.uuid}/${relpath}`;
   }
 
-  // getMetadata() {
-  //     return this._getYAML('metadata.yaml');
-  // }
+  getMetadata() {
+      this._getYAML('metadata.yaml').then((metadata) => {this.metadata = metadata});
+  }
 
   _artifactMap(uuid) {
     return new Promise((resolve, reject) => {
@@ -271,17 +306,17 @@ export default class ViewModel {
     ]);
   }
 
-  // getProvenanceAction(uuid) {
-  //     if (this.uuid === uuid) {
-  //         return this._getYAML('provenance/action/action.yaml');
-  //     }
-  //     return this._getYAML(`provenance/artifacts/${uuid}/action/action.yaml`);
-  // }
+  getProvenanceAction(uuid) {
+      if (this.uuid === uuid) {
+          return this._getYAML('provenance/action/action.yaml');
+      }
+      return this._getYAML(`provenance/artifacts/${uuid}/action/action.yaml`);
+  }
 
-  // getProvenanceArtifact(uuid) {
-  //     if (this.uuid === uuid) {
-  //         return this._getYAML('provenance/metadata.yaml');
-  //     }
-  //     return this._getYAML(`provenance/artifacts/${uuid}/metadata.yaml`);
-  // }
+  getProvenanceArtifact(uuid) {
+      if (this.uuid === uuid) {
+          return this._getYAML('provenance/metadata.yaml');
+      }
+      return this._getYAML(`provenance/artifacts/${uuid}/metadata.yaml`);
+  }
 }
