@@ -20,7 +20,8 @@
 	<li><a href="/" on:click|preventDefault={() => (tab = 3)}>Provenance</a></li>
 </ul>
 
-<!-- We can probably just render all of these and either hide the ones we aren't currently showing or draw them over each other
+<!-- We can probably just render all of these and either hide the ones we aren't currently showing or draw
+	them over each other
  -->
 {#if tab === 0}
 	<DropZone {fileModel}/>

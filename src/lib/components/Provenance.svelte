@@ -1,11 +1,11 @@
 <script lang="ts">
+    import Dag from "./Dag.svelte";
     import type ViewModel from "$lib/models/viewModel";
 
     export let viewModel: ViewModel;
 
     let height;
-    let nodes;
-    let edges;
+    let elements;
 
     function getProvenanceTree() {
         viewModel.getProvenanceTree().then(([artifacts, actions]) => {
@@ -17,10 +17,9 @@
                     findMaxDepth(Object.values(mapping)[0])));
             };
 
-
             height = findMaxDepth(viewModel.uuid);
-            nodes = [];
-            edges = [];
+            let nodes = [];
+            let edges = [];
             const actionNodes = [];
 
             for (const actionUUID of Object.keys(actions)) {
@@ -72,12 +71,13 @@
             }
 
             nodes = [...actionNodes, ...nodes];
+            elements = nodes.concat(edges);
         });
     }
 </script>
 
-{#await getProvenanceTree()}
+{#await viewModel.getProvenanceTree()}
     <p>Loading...</p>
-{:then}
-    <p>Provenance {height} {nodes} {edges}</p>
+{:then data}
+    <Dag height={data[0]} elements={data[1]} />
 {/await}
