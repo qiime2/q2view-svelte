@@ -15,7 +15,7 @@ export default class ViewModel {
   name: string = "";
 
   citations: string | null | undefined = undefined;
-  metadata: object | undefined = undefined;
+  metadata: string | object | undefined = undefined;
 
   session: string;
 
@@ -143,7 +143,14 @@ export default class ViewModel {
   }
 
   getCitations() {
-    this._getCitations().then((citations) => {this.citations = this.dedup(citations)});
+    if (this.citations !== undefined) {
+      return this.citations;
+    }
+
+    return this._getCitations().then((citations) => {
+      this.citations = this.dedup(citations);
+      return this.citations;
+    });
   }
 
   _getCitations() {
@@ -192,12 +199,14 @@ export default class ViewModel {
   }
 
   getMetadata() {
+    if (this.metadata !== undefined) {
+      return this.metadata;
+    }
 
-
-      return new Promise(() => {this._getYAML('metadata.yaml')}).then((metadata) => {
-        this.metadata = metadata;
-        return metadata;
-      });
+    return this._getYAML('metadata.yaml').then((metadata) => {
+      this.metadata = metadata;
+      return metadata;
+    });
   }
 
   _artifactMap(uuid) {
