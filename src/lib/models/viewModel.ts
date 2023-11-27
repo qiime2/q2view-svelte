@@ -14,10 +14,13 @@ export default class ViewModel {
   port: string | null = null;
   name: string = "";
 
-  citations: string | null = "";
-  metadata: object | undefined;
+  citations: string | null | undefined = undefined;
+  metadata: object | undefined = undefined;
 
   session: string;
+
+  height: number | undefined = undefined;
+  elements: Array<Object> | undefined = undefined;
 
   constructor() {
     this.session = Math.random().toString(36).substr(2);
@@ -189,7 +192,12 @@ export default class ViewModel {
   }
 
   getMetadata() {
-      this._getYAML('metadata.yaml').then((metadata) => {this.metadata = metadata});
+
+
+      return new Promise(() => {this._getYAML('metadata.yaml')}).then((metadata) => {
+        this.metadata = metadata;
+        return metadata;
+      });
   }
 
   _artifactMap(uuid) {
@@ -300,6 +308,10 @@ export default class ViewModel {
   }
 
   getProvenanceTree() {
+    if (this.height !== undefined && this.elements.length !== undefined){
+      return [this.height, this.elements]
+    }
+
     return Promise.all([
       this._artifactMap(this.uuid),
       this._inputMap(this.uuid),
@@ -313,7 +325,6 @@ export default class ViewModel {
       };
 
       let height = findMaxDepth(this.uuid);
-      console.log(height);
       let nodes = [];
       let edges = [];
       const actionNodes = [];
@@ -368,6 +379,9 @@ export default class ViewModel {
 
       nodes = [...actionNodes, ...nodes];
       let elements = nodes.concat(edges);
+
+      this.height = height;
+      this.elements = elements;
 
       return [height, elements];
     });
