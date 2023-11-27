@@ -12,7 +12,7 @@
     <p>{viewModel.name}</p>
     <JSONTree value={viewModel.metadata}/>
 {/await}
-<p>Citaions</p>
+<p>Citations</p>
 {#await viewModel.getCitations()}
     <p>Loading citations...</p>
 {:then}
