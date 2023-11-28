@@ -68,10 +68,10 @@
     function setSelection(type, uuid) {
         let selectionData = null;
         if (type === 'action') {
-            // setViewTitle('Action Details');
+            viewModel.provTitle = 'Action Details';
             selectionData = viewModel.getProvenanceAction(uuid);
         } else {
-            // setViewTitle('Result Details');
+            viewModel.provTitle = 'Result Details';
             selectionData = viewModel.getProvenanceArtifact(uuid);
         }
 
@@ -87,6 +87,7 @@
 
 
     function clearSelection() {
+        viewModel.provTitle = 'Details';
         viewModel.provData = undefined;
         viewModel._dirty();
     }

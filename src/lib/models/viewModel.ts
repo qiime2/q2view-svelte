@@ -23,6 +23,7 @@ export default class ViewModel {
   elements: Array<Object> | undefined = undefined;
 
   provData: Object | undefined = undefined;
+  provTitle: String = "Details";
 
   _subscription: Record<number, (arg0: ViewModel) => void> = {};
   _subscriptionNum = 0;

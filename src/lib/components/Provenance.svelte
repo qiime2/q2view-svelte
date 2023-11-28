@@ -12,6 +12,7 @@
     <Dag height={data[0]} elements={data[1]} {viewModel} />
 {/await}
 
+<p>{$viewModel.provTitle}</p>
 {#if $viewModel.provData !== undefined}
     <JSONTree value={viewModel.provData}/>
 {:else}
