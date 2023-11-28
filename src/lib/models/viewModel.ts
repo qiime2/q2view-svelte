@@ -22,9 +22,32 @@ export default class ViewModel {
   height: number | undefined = undefined;
   elements: Array<Object> | undefined = undefined;
 
+  provData: Object | undefined = undefined;
+
+  _subscription: Record<number, (arg0: ViewModel) => void> = {};
+  _subscriptionNum = 0;
+
+
   constructor() {
     this.session = Math.random().toString(36).substr(2);
   }
+
+  _dirty() {
+      for (const subscription of Object.values(this._subscription)) {
+          subscription(this);
+      }
+  }
+
+  subscribe(subscription: (value: ViewModel) => void): () => void {
+      this._subscription[this._subscriptionNum] = subscription;
+      subscription(this);
+      return ((index) => {
+          return () => {
+              delete this._subscription[index];
+          };
+      })(this._subscriptionNum++);
+  }
+
 
   initModelFromFile(fileModel) {
     let file = fileModel.file;
@@ -170,28 +193,28 @@ export default class ViewModel {
   }
 
   dedup(bibtex) {
-    const store = {};
-    const dedup = [];
+      const store = {};
+      const dedup = [];
 
-    let skip = false;
-    for (const line of bibtex.split('\n')) {
-        if (line.startsWith('@')) {
-            skip = false;
-            const id = /@.*{(.*),\w*/.exec(line)[0];
+      let skip = false;
+      for (const line of bibtex.split('\n')) {
+          if (line.startsWith('@')) {
+              skip = false;
+              const id = /@.*{(.*),\w*/.exec(line)[0];
 
-            if (id in store) {
-                skip = true;
-            } else {
-                store[id] = true;
-            }
-        }
+              if (id in store) {
+                  skip = true;
+              } else {
+                  store[id] = true;
+              }
+          }
 
-        if (!skip) {
-            dedup.push(line);
-        }
-    }
-    return dedup.join('\n');
-};
+          if (!skip) {
+              dedup.push(line);
+          }
+      }
+      return dedup.join('\n');
+  }
 
 
   getURLOfPath(relpath) {

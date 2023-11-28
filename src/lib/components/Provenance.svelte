@@ -1,4 +1,5 @@
 <script lang="ts">
+    import JSONTree from "svelte-json-tree";
     import Dag from "./Dag.svelte";
     import type ViewModel from "$lib/models/viewModel";
 
@@ -8,5 +9,10 @@
 {#await viewModel.getProvenanceTree()}
     <p>Loading...</p>
 {:then data}
-    <Dag height={data[0]} elements={data[1]} />
+    <Dag height={data[0]} elements={data[1]} {viewModel} />
 {/await}
+
+{#if $viewModel.provData !== undefined}
+    <JSONTree value={viewModel.provData}/>
+{:else}
+{/if}

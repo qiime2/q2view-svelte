@@ -2,9 +2,11 @@
     import { onMount } from 'svelte';
 
     import cytoscape from 'cytoscape';
+    import type ViewModel from '$lib/models/viewModel';
 
     export let height: number;
     export let elements: Array<Object>;
+    export let viewModel: ViewModel;
 
     let self: HTMLDivElement;
 
@@ -62,6 +64,34 @@
         ]
     };
 
+
+    function setSelection(type, uuid) {
+        let selectionData = null;
+        if (type === 'action') {
+            // setViewTitle('Action Details');
+            selectionData = viewModel.getProvenanceAction(uuid);
+        } else {
+            // setViewTitle('Result Details');
+            selectionData = viewModel.getProvenanceArtifact(uuid);
+        }
+
+        selectionData.then((data) => _setSelection(data))
+                    .catch(() => _setSelection(undefined));
+    };
+
+
+    function _setSelection(data) {
+        viewModel.provData = data;
+        viewModel._dirty();
+    }
+
+
+    function clearSelection() {
+        viewModel.provData = undefined;
+        viewModel._dirty();
+    }
+
+
     onMount(() =>{
         let displayHeight = (height + 1) * 105;
         self.style.setProperty('height', `${displayHeight}px`);
@@ -74,27 +104,25 @@
         });
 
         cy.on('select', 'node, edge', (event) => {
+            console.log(event);
             if (!lock) {
                 selectedExists = true;
                 lock = true;
-                const elem = event.cyTarget;
+                const elem = event.target;
 
                 let node = elem;
                 if (elem.isEdge()) {
                     node = elem.source();
                 }
 
-                // if (node.isParent()) {
-                //     props.setSelection({
-                //         type: 'action',
-                //         uuid: node.children()[0].data('id')
-                //     });
-                // } else {
-                //     props.setSelection({
-                //         type: 'artifact',
-                //         uuid: node.data('id')
-                //     });
-                // }
+                // This is getting the information to draw the details of the
+                // selected node clicked on. I don't really know how it works
+                // lol
+                if (node.isParent()) {
+                    setSelection('action', node.children()[0].data('id'));
+                } else {
+                    setSelection('artifact', node.data('id'));
+                }
 
                 const edges = node.edgesTo('node');
                 cy.elements('node, edge').unselect();
@@ -105,9 +133,11 @@
             }
         });
 
+
         cy.on('unselect', 'node, edge', (event) => {  // eslint-disable-line no-unused-vars
             cy.elements('node, edge').unselect();
             if (!lock && selectedExists) {
+                clearSelection();
                 selectedExists = false;
             }
         });
