@@ -1,7 +1,7 @@
 <script lang="ts">
-	import type ViewModel from "$lib/models/viewModel";
+    import type ViewModel from "$lib/models/viewModel";
 
-	export let indexPath: string;
+    export let indexPath: string;
 </script>
 
 <div>

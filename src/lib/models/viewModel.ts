@@ -1,9 +1,9 @@
-import yaml from 'js-yaml';
+import yaml from "js-yaml";
 import JSZip from "jszip";
 
 import { readBlobAsText } from "$lib/scripts/util";
 import extmap from "$lib/scripts/extmap";
-import schema from '$lib/scripts/yaml-schema';
+import schema from "$lib/scripts/yaml-schema";
 
 export default class ViewModel {
   uuid: string = "";
@@ -33,19 +33,19 @@ export default class ViewModel {
   }
 
   _dirty() {
-      for (const subscription of Object.values(this._subscription)) {
-          subscription(this);
-      }
+    for (const subscription of Object.values(this._subscription)) {
+      subscription(this);
+    }
   }
 
   subscribe(subscription: (value: ViewModel) => void): () => void {
-      this._subscription[this._subscriptionNum] = subscription;
-      subscription(this);
-      return ((index) => {
-          return () => {
-              delete this._subscription[index];
-          };
-      })(this._subscriptionNum++);
+    this._subscription[this._subscriptionNum] = subscription;
+    subscription(this);
+    return ((index) => {
+      return () => {
+        delete this._subscription[index];
+      };
+    })(this._subscriptionNum++);
   }
 
   initModelFromFile(fileModel) {
@@ -58,7 +58,7 @@ export default class ViewModel {
 
     // TODO: This needs to go in an actual place lol
     this.attachToServiceWorker();
-    fetch('/_/wakeup');
+    fetch("/_/wakeup");
 
     const jsZip = new JSZip();
     return jsZip.loadAsync(file).then((zip) => {
@@ -158,10 +158,10 @@ export default class ViewModel {
   }
 
   _getYAML(relpath) {
-      return this._getFile(relpath)
-          .then(data => new Blob([data.byteArray], { type: data.type }))
-          .then(readBlobAsText)
-          .then(text => yaml.safeLoad(text, { schema }));
+    return this._getFile(relpath)
+      .then((data) => new Blob([data.byteArray], { type: data.type }))
+      .then(readBlobAsText)
+      .then((text) => yaml.safeLoad(text, { schema }));
   }
 
   getCitations() {
@@ -192,27 +192,27 @@ export default class ViewModel {
   }
 
   dedup(bibtex) {
-      const store = {};
-      const dedup = [];
+    const store = {};
+    const dedup = [];
 
-      let skip = false;
-      for (const line of bibtex.split('\n')) {
-          if (line.startsWith('@')) {
-              skip = false;
-              const id = /@.*{(.*),\w*/.exec(line)[0];
+    let skip = false;
+    for (const line of bibtex.split("\n")) {
+      if (line.startsWith("@")) {
+        skip = false;
+        const id = /@.*{(.*),\w*/.exec(line)[0];
 
-              if (id in store) {
-                  skip = true;
-              } else {
-                  store[id] = true;
-              }
-          }
-
-          if (!skip) {
-              dedup.push(line);
-          }
+        if (id in store) {
+          skip = true;
+        } else {
+          store[id] = true;
+        }
       }
-      return dedup.join('\n');
+
+      if (!skip) {
+        dedup.push(line);
+      }
+    }
+    return dedup.join("\n");
   }
 
   getURLOfPath(relpath) {
@@ -224,7 +224,7 @@ export default class ViewModel {
       return this.metadata;
     }
 
-    return this._getYAML('metadata.yaml').then((metadata) => {
+    return this._getYAML("metadata.yaml").then((metadata) => {
       this.metadata = metadata;
       return metadata;
     });
@@ -338,8 +338,8 @@ export default class ViewModel {
   }
 
   getProvenanceTree() {
-    if (this.height !== undefined && this.elements.length !== undefined){
-      return [this.height, this.elements]
+    if (this.height !== undefined && this.elements.length !== undefined) {
+      return [this.height, this.elements];
     }
 
     return Promise.all([
@@ -347,11 +347,20 @@ export default class ViewModel {
       this._inputMap(this.uuid),
     ]).then(([artifacts, actions]) => {
       const findMaxDepth = (uuid) => {
-        if (artifacts[uuid] === null || typeof actions[artifacts[uuid]] === 'undefined') {
-            return 0;
+        if (
+          artifacts[uuid] === null ||
+          typeof actions[artifacts[uuid]] === "undefined"
+        ) {
+          return 0;
         }
-        return 1 + Math.max(...Array.from(actions[artifacts[uuid]]).map(mapping =>
-            findMaxDepth(Object.values(mapping)[0])));
+        return (
+          1 +
+          Math.max(
+            ...Array.from(actions[artifacts[uuid]]).map((mapping) =>
+              findMaxDepth(Object.values(mapping)[0]),
+            ),
+          )
+        );
       };
 
       let height = findMaxDepth(this.uuid);
@@ -360,51 +369,53 @@ export default class ViewModel {
       const actionNodes = [];
 
       for (const actionUUID of Object.keys(actions)) {
-          for (const mapping of actions[actionUUID]) {
-              edges.push({
-                  data: {
-                      id: `${Object.keys(mapping)[0]}_${Object.values(mapping)[0]}to${actionUUID}`,
-                      param: Object.keys(mapping)[0],
-                      source: Object.values(mapping)[0],
-                      target: actionUUID
-                  }
-              });
-          }
+        for (const mapping of actions[actionUUID]) {
+          edges.push({
+            data: {
+              id: `${Object.keys(mapping)[0]}_${
+                Object.values(mapping)[0]
+              }to${actionUUID}`,
+              param: Object.keys(mapping)[0],
+              source: Object.values(mapping)[0],
+              target: actionUUID,
+            },
+          });
+        }
       }
 
       for (const actionUUID of Object.values(artifacts)) {
-          // These don't need to be sorted.
-          if (actionUUID !== null) {
-              actionNodes.push({
-                  data: { id: actionUUID }
-              });
-          }
+        // These don't need to be sorted.
+        if (actionUUID !== null) {
+          actionNodes.push({
+            data: { id: actionUUID },
+          });
+        }
       }
 
       for (const artifactUUID of Object.keys(artifacts)) {
-          nodes.push({
-              data: {
-                  id: artifactUUID,
-                  parent: artifacts[artifactUUID],
-                  row: findMaxDepth(artifactUUID)
-              }
-          });
+        nodes.push({
+          data: {
+            id: artifactUUID,
+            parent: artifacts[artifactUUID],
+            row: findMaxDepth(artifactUUID),
+          },
+        });
       }
 
       for (let i = 0; i < height; i += 1) {
-          const currNodes = nodes.filter(v => v.data.row === i);
-          const sorted = currNodes.sort((a, b) => {
-              if (a.data.parent < b.data.parent) {
-                  return -1;
-              } else if (a.data.parent > b.data.parent) {
-                  return 1;
-              }
-              return 0;
-          });
-
-          for (const n of currNodes) {
-              n.data.col = sorted.indexOf(n);
+        const currNodes = nodes.filter((v) => v.data.row === i);
+        const sorted = currNodes.sort((a, b) => {
+          if (a.data.parent < b.data.parent) {
+            return -1;
+          } else if (a.data.parent > b.data.parent) {
+            return 1;
           }
+          return 0;
+        });
+
+        for (const n of currNodes) {
+          n.data.col = sorted.indexOf(n);
+        }
       }
 
       nodes = [...actionNodes, ...nodes];
@@ -418,16 +429,16 @@ export default class ViewModel {
   }
 
   getProvenanceAction(uuid) {
-      if (this.uuid === uuid) {
-          return this._getYAML('provenance/action/action.yaml');
-      }
-      return this._getYAML(`provenance/artifacts/${uuid}/action/action.yaml`);
+    if (this.uuid === uuid) {
+      return this._getYAML("provenance/action/action.yaml");
+    }
+    return this._getYAML(`provenance/artifacts/${uuid}/action/action.yaml`);
   }
 
   getProvenanceArtifact(uuid) {
-      if (this.uuid === uuid) {
-          return this._getYAML('provenance/metadata.yaml');
-      }
-      return this._getYAML(`provenance/artifacts/${uuid}/metadata.yaml`);
+    if (this.uuid === uuid) {
+      return this._getYAML("provenance/metadata.yaml");
+    }
+    return this._getYAML(`provenance/artifacts/${uuid}/metadata.yaml`);
   }
 }
