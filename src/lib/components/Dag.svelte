@@ -64,7 +64,6 @@
         ]
     };
 
-
     function setSelection(type, uuid) {
         let selectionData = null;
         if (type === 'action') {
@@ -79,19 +78,16 @@
                     .catch(() => _setSelection(undefined));
     };
 
-
     function _setSelection(data) {
         viewModel.provData = data;
         viewModel._dirty();
     }
-
 
     function clearSelection() {
         viewModel.provTitle = 'Details';
         viewModel.provData = undefined;
         viewModel._dirty();
     }
-
 
     onMount(() =>{
         let displayHeight = (height + 1) * 105;
@@ -133,7 +129,6 @@
                 lock = false;
             }
         });
-
 
         cy.on('unselect', 'node, edge', (event) => {  // eslint-disable-line no-unused-vars
             cy.elements('node, edge').unselect();

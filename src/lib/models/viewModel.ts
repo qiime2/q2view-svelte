@@ -28,7 +28,6 @@ export default class ViewModel {
   _subscription: Record<number, (arg0: ViewModel) => void> = {};
   _subscriptionNum = 0;
 
-
   constructor() {
     this.session = Math.random().toString(36).substr(2);
   }
@@ -48,7 +47,6 @@ export default class ViewModel {
           };
       })(this._subscriptionNum++);
   }
-
 
   initModelFromFile(fileModel) {
     let file = fileModel.file;
@@ -216,7 +214,6 @@ export default class ViewModel {
       }
       return dedup.join('\n');
   }
-
 
   getURLOfPath(relpath) {
     return `/_/${this.session}/${this.uuid}/${relpath}`;
