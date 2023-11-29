@@ -17,17 +17,17 @@
 
 <button on:click={() => (selectedTab = "Input")}><img id="navlogo" src="/q2view.png" alt="QIIME 2 view logo"></button>
 {#if $viewModel.indexPath}
-    <button id="navbutton" on:click={() => (selectedTab = "Visualization")}>Visualization</button>
+    <button class="navbutton" on:click={() => (selectedTab = "Visualization")}>Visualization</button>
 {/if}
 {#if $fileModel.file}
-    <button id="navbutton" on:click={() => (selectedTab = "Details")}>Details</button>
-    <button id="navbutton" on:click={() => (selectedTab = "Provenance")}>Provenance</button>
+    <button class="navbutton" on:click={() => (selectedTab = "Details")}>Details</button>
+    <button class="navbutton" on:click={() => (selectedTab = "Provenance")}>Provenance</button>
 {/if}
 
 <Organizer {selectedTab} {viewModel} {fileModel}/>
 
 <style lang="postcss">
-    #navbutton {
+    .navbutton {
         @apply bg-slate-300;
     }
 
