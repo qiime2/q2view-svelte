@@ -9,4 +9,12 @@
 <p>{viewModel.name}</p>
 <JSONTree value={$viewModel.metadata}/>
 <p>Citations</p>
-<pre>{$viewModel.citations}</pre>
+<pre id="json">{$viewModel.citations}</pre>
+
+<style lang="postcss">
+    #json {
+        height:500px;
+        width: 1000px;
+        overflow-x: auto;
+    }
+</style>
