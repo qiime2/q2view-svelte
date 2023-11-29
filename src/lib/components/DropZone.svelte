@@ -34,8 +34,9 @@
         if (files.length > 1) {
             alert("Please only provide a single file.");
         }
-
-        fileModel.setFile(files[0]);
+        else {
+            fileModel.setFile(files[0]);
+        }
     }
 </script>
 
