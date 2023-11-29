@@ -15,10 +15,6 @@
         isDragging = false;
     }
 
-// <iframe frameborder="0" src="/_/ja00b96kk5j/50ff4745-c579-4a11-acec-5c8daca97a3f/data/index.html" style="width: 100%; height: 100%; position: absolute;"></iframe>
-// The source for this iframe is obtained via a get request that is intercepted by the service worker
-// URLs that start with _ are intercepted by the service worker. The next bit is the session id
-
     function onDrop(event: DragEvent) {
         isDragging = false;
         event.preventDefault();
@@ -40,7 +36,8 @@
     }
 </script>
 
-<!-- I couldn't find a good answer for what ARIA role to give this, but the linter told me I needed one -->
+<!-- I couldn't find a good answer for what ARIA role to give this, but the
+    linter told me I needed one -->
 <div
     id="dropzone"
     class="relative"
