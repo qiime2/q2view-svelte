@@ -1,8 +1,6 @@
 <script lang="ts">
     import { FormGroup, InputGroup, Button, Input } from 'sveltestrap';
 
-    export let tab: number;
-
     let inputMode: number = 0;
     let isSelected = false;
 
@@ -20,12 +18,6 @@
                 dispatch(setSource(encodeURIComponent(rawSrc.data)));
                 dispatch(setReader(reader));
             });
-    }
-
-    $: if (tab === 0) {
-        isSelected = true;
-    } else {
-        isSelected = false;
     }
 </script>
 
@@ -52,9 +44,3 @@
         </InputGroup>
     {/if}
 </div>
-
-<style lang="postcss">
-     div.isSelected {
-        @apply visible;
-    }
-</style>
