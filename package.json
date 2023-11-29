@@ -26,11 +26,13 @@
   },
   "type": "module",
   "dependencies": {
+    "bootstrap": "^5.3.2",
     "cytoscape": "^3.27.0",
     "js-yaml": "^3.14.1",
     "jszip": "^3.10.1",
     "prettier": "^3.1.0",
     "svelte": "^4.2.7",
-    "svelte-json-tree": "^2.2.0"
+    "svelte-json-tree": "^2.2.0",
+    "sveltestrap": "^5.11.2"
   }
 }

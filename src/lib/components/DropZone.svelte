@@ -42,7 +42,7 @@
 <!-- I couldn't find a good answer for what ARIA role to give this, but the linter told me I needed one -->
 <div
     id="dropzone"
-    class="absolute"
+    class="relative"
     class:isDragging
     on:dragover={onDragOver}
     on:dragleave={onDragLeave}

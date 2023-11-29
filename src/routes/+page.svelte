@@ -6,6 +6,7 @@
 
     import ViewModel from "$lib/models/viewModel";
     import FileModel from "$lib/models/fileModel";
+    import UrlInput from "$lib/components/UrlInput.svelte";
 
     let viewModel: ViewModel = new ViewModel();
     let fileModel: FileModel = new FileModel();
@@ -25,7 +26,9 @@
  -->
 {#if tab === 0}
     <DropZone {fileModel}/>
+    <UrlInput/>
 {/if}
+
 {#await viewModel.initModelFromFile($fileModel)}
     <p>Loading...</p>
 {:then}
