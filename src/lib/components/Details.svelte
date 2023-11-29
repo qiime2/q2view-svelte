@@ -2,19 +2,28 @@
     import JSONTree from "svelte-json-tree";
     import type ViewModel from "$lib/models/viewModel";
 
+    export let tab: number;
     export let viewModel: ViewModel;
+
+    let isSelected = false;
+
+    $: if(tab === 2) {
+        isSelected = true;
+    } else {
+        isSelected = false;
+    }
 </script>
 
-<p>Details</p>
-{#await viewModel.getMetadata()}
-    <p>Loading metadata...</p>
-{:then}
+<div class:isSelected class='invisible'>
+    <p>Details</p>
     <p>{viewModel.name}</p>
-    <JSONTree value={viewModel.metadata}/>
-{/await}
-<p>Citations</p>
-{#await viewModel.getCitations()}
-    <p>Loading citations...</p>
-{:then}
-    <pre>{viewModel.citations}</pre>
-{/await}
+    <JSONTree value={$viewModel.metadata}/>
+    <p>Citations</p>
+    <pre>{$viewModel.citations}</pre>
+</div>
+
+<style lang="postcss">
+    div.isSelected {
+        @apply visible;
+    }
+</style>

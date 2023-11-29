@@ -17,7 +17,7 @@ export default class ViewModel {
     name: string = "";
 
     citations: string | null | undefined = undefined;
-    metadata: string | object | undefined = undefined;
+    metadata: object = {};
 
     session: string;
 
@@ -108,8 +108,28 @@ export default class ViewModel {
             }
 
             this.uuid = UUID;
-            this.indexPath = `/_/${this.session}/${UUID}/data/index.html`;
             this.zipReader = zip;
+
+            // Set Metadata
+            this._getYAML("metadata.yaml").then((metadata) => {
+                this.metadata = metadata;
+                // Determine if we have a visualization or an artifact
+                if (metadata['type'] === 'Visualization') {
+                    this.indexPath = `/_/${this.session}/${UUID}/data/index.html`;
+                }
+                else {
+                    this.indexPath = '';
+                }
+                this._dirty();
+            });
+
+            // Set Citations
+            this._getCitations().then((citations) => {
+                this.citations = this.dedup(citations);
+                this._dirty();
+            });
+
+            this._dirty;
         });
     }
 
@@ -219,17 +239,6 @@ export default class ViewModel {
 
     getURLOfPath(relpath) {
         return `/_/${this.session}/${this.uuid}/${relpath}`;
-    }
-
-    getMetadata() {
-        if (this.metadata !== undefined) {
-            return this.metadata;
-        }
-
-        return this._getYAML("metadata.yaml").then((metadata) => {
-            this.metadata = metadata;
-            return metadata;
-        });
     }
 
     _artifactMap(uuid) {

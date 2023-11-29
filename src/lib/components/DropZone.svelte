@@ -2,9 +2,11 @@
     import type FileModel from "$lib/models/fileModel";
 
     export let fileModel: FileModel;
+    export let tab: number;
 
     let files: FileList;
     let isDragging = false;
+    let isSelected = false;
 
     function onDragOver(event: DragEvent) {
         isDragging = true;
@@ -34,14 +36,21 @@
             fileModel.setFile(files[0]);
         }
     }
+
+    $: if (tab === 0) {
+        isSelected = true;
+    }  else {
+        isSelected = false;
+    }
 </script>
 
 <!-- I couldn't find a good answer for what ARIA role to give this, but the
     linter told me I needed one -->
 <div
     id="dropzone"
-    class="relative"
+    class="relative invisible"
     class:isDragging
+    class:isSelected
     on:dragover={onDragOver}
     on:dragleave={onDragLeave}
     on:drop={onDrop}
@@ -76,5 +85,9 @@
             outline
             outline-2
             outline-blue-500;
+    }
+
+    #dropzone.isSelected {
+        @apply visible;
     }
 </style>

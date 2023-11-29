@@ -1,10 +1,17 @@
 <script lang="ts">
-    import type ViewModel from "$lib/models/viewModel";
-
+    export let tab: number;
     export let indexPath: string;
+
+    let isSelected = false;
+
+    $: if(tab === 1) {
+        isSelected = true;
+    } else {
+        isSelected = false;
+    }
 </script>
 
-<div>
+<div class:isSelected class='invisible'>
    <iframe
         id="iframe"
         frameborder="0"
@@ -17,5 +24,9 @@
         @apply h-full
         w-full
         absolute;
+    }
+
+    div.isSelected {
+        @apply visible;
     }
 </style>

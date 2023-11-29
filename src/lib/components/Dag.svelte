@@ -101,7 +101,6 @@
         });
 
         cy.on('select', 'node, edge', (event) => {
-            console.log(event);
             if (!lock) {
                 selectedExists = true;
                 lock = true;

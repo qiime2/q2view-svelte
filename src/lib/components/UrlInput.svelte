@@ -1,7 +1,10 @@
 <script lang="ts">
     import { FormGroup, InputGroup, Button, Input } from 'sveltestrap';
 
+    export let tab: number;
+
     let inputMode: number = 0;
+    let isSelected = false;
 
     function resolveURL(dispatch, getState) {
         dispatch(updateLoadMessage('validating remote file'));
@@ -18,9 +21,15 @@
                 dispatch(setReader(reader));
             });
     }
+
+    $: if (tab === 0) {
+        isSelected = true;
+    } else {
+        isSelected = false;
+    }
 </script>
 
-<div>
+<div class='invisible' class:isSelected >
     {#if inputMode === 0}
         <p>
             You can also provide a link to
@@ -43,3 +52,9 @@
         </InputGroup>
     {/if}
 </div>
+
+<style lang="postcss">
+     div.isSelected {
+        @apply visible;
+    }
+</style>
