@@ -25,6 +25,7 @@
     </div>
 
     {#await viewModel.initModelFromFile($fileModel)}
+        <!-- TODO: We need a real loading bar. At the very least we do not need this -->
         <p>Loading...</p>
     {:then}
         {#if $viewModel.indexPath}
