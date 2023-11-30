@@ -1,8 +1,8 @@
 <script lang="ts">
-    import JSONTree from "svelte-json-tree";
-    import type ViewModel from "$lib/models/viewModel";
+  import JSONTree from "svelte-json-tree";
+  import type ViewModel from "$lib/models/viewModel";
 
-    export let viewModel: ViewModel;
+  export let viewModel: ViewModel;
 </script>
 
 <p>Details</p>
@@ -12,9 +12,9 @@
 <pre id="json">{$viewModel.citations}</pre>
 
 <style lang="postcss">
-    #json {
-        height:500px;
-        width: 1000px;
-        overflow-x: auto;
-    }
+  #json {
+    height:500px;
+    width: 1000px;
+    overflow-x: auto;
+  }
 </style>

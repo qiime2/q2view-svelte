@@ -1,6 +1,6 @@
 <script>
-    // Global postcss
-    import "../app.css";
+  // Global postcss
+  import "../app.css";
 </script>
 
 <slot />
