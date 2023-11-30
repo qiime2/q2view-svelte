@@ -12,6 +12,7 @@
     #iframe {
         @apply h-full
         w-full
-        absolute;
+        fixed
+        overflow-auto;
     }
 </style>
