@@ -16,7 +16,7 @@
 <div id="container">
     <div class="tab" class:visible={selectedTab === "Input"}>
         <DropZone {fileModel}/>
-        <UrlInput/>
+        <UrlInput {fileModel}/>
     </div>
 
     {#await viewModel.initModelFromFile($fileModel)}
