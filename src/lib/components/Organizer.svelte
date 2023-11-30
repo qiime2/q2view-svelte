@@ -11,15 +11,10 @@
     export let selectedTab: string;
     export let viewModel: ViewModel;
     export let fileModel: FileModel;
-
-    $: inputVisible = (selectedTab === "Input");
-    $: visualizationVisible = (selectedTab === "Visualization");
-    $: detailsVisible = (selectedTab === "Details");
-    $: provenanceVisible = (selectedTab === "Provenance");
 </script>
 
 <div id="container">
-    <div id="input" class="tab" class:inputVisible>
+    <div class="tab" class:visible={selectedTab === "Input"}>
         <DropZone {fileModel}/>
         <UrlInput/>
     </div>
@@ -29,15 +24,15 @@
         <p>Loading...</p>
     {:then}
         {#if $viewModel.indexPath}
-            <div id="visualization" class="tab" class:visualizationVisible>
+            <div class="tab" class:visible={selectedTab === "Visualization"}>
                 <Iframe indexPath={viewModel.indexPath}/>
             </div>
         {/if}
         {#if $fileModel.file}
-            <div id="details" class="tab" class:detailsVisible>
+            <div class="tab" class:visible={selectedTab === "Details"}>
                 <Details {viewModel}/>
             </div>
-            <div id="provenance" class="tab" class:provenanceVisible>
+            <div class="tab" class:visible={selectedTab === "Provenance"}>
                 <Provenance {viewModel}/>
             </div>
         {/if}
@@ -45,22 +40,6 @@
 </div>
 
 <style lang="postcss">
-    #input.inputVisible {
-        @apply visible;
-    }
-
-    #visualization.visualizationVisible {
-        @apply visible;
-    }
-
-    #details.detailsVisible {
-        @apply visible;
-    }
-
-    #provenance.provenanceVisible {
-        @apply visible;
-    }
-
     #container {
         display: grid;
     }
@@ -69,5 +48,9 @@
         visibility: hidden;
         grid-column: 1;
         grid-row: 1;
+    }
+
+    .visible {
+        visibility: visible;
     }
 </style>
