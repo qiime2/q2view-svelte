@@ -2,7 +2,6 @@
     import { FormGroup, InputGroup, Button, Input } from 'sveltestrap';
 
     let inputMode: number = 0;
-    let isSelected = false;
 
     function resolveURL(dispatch, getState) {
         dispatch(updateLoadMessage('validating remote file'));
@@ -21,7 +20,7 @@
     }
 </script>
 
-<div class='invisible' class:isSelected >
+<div>
     {#if inputMode === 0}
         <p>
             You can also provide a link to
