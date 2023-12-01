@@ -5,7 +5,7 @@ import JSZip from "jszip";
 import { readBlobAsText } from "$lib/scripts/util";
 import extmap from "$lib/scripts/extmap";
 import schema from "$lib/scripts/yaml-schema";
-import type DataReaderModel from "$lib/models/dataReaderModel";
+import type DataReadModel from "$lib/models/dataReaderModel";
 
 export default class ViewModel {
   // TODO: Probably need to split this data off across a few models not just
@@ -52,7 +52,7 @@ export default class ViewModel {
     })(this._subscriptionNum++);
   }
 
-  initModelFromFile(fileModel: DataReaderModel) {
+  initModelFromFile(fileModel: DataReadModel) {
     let file = fileModel.data;
     if (file === null) {
       return;

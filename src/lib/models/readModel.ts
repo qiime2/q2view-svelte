@@ -1,11 +1,11 @@
-export default class DataReaderModel {
+export default class ReadModel {
   name: string = "";
   data: File | Blob | null = null;
 
   //****************************************************************************
   // Start Boilerplate to make this a subscribable svelte store
   //****************************************************************************
-  _subscription: Record<number, (arg0: DataReaderModel) => void> = {};
+  _subscription: Record<number, (arg0: ReadModel) => void> = {};
   _subscriptionNum = 0;
 
   _dirty() {
@@ -14,7 +14,7 @@ export default class DataReaderModel {
     }
   }
 
-  subscribe(subscription: (value: DataReaderModel) => void): () => void {
+  subscribe(subscription: (value: ReadModel) => void): () => void {
     this._subscription[this._subscriptionNum] = subscription;
     subscription(this);
     return ((index) => {

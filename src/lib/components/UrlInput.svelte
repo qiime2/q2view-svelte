@@ -1,7 +1,7 @@
 <script lang="ts">
-  import type DataReaderModel from "$lib/models/dataReaderModel";
+  import type ReadModel from "$lib/models/readModel";
 
-  export let fileModel: DataReaderModel;
+  export let fileModel: ReadModel;
 
   let inputMode: number = 0;
 

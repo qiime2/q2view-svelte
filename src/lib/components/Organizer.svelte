@@ -1,6 +1,6 @@
 <script lang="ts">
   import type ViewModel from "$lib/models/viewModel";
-  import type DataReaderModel from "$lib/models/dataReaderModel";
+  import type ReadModel from "$lib/models/readModel";
 
   import Iframe from "$lib/components/Iframe.svelte";
   import Details from "$lib/components/Details.svelte";
@@ -10,7 +10,7 @@
 
   export let selectedTab: string;
   export let viewModel: ViewModel;
-  export let fileModel: DataReaderModel;
+  export let fileModel: ReadModel;
 </script>
 
 <div id="container">

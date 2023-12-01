@@ -5,12 +5,12 @@
   import Provenance from "$lib/components/Provenance.svelte";
 
   import ViewModel from "$lib/models/viewModel";
-  import DataReaderModel from "$lib/models/dataReaderModel";
+  import ReadModel from "$lib/models/readModel";
   import UrlInput from "$lib/components/UrlInput.svelte";
   import Organizer from "$lib/components/Organizer.svelte";
 
   let viewModel: ViewModel = new ViewModel();
-  let fileModel: DataReaderModel = new DataReaderModel();
+  let fileModel: ReadModel = new ReadModel();
 
   let selectedTab: string = "Input";
 </script>
