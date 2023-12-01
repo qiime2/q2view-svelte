@@ -2,11 +2,11 @@
   import { onMount } from 'svelte';
 
   import cytoscape from 'cytoscape';
-  import type ViewModel from '$lib/models/viewModel';
+  import type ReaderModel from '$lib/models/readerModel';
 
   export let height: number;
   export let elements: Array<Object>;
-  export let viewModel: ViewModel;
+  export let readerModel: ReaderModel;
 
   let self: HTMLDivElement;
 
@@ -67,11 +67,11 @@
   function setSelection(type, uuid) {
     let selectionData = null;
     if (type === 'action') {
-      viewModel.provTitle = 'Action Details';
-      selectionData = viewModel.getProvenanceAction(uuid);
+      readerModel.provTitle = 'Action Details';
+      selectionData = readerModel.getProvenanceAction(uuid);
     } else {
-      viewModel.provTitle = 'Result Details';
-      selectionData = viewModel.getProvenanceArtifact(uuid);
+      readerModel.provTitle = 'Result Details';
+      selectionData = readerModel.getProvenanceArtifact(uuid);
     }
 
     selectionData.then((data) => _setSelection(data))
@@ -79,14 +79,14 @@
   };
 
   function _setSelection(data) {
-    viewModel.provData = data;
-    viewModel._dirty();
+    readerModel.provData = data;
+    readerModel._dirty();
   }
 
   function clearSelection() {
-    viewModel.provTitle = 'Details';
-    viewModel.provData = undefined;
-    viewModel._dirty();
+    readerModel.provTitle = 'Details';
+    readerModel.provData = undefined;
+    readerModel._dirty();
   }
 
   onMount(() =>{

@@ -1,18 +1,18 @@
 <script lang="ts">
-  import type ReadModel from "$lib/models/readModel";
+  import type ReaderModel from "$lib/models/readerModel";
 
-  export let fileModel: ReadModel;
+  export let readerModel: ReaderModel;
 
   let inputMode: number = 0;
 
   function resolveDropBoxURL() {
     let input = (<HTMLInputElement>document.getElementById("dropBoxInput")).value;
-    fileModel.readData(input, "DropBoxURL");
+    readerModel.readData(input, "DropBoxURL");
   }
 
   function resolveFileURL() {
     let input = (<HTMLInputElement>document.getElementById("URLInput")).value;
-    fileModel.readData(input, "FileURL");
+    readerModel.readData(input, "FileURL");
   }
 </script>
 

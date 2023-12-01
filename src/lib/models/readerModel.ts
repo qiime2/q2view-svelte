@@ -1,22 +1,27 @@
-// TODO: Refactor this especially the initModelFromFile deal
+// *****************************************************************************
+// This model is responsible for reading all of the data from the provided
+// .qza/.qzv. It takes their input and turns it into something it can interpret
+// then provides various bits of information about the provided .qza/.qzv on
+//  request.
+// *****************************************************************************
+
 import yaml from "js-yaml";
 import JSZip from "jszip";
 
 import { readBlobAsText } from "$lib/scripts/util";
 import extmap from "$lib/scripts/extmap";
 import schema from "$lib/scripts/yaml-schema";
-import type ReadModel from "$lib/models/readModel";
 
-export default class ViewModel {
-  // TODO: Probably need to split this data off across a few models not just
-  // this one
+export default class ReaderModel {
+  name: string = "";
+  data: File | Blob | null = null;
+
   uuid: string = "";
   indexPath: string = "";
   version: string = "";
   frameworkVersion: string = "";
   zipReader: JSZip | null = null;
   port: string | null = null;
-  name: string = "";
 
   citations: string | null | undefined = undefined;
   metadata: object = {};
@@ -29,12 +34,11 @@ export default class ViewModel {
   provData: Object | undefined = undefined;
   provTitle: String = "Details";
 
-  _subscription: Record<number, (arg0: ViewModel) => void> = {};
+  //****************************************************************************
+  // Start boilerplate to make this a subscribable svelte store
+  //****************************************************************************
+  _subscription: Record<number, (arg0: ReaderModel) => void> = {};
   _subscriptionNum = 0;
-
-  constructor() {
-    this.session = Math.random().toString(36).substr(2);
-  }
 
   _dirty() {
     for (const subscription of Object.values(this._subscription)) {
@@ -42,7 +46,7 @@ export default class ViewModel {
     }
   }
 
-  subscribe(subscription: (value: ViewModel) => void): () => void {
+  subscribe(subscription: (value: ReaderModel) => void): () => void {
     this._subscription[this._subscriptionNum] = subscription;
     subscription(this);
     return ((index) => {
@@ -51,21 +55,69 @@ export default class ViewModel {
       };
     })(this._subscriptionNum++);
   }
+  //****************************************************************************
+  // End boilerplate to make this a subscribable svelte store
+  //****************************************************************************
 
-  initModelFromFile(fileModel: ReadModel) {
-    let file = fileModel.data;
-    if (file === null) {
-      return;
+  constructor() {
+    this.session = Math.random().toString(36).substr(2);
+  }
+
+  async readData(rawSrc: File | string, sourceType: string): Promise<void> {
+    // They gave us a file from their computer
+    if (rawSrc instanceof File) {
+      this.data = rawSrc;
+      this.name = rawSrc.name;
+    }
+    // They gave us some kind of URL
+    else {
+      // Handle potential DropBox URL weirdness to do with search params
+      if (sourceType === "DropBoxURL") {
+        const source = new URL(rawSrc);
+        source.searchParams.set("dl", "1");
+        const path = `${source.pathname}?${source.searchParams}`;
+        rawSrc = `https://dl.dropboxusercontent.com${path}`;
+      }
+
+      this.data = await this.getRemoteFile(rawSrc);
+      this.name = this.parseFileNameFromURL(rawSrc);
     }
 
-    this.name = fileModel.name;
+    this.initModelFromData();
+  }
+
+  private async getRemoteFile(url: string): Promise<Blob> {
+    return await fetch(url).then((response) => {
+      if (!response.ok) {
+        throw Error(`Network error, recieved ${response.status} from server.`);
+      }
+
+      return response.blob();
+    });
+  }
+
+  private parseFileNameFromURL(url: string): string {
+    let fileName = new URL(url).pathname.split("/").pop();
+
+    if (fileName === undefined) {
+      throw Error(`Could not get filename from the URL ${url}`);
+    }
+
+    return fileName;
+  }
+
+  initModelFromData() {
+    if (this.data === null) {
+      // How did we get here?
+      return;
+    }
 
     // TODO: This needs to go in an actual place lol
     this.attachToServiceWorker();
     fetch("/_/wakeup");
 
     const jsZip = new JSZip();
-    return jsZip.loadAsync(file).then((zip) => {
+    return jsZip.loadAsync(this.data).then((zip) => {
       const error = new Error("Not a valid QIIME 2 archive.");
       // Verify layout:
       // 1) Root dir named with UUID, only object in zip root
@@ -126,19 +178,11 @@ export default class ViewModel {
 
       // Set Citations
       this._getCitations().then((citations) => {
-        this.citations = this.dedup(citations);
+        this.citations = this._dedup(citations);
         this._dirty();
       });
 
       this._dirty;
-    });
-  }
-
-  initModelFromURL(url) {
-    // eslint-disable-line no-unused-vars
-    // TODO, be smurter and make this someday
-    return new Promise((resolve, reject) => {
-      // eslint-disable-line no-unused-vars
     });
   }
 
@@ -193,7 +237,7 @@ export default class ViewModel {
     }
 
     return this._getCitations().then((citations) => {
-      this.citations = this.dedup(citations);
+      this.citations = this._dedup(citations);
       return this.citations;
     });
   }
@@ -214,7 +258,7 @@ export default class ViewModel {
     return Promise.all(promises).then((array) => array.join(""));
   }
 
-  dedup(bibtex) {
+  _dedup(bibtex) {
     const store = {};
     const dedup = [];
 

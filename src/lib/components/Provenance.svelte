@@ -1,19 +1,19 @@
 <script lang="ts">
   import JSONTree from "svelte-json-tree";
   import Dag from "./Dag.svelte";
-  import type ViewModel from "$lib/models/viewModel";
+  import type ReaderModel from "$lib/models/readerModel";
 
-  export let viewModel: ViewModel;
+  export let readerModel: ReaderModel;
 </script>
 
-{#await viewModel.getProvenanceTree()}
+{#await readerModel.getProvenanceTree()}
   <p>Loading...</p>
 {:then data}
-  <Dag height={data[0]} elements={data[1]} {viewModel} />
+  <Dag height={data[0]} elements={data[1]} {readerModel} />
 {/await}
 
-<p>{$viewModel.provTitle}</p>
-{#if $viewModel.provData !== undefined}
-  <JSONTree value={viewModel.provData}/>
+<p>{$readerModel.provTitle}</p>
+{#if $readerModel.provData !== undefined}
+  <JSONTree value={readerModel.provData}/>
 {:else}
 {/if}

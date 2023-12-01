@@ -4,27 +4,25 @@
   import DropZone from "$lib/components/DropZone.svelte";
   import Provenance from "$lib/components/Provenance.svelte";
 
-  import ViewModel from "$lib/models/viewModel";
-  import ReadModel from "$lib/models/readModel";
+  import ReaderModel from "$lib/models/readerModel";
   import UrlInput from "$lib/components/UrlInput.svelte";
   import Organizer from "$lib/components/Organizer.svelte";
 
-  let viewModel: ViewModel = new ViewModel();
-  let fileModel: ReadModel = new ReadModel();
+  let readerModel: ReaderModel = new ReaderModel();
 
   let selectedTab: string = "Input";
 </script>
 
 <button on:click={() => (selectedTab = "Input")}><img id="navlogo" src="/q2view.png" alt="QIIME 2 view logo"></button>
-{#if $viewModel.indexPath}
+{#if $readerModel.indexPath}
   <button class="navbutton" on:click={() => (selectedTab = "Visualization")}>Visualization</button>
 {/if}
-{#if $fileModel.data}
+{#if $readerModel.data}
   <button class="navbutton" on:click={() => (selectedTab = "Details")}>Details</button>
   <button class="navbutton" on:click={() => (selectedTab = "Provenance")}>Provenance</button>
 {/if}
 
-<Organizer {selectedTab} {viewModel} {fileModel}/>
+<Organizer {selectedTab} {readerModel}/>
 
 <style lang="postcss">
   .navbutton {

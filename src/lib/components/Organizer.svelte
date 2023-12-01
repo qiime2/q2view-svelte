@@ -1,6 +1,5 @@
 <script lang="ts">
-  import type ViewModel from "$lib/models/viewModel";
-  import type ReadModel from "$lib/models/readModel";
+  import type ReaderModel from "$lib/models/readerModel";
 
   import Iframe from "$lib/components/Iframe.svelte";
   import Details from "$lib/components/Details.svelte";
@@ -9,34 +8,28 @@
   import Provenance from "$lib/components/Provenance.svelte";
 
   export let selectedTab: string;
-  export let viewModel: ViewModel;
-  export let fileModel: ReadModel;
+  export let readerModel: ReaderModel;
 </script>
 
 <div id="container">
   <div class="tab" class:visible={selectedTab === "Input"}>
-    <DropZone {fileModel}/>
-    <UrlInput {fileModel}/>
+    <DropZone {readerModel}/>
+    <UrlInput {readerModel}/>
   </div>
 
-  {#await viewModel.initModelFromFile($fileModel)}
-    <!-- TODO: We need a real loading bar. At the very least we do not need this -->
-    <p>Loading...</p>
-  {:then}
-    {#if $viewModel.indexPath}
-      <div class="tab" class:visible={selectedTab === "Visualization"}>
-        <Iframe indexPath={viewModel.indexPath}/>
-      </div>
-    {/if}
-    {#if $fileModel.data}
-      <div class="tab" class:visible={selectedTab === "Details"}>
-        <Details {viewModel}/>
-      </div>
-      <div class="tab" class:visible={selectedTab === "Provenance"}>
-        <Provenance {viewModel}/>
-      </div>
-    {/if}
-  {/await}
+  {#if $readerModel.indexPath}
+    <div class="tab" class:visible={selectedTab === "Visualization"}>
+      <Iframe indexPath={readerModel.indexPath}/>
+    </div>
+  {/if}
+  {#if $readerModel.data}
+    <div class="tab" class:visible={selectedTab === "Details"}>
+      <Details {readerModel}/>
+    </div>
+    <div class="tab" class:visible={selectedTab === "Provenance"}>
+      <Provenance {readerModel}/>
+    </div>
+  {/if}
 </div>
 
 <style lang="postcss">

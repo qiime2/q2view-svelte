@@ -1,7 +1,7 @@
 <script lang="ts">
-  import type ReadModel from "$lib/models/readModel";
+  import type ReaderModel from "$lib/models/readerModel";
 
-  export let fileModel: ReadModel;
+  export let readerModel: ReaderModel;
 
   let files: FileList;
   let isDragging = false;
@@ -32,7 +32,7 @@
       alert("Please only provide a single file.");
     }
     else {
-      fileModel.readData(files[0], "LocalFile");
+      readerModel.readData(files[0], "LocalFile");
     }
   }
 </script>

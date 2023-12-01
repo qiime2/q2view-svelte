@@ -1,15 +1,15 @@
 <script lang="ts">
   import JSONTree from "svelte-json-tree";
-  import type ViewModel from "$lib/models/viewModel";
+  import type ReaderModel from "$lib/models/readerModel";
 
-  export let viewModel: ViewModel;
+  export let readerModel: ReaderModel;
 </script>
 
 <p>Details</p>
-<p>{viewModel.name}</p>
-<JSONTree value={$viewModel.metadata}/>
+<p>{readerModel.name}</p>
+<JSONTree value={$readerModel.metadata}/>
 <p>Citations</p>
-<pre id="json">{$viewModel.citations}</pre>
+<pre id="json">{$readerModel.citations}</pre>
 
 <style lang="postcss">
   #json {
