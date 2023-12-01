@@ -60,7 +60,6 @@ export default class ViewModel {
 
     this.name = fileModel.name;
 
-    console.log(file);
     // TODO: This needs to go in an actual place lol
     this.attachToServiceWorker();
     fetch("/_/wakeup");
