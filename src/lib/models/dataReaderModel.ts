@@ -34,7 +34,7 @@ export default class DataReaderModel {
       }
 
       return response.blob();
-    })
+    });
   }
 
   async readData(rawSrc: File | string, sourceType: string): Promise<void> {
@@ -48,7 +48,7 @@ export default class DataReaderModel {
       // Handle potential DropBox URL weirdness to do with search params
       if (sourceType === "DropBoxURL") {
         const source = new URL(rawSrc);
-        source.searchParams.set('dl', '1');
+        source.searchParams.set("dl", "1");
         const path = `${source.pathname}?${source.searchParams}`;
         rawSrc = `https://dl.dropboxusercontent.com${path}`;
       }
