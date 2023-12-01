@@ -5,12 +5,12 @@
   import Provenance from "$lib/components/Provenance.svelte";
 
   import ViewModel from "$lib/models/viewModel";
-  import FileModel from "$lib/models/fileModel";
+  import DataReaderModel from "$lib/models/dataReaderModel";
   import UrlInput from "$lib/components/UrlInput.svelte";
   import Organizer from "$lib/components/Organizer.svelte";
 
   let viewModel: ViewModel = new ViewModel();
-  let fileModel: FileModel = new FileModel();
+  let fileModel: DataReaderModel = new DataReaderModel();
 
   let selectedTab: string = "Input";
 </script>
@@ -19,7 +19,7 @@
 {#if $viewModel.indexPath}
   <button class="navbutton" on:click={() => (selectedTab = "Visualization")}>Visualization</button>
 {/if}
-{#if $fileModel.file}
+{#if $fileModel.data}
   <button class="navbutton" on:click={() => (selectedTab = "Details")}>Details</button>
   <button class="navbutton" on:click={() => (selectedTab = "Provenance")}>Provenance</button>
 {/if}

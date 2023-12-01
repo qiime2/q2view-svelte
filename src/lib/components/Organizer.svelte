@@ -1,6 +1,6 @@
 <script lang="ts">
   import type ViewModel from "$lib/models/viewModel";
-  import type FileModel from "$lib/models/fileModel";
+  import type DataReaderModel from "$lib/models/dataReaderModel";
 
   import Iframe from "$lib/components/Iframe.svelte";
   import Details from "$lib/components/Details.svelte";
@@ -10,7 +10,7 @@
 
   export let selectedTab: string;
   export let viewModel: ViewModel;
-  export let fileModel: FileModel;
+  export let fileModel: DataReaderModel;
 </script>
 
 <div id="container">
@@ -28,7 +28,7 @@
         <Iframe indexPath={viewModel.indexPath}/>
       </div>
     {/if}
-    {#if $fileModel.file}
+    {#if $fileModel.data}
       <div class="tab" class:visible={selectedTab === "Details"}>
         <Details {viewModel}/>
       </div>

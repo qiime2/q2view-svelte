@@ -1,9 +1,11 @@
+// TODO: Refactor this especially the initModelFromFile deal
 import yaml from "js-yaml";
 import JSZip from "jszip";
 
 import { readBlobAsText } from "$lib/scripts/util";
 import extmap from "$lib/scripts/extmap";
 import schema from "$lib/scripts/yaml-schema";
+import type DataReaderModel from "$lib/models/dataReaderModel";
 
 export default class ViewModel {
   // TODO: Probably need to split this data off across a few models not just
@@ -50,14 +52,15 @@ export default class ViewModel {
     })(this._subscriptionNum++);
   }
 
-  initModelFromFile(fileModel) {
-    let file = fileModel.file;
+  initModelFromFile(fileModel: DataReaderModel) {
+    let file = fileModel.data;
     if (file === null) {
       return;
     }
 
-    this.name = file.name;
+    this.name = fileModel.name;
 
+    console.log(file);
     // TODO: This needs to go in an actual place lol
     this.attachToServiceWorker();
     fetch("/_/wakeup");
