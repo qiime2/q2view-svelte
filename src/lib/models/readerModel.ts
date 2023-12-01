@@ -4,7 +4,6 @@
 // then provides various bits of information about the provided .qza/.qzv on
 //  request.
 // *****************************************************************************
-
 import yaml from "js-yaml";
 import JSZip from "jszip";
 
