@@ -2,6 +2,9 @@ export default class DataReaderModel {
   name: string = "";
   data: File | Blob | null = null;
 
+  //****************************************************************************
+  // Start Boilerplate to make this a subscribable svelte store
+  //****************************************************************************
   _subscription: Record<number, (arg0: DataReaderModel) => void> = {};
   _subscriptionNum = 0;
 
@@ -20,6 +23,9 @@ export default class DataReaderModel {
       };
     })(this._subscriptionNum++);
   }
+  //****************************************************************************
+  // End Boilerplate to make this a subscribable svelte store
+  //****************************************************************************
 
   private async getRemoteFile(url: string): Promise<Blob> {
     return await fetch(url).then((response) => {
