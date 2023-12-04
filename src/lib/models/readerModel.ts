@@ -2,7 +2,7 @@
 // This model is responsible for reading all of the data from the provided
 // .qza/.qzv. It takes their input and turns it into something it can interpret
 // then provides various bits of information about the provided .qza/.qzv on
-//  request.
+// request.
 // *****************************************************************************
 import yaml from "js-yaml";
 import JSZip from "jszip";
