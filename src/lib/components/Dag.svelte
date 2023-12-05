@@ -1,12 +1,11 @@
 <script lang="ts">
   import { onMount } from 'svelte';
 
+  import readerModel from "$lib/models/readerModel";
   import cytoscape from 'cytoscape';
-  import type ReaderModel from '$lib/models/readerModel';
 
   export let height: number;
   export let elements: Array<Object>;
-  export let readerModel: ReaderModel;
 
   let self: HTMLDivElement;
 

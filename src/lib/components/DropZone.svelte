@@ -1,7 +1,5 @@
 <script lang="ts">
-  import type ReaderModel from "$lib/models/readerModel";
-
-  export let readerModel: ReaderModel;
+  import readerModel from "$lib/models/readerModel";
 
   let files: FileList;
   let isDragging = false;

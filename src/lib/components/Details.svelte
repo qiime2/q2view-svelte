@@ -1,8 +1,7 @@
 <script lang="ts">
   import JSONTree from "svelte-json-tree";
-  import type ReaderModel from "$lib/models/readerModel";
 
-  export let readerModel: ReaderModel;
+  import readerModel from "$lib/models/readerModel";
 </script>
 
 <p>Details</p>

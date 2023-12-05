@@ -11,7 +11,7 @@ import { readBlobAsText } from "$lib/scripts/util";
 import extmap from "$lib/scripts/extmap";
 import schema from "$lib/scripts/yaml-schema";
 
-export default class ReaderModel {
+class ReaderModel {
   name: string = "";
   data: File | Blob | null = null;
 
@@ -497,3 +497,7 @@ export default class ReaderModel {
     return this._getYAML(`provenance/artifacts/${uuid}/metadata.yaml`);
   }
 }
+
+// Create a singleton version of the reader for this session
+const readerModel = new ReaderModel();
+export default readerModel;
