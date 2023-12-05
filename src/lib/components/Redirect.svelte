@@ -1,4 +1,4 @@
-<script lang="ts">
+<script lang='ts'>
   import { page } from '$app/stores'
   import { goto } from '$app/navigation';
   import { browser } from '$app/environment';
@@ -8,7 +8,7 @@
     const src = $page.url.searchParams.get('src');
 
     if (src === null) {
-      alert("Invalid URL. Lacking a src param.");
+      alert('Invalid URL. Lacking a src param.');
     }
     else {
       readerModel.readData(src);

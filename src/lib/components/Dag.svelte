@@ -1,7 +1,7 @@
-<script lang="ts">
+<script lang='ts'>
   import { onMount } from 'svelte';
 
-  import readerModel from "$lib/models/readerModel";
+  import readerModel from '$lib/models/readerModel';
   import cytoscape from 'cytoscape';
 
   export let height: number;

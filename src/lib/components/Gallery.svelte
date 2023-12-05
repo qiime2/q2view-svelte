@@ -1,5 +1,5 @@
-<script lang="ts">
-  import GalleryCard from "./GalleryCard.svelte";
+<script lang='ts'>
+  import GalleryCard from './GalleryCard.svelte';
 
   const taxaObj = {
       title: 'Taxonomic Bar Plots',
@@ -60,7 +60,7 @@
 <h2>Gallery</h2>
 <p>Don&apos;t have a QIIME 2 result of your own to view? Try one of these?</p>
 
-<div class="grid grid-cols-3 grid-rows-2">
+<div class='grid grid-cols-3 grid-rows-2'>
   <div>
     <GalleryCard {...taxaObj}/>
   </div>
@@ -81,5 +81,5 @@
   </div>
 </div>
 
-<style lang="postcss">
+<style lang='postcss'>
 </style>

@@ -1,8 +1,8 @@
-<script lang="ts">
-  import readerModel from "$lib/models/readerModel";
+<script lang='ts'>
+  import readerModel from '$lib/models/readerModel';
 
-  import JSONTree from "svelte-json-tree";
-  import Dag from "./Dag.svelte";
+  import JSONTree from 'svelte-json-tree';
+  import Dag from './Dag.svelte';
 </script>
 
 {#await readerModel.getProvenanceTree()}
