@@ -6,10 +6,10 @@ export const readBlobAsText = (blob) =>
       // eslint-disable-line no-unused-vars
       resolve(reader.result);
     };
-    reader.readAsText(blob, 'utf8');
+    reader.readAsText(blob, "utf8");
   });
 
-export const timeoutAt = (timeout, reason = 'Timed out') =>
+export const timeoutAt = (timeout, reason = "Timed out") =>
   new Promise((resolve, reject) => {
     // eslint-disable-line no-unused-vars
     setTimeout(() => {
@@ -32,4 +32,4 @@ export const waitUntil = (condition) =>
   });
 
 export const parseFileNameFromURL = (urlString) =>
-  new URL(urlString).pathname.split('/').pop();
+  new URL(urlString).pathname.split("/").pop();

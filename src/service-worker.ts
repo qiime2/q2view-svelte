@@ -6,29 +6,29 @@
 // The full license is in the file LICENSE, distributed with this software.
 // ----------------------------------------------------------------------------
 
-self.addEventListener('install', (event) => {
+self.addEventListener("install", (event) => {
   event.waitUntil(self.skipWaiting()); // Activate worker immediately
 });
 
-self.addEventListener('activate', (event) => {
+self.addEventListener("activate", (event) => {
   event.waitUntil(self.clients.claim()); // Become available to all pages
 });
 
-self.addEventListener('fetch', (fetchEvent) => {
+self.addEventListener("fetch", (fetchEvent) => {
   const url = new URL(fetchEvent.request.url);
-  if (!url.pathname.startsWith('/_/')) {
+  if (!url.pathname.startsWith("/_/")) {
     return; // end of fetch
   }
 
-  if (url.pathname.toString() === '/_/wakeup') {
-    fetchEvent.respondWith(Promise.resolve(new Response('OK')));
+  if (url.pathname.toString() === "/_/wakeup") {
+    fetchEvent.respondWith(Promise.resolve(new Response("OK")));
     return; // end of fetch
   }
 
-  const components = url.pathname.split('/').slice(2); // discard '' and '_'
+  const components = url.pathname.split("/").slice(2); // discard '' and '_'
   const session = components[0];
   const uuid = components[1];
-  const filename = components.slice(2).join('/'); // everything but session/uuid
+  const filename = components.slice(2).join("/"); // everything but session/uuid
 
   fetchEvent.respondWith(
     new Promise((resolve, reject) => {
@@ -43,12 +43,12 @@ self.addEventListener('fetch', (fetchEvent) => {
             const init = {};
             if (!event.data.type) {
               // unknown extension, so invoke download dialog
-              init.headers = { 'Content-Disposition': 'attachment' };
+              init.headers = { "Content-Disposition": "attachment" };
             }
             resolve(new Response(blob, init));
           };
 
-          client.postMessage({ type: 'GET_DATA', session, uuid, filename }, [
+          client.postMessage({ type: "GET_DATA", session, uuid, filename }, [
             channel.port2,
           ]);
         }),
