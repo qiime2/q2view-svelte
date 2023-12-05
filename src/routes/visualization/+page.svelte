@@ -1,5 +1,5 @@
 <script>
-    import Redirect from '$lib/components/Redirect.svelte';
+    import Redirect from "$lib/components/Redirect.svelte";
 </script>
 
 <Redirect/>

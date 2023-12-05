@@ -1,8 +1,8 @@
-<script lang='ts'>
-  import { onMount } from 'svelte';
+<script lang="ts">
+  import { onMount } from "svelte";
 
-  import readerModel from '$lib/models/readerModel';
-  import cytoscape from 'cytoscape';
+  import readerModel from "$lib/models/readerModel";
+  import cytoscape from "cytoscape";
 
   export let height: number;
   export let elements: Array<Object>;
@@ -14,50 +14,50 @@
     autounselectify: false,
     userZoomingEnabled: false,
     layout: {
-      name: 'grid',
+      name: "grid",
       fit: false,
       condense: true,
       avoidOverlapPadding: 75,
       position: node => ({
-        row: node.data('row'),
-        col: node.data('col')
+        row: node.data("row"),
+        col: node.data("col")
       })
     },
     style: [
       {
-        selector: 'node',
+        selector: "node",
         css: {
-          'text-valign': 'center',
-          'text-halign': 'center'
+          "text-valign": "center",
+          "text-halign": "center"
         }
       },
       {
-        selector: '$node > node',
+        selector: "$node > node",
         css: {
-          'padding-top': '10px',
-          'padding-left': '10px',
-          'padding-bottom': '10px',
-          'padding-right': '10px',
-          'text-valign': 'top',
-          'text-halign': 'center',
-          'background-color': '#bbb'
+          "padding-top": "10px",
+          "padding-left": "10px",
+          "padding-bottom": "10px",
+          "padding-right": "10px",
+          "text-valign": "top",
+          "text-halign": "center",
+          "background-color": "#bbb"
         }
       },
       {
-        selector: 'edge',
+        selector: "edge",
         css: {
-          content: 'data(param)',
-          'target-arrow-shape': 'triangle',
-          'curve-style': 'segments'
+          content: "data(param)",
+          "target-arrow-shape": "triangle",
+          "curve-style": "segments"
         }
       },
       {
-        selector: ':selected',
+        selector: ":selected",
         css: {
-          'background-color': 'rgb(81, 132, 151)',
-          'line-color': 'rgb(81, 132, 151)',
-          'target-arrow-color': 'rgb(81, 132, 151)',
-          'source-arrow-color': 'rgb(81, 132, 151)'
+          "background-color": "rgb(81, 132, 151)",
+          "line-color": "rgb(81, 132, 151)",
+          "target-arrow-color": "rgb(81, 132, 151)",
+          "source-arrow-color": "rgb(81, 132, 151)"
         }
       }
     ]
@@ -65,11 +65,11 @@
 
   function setSelection(type, uuid) {
     let selectionData = null;
-    if (type === 'action') {
-      readerModel.provTitle = 'Action Details';
+    if (type === "action") {
+      readerModel.provTitle = "Action Details";
       selectionData = readerModel.getProvenanceAction(uuid);
     } else {
-      readerModel.provTitle = 'Result Details';
+      readerModel.provTitle = "Result Details";
       selectionData = readerModel.getProvenanceArtifact(uuid);
     }
 
@@ -83,23 +83,23 @@
   }
 
   function clearSelection() {
-    readerModel.provTitle = 'Details';
+    readerModel.provTitle = "Details";
     readerModel.provData = undefined;
     readerModel._dirty();
   }
 
   onMount(() =>{
     let displayHeight = (height + 1) * 105;
-    self.style.setProperty('height', `${displayHeight}px`);
+    self.style.setProperty("height", `${displayHeight}px`);
     let lock = false; // used to prevent recursive event storms
     let selectedExists = false;
     let cy = cytoscape({
       ...cytoscapeConfig,
-      container: document.getElementById('cy'),
+      container: document.getElementById("cy"),
       elements: elements
     });
 
-    cy.on('select', 'node, edge', (event) => {
+    cy.on("select", "node, edge", (event) => {
       if (!lock) {
         selectedExists = true;
         lock = true;
@@ -111,16 +111,16 @@
         }
 
         // This is getting the information to draw the details of the
-        // selected node clicked on. I don't really know how it works
+        // selected node clicked on. I don"t really know how it works
         // lol
         if (node.isParent()) {
-          setSelection('action', node.children()[0].data('id'));
+          setSelection("action", node.children()[0].data("id"));
         } else {
-          setSelection('artifact', node.data('id'));
+          setSelection("artifact", node.data("id"));
         }
 
-        const edges = node.edgesTo('node');
-        cy.elements('node, edge').unselect();
+        const edges = node.edgesTo("node");
+        cy.elements("node, edge").unselect();
         node.select();
         edges.select();
 
@@ -128,8 +128,8 @@
       }
     });
 
-    cy.on('unselect', 'node, edge', (event) => {  // eslint-disable-line no-unused-vars
-      cy.elements('node, edge').unselect();
+    cy.on("unselect", "node, edge", (event) => {  // eslint-disable-line no-unused-vars
+      cy.elements("node, edge").unselect();
       if (!lock && selectedExists) {
         clearSelection();
         selectedExists = false;
@@ -142,5 +142,5 @@
 
 <div
   bind:this={self}
-  id='cy'
+  id="cy"
 />
