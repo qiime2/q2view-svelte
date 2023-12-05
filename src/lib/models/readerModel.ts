@@ -62,7 +62,7 @@ class ReaderModel {
     this.session = Math.random().toString(36).substr(2);
   }
 
-  async readData(rawSrc: File | string, sourceType: string): Promise<void> {
+  async readData(rawSrc: File | string): Promise<void> {
     // They gave us a file from their computer
     if (rawSrc instanceof File) {
       this.data = rawSrc;
@@ -70,11 +70,11 @@ class ReaderModel {
     }
     // They gave us some kind of URL
     else {
+      const sourceURL = new URL(rawSrc);
       // Handle potential DropBox URL weirdness to do with search params
-      if (sourceType === "DropBoxURL") {
-        const source = new URL(rawSrc);
-        source.searchParams.set("dl", "1");
-        const path = `${source.pathname}?${source.searchParams}`;
+      if (sourceURL.hostname === 'www.dropbox.com') {
+        sourceURL.searchParams.set('dl', '1');
+        const path = `${sourceURL.pathname}?${sourceURL.searchParams}`;
         rawSrc = `https://dl.dropboxusercontent.com${path}`;
       }
 

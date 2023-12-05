@@ -30,7 +30,7 @@
       alert("Please only provide a single file.");
     }
     else {
-      readerModel.readData(files[0], "LocalFile");
+      readerModel.readData(files[0]);
     }
   }
 </script>

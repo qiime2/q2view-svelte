@@ -11,14 +11,16 @@
   let selectedTab: string = "Input";
 </script>
 
-<button on:click={() => (selectedTab = "Input")}><img id="navlogo" src="/q2view.png" alt="QIIME 2 view logo"></button>
-{#if $readerModel.indexPath}
-  <button class="navbutton" on:click={() => (selectedTab = "Visualization")}>Visualization</button>
-{/if}
-{#if $readerModel.data}
-  <button class="navbutton" on:click={() => (selectedTab = "Details")}>Details</button>
-  <button class="navbutton" on:click={() => (selectedTab = "Provenance")}>Provenance</button>
-{/if}
+<div id="navbar">
+  <button on:click={() => (selectedTab = "Input")}><img id="navlogo" src="/q2view.png" alt="QIIME 2 view logo"></button>
+  {#if $readerModel.indexPath}
+    <button class="navbutton" on:click={() => (selectedTab = "Visualization")}>Visualization</button>
+  {/if}
+  {#if $readerModel.data}
+    <button class="navbutton" on:click={() => (selectedTab = "Details")}>Details</button>
+    <button class="navbutton" on:click={() => (selectedTab = "Provenance")}>Provenance</button>
+  {/if}
+</div>
 
 
 <div id="container">
@@ -44,13 +46,25 @@
 </div>
 
 <style lang="postcss">
-  #container {
-    display: grid;
+  #navbar {
+    @apply fixed
+    rounded-none
+    shadow
+    z-10
+    top-0
+    left-0
+    right-0
+    bg-slate-300;
   }
 
   #navlogo {
     @apply h-10
     mt-2;
+  }
+
+  #container {
+    display: grid;
+    margin-top: 75px;
   }
 
   .tab {
@@ -61,9 +75,5 @@
 
   .visible {
     visibility: visible;
-  }
-
-  .navbutton {
-    @apply bg-slate-300;
   }
 </style>
