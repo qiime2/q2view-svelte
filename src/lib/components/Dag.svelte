@@ -4,8 +4,6 @@
   import readerModel from "$lib/models/readerModel";
   import cytoscape from "cytoscape";
 
-  export let height: number;
-  export let elements: Array<Object>;
 
   let self: HTMLDivElement;
 
@@ -89,14 +87,14 @@
   }
 
   onMount(() =>{
-    let displayHeight = (height + 1) * 105;
+    let displayHeight = (readerModel.height + 1) * 105;
     self.style.setProperty("height", `${displayHeight}px`);
     let lock = false; // used to prevent recursive event storms
     let selectedExists = false;
     let cy = cytoscape({
       ...cytoscapeConfig,
       container: document.getElementById("cy"),
-      elements: elements
+      elements: readerModel.elements
     });
 
     cy.on("select", "node, edge", (event) => {

@@ -15,4 +15,7 @@
       goto("/");
     }
   }
+
+// History.pushstate to add arbitrary info to url in browser use this + routing
+// To have more informative URL stuff
 </script>

@@ -7,8 +7,14 @@
   import DropZone from "$lib/components/DropZone.svelte";
   import UrlInput from "$lib/components/UrlInput.svelte";
   import Provenance from "$lib/components/Provenance.svelte";
+  import { onMount } from "svelte";
 
   let selectedTab: string = "Input";
+
+  onMount(() => {
+    readerModel.attachToServiceWorker();
+    fetch("/_/wakeup");
+  })
 </script>
 
 <div id="navbar">
@@ -32,7 +38,7 @@
 
   {#if $readerModel.indexPath}
     <div class="tab" class:visible={selectedTab === "Visualization"}>
-      <Iframe indexPath={readerModel.indexPath}/>
+      <Iframe indexPath={$readerModel.indexPath}/>
     </div>
   {/if}
   {#if $readerModel.data}

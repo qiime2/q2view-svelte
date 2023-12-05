@@ -64,8 +64,19 @@ class ReaderModel {
   }
 
   async readData(rawSrc: File | string): Promise<void> {
+    // TODO: This is some basic loading error handling. The live version
+    // redirects to a nice page. We should probably do that here too.
+    try {
+      await this._readData(rawSrc);
+    } catch (err) {
+      alert(err);
+    }
+  }
+
+  async _readData(rawSrc: File | string): Promise<void> {
     // They gave us a file from their computer
     if (rawSrc instanceof File) {
+      // TODO: Validate file first
       this.data = rawSrc;
       this.name = rawSrc.name;
       this.source = "local";
@@ -80,12 +91,15 @@ class ReaderModel {
         rawSrc = `https://dl.dropboxusercontent.com${path}`;
       }
 
-      this.data = await this.getRemoteFile(rawSrc);
+      const data = await this.getRemoteFile(rawSrc);
+      // TODO: Validate file first
+      this.data = data;
       this.name = this.parseFileNameFromURL(rawSrc);
       this.source = "remote";
     }
 
-    this.initModelFromData();
+    await this.initModelFromData();
+    this._dirty();
   }
 
   private async getRemoteFile(url: string): Promise<Blob> {
@@ -108,84 +122,75 @@ class ReaderModel {
     return fileName;
   }
 
-  initModelFromData() {
+  async initModelFromData() {
     if (this.data === null) {
       // How did we get here?
       return;
     }
 
-    // TODO: This needs to go in an actual place lol
-    this.attachToServiceWorker();
-    fetch("/_/wakeup");
-
     const jsZip = new JSZip();
-    return jsZip.loadAsync(this.data).then((zip) => {
-      const error = new Error("Not a valid QIIME 2 archive.");
-      // Verify layout:
-      // 1) Root dir named with UUID, only object in zip root
-      // 2) UUID dir has a file named `VERSION`
-      const files = Object.keys(zip.files);
-      const parsedPaths = [];
-      files.forEach((f) => {
-        const fileParts = f.split("/");
-        for (let i = 1; i <= fileParts.length; i += 1) {
-          parsedPaths.push(fileParts.slice(0, i).join("/"));
-        }
-      });
-      const uniquePaths = parsedPaths.filter(
-        (value, index, self) => self.indexOf(value) === index,
-      );
+    const zip = await jsZip.loadAsync(this.data);
+    const error = new Error("Not a valid QIIME 2 archive.");
 
-      // http://stackoverflow.com/a/13653180
-      const uuidRegEx =
-        /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i; // eslint-disable-line max-len
-      let allInUUID = true;
-      uniquePaths.every((path) => {
-        const parts = path.split("/");
-        if (!uuidRegEx.test(parts[0])) {
-          allInUUID = false;
-          return false; // break
-        }
-        return true;
-      });
-
-      // If every path has UUID, then proceed
-      if (!allInUUID) {
-        throw error;
+    // Verify layout:
+    // 1) Root dir named with UUID, only object in zip root
+    // 2) UUID dir has a file named `VERSION`
+    const files = Object.keys(zip.files);
+    const parsedPaths = [];
+    files.forEach((f) => {
+      const fileParts = f.split("/");
+      for (let i = 1; i <= fileParts.length; i += 1) {
+        parsedPaths.push(fileParts.slice(0, i).join("/"));
       }
-
-      const UUID = uniquePaths[0].split("/")[0];
-
-      // Search for VERSION file
-      if (
-        uniquePaths.find((path) => path === `${UUID}/VERSION`) === undefined
-      ) {
-        throw error;
-      }
-
-      this.uuid = UUID;
-      this.zipReader = zip;
-
-      // Set Metadata
-      this._getYAML("metadata.yaml").then((metadata) => {
-        this.metadata = metadata;
-        // Determine if we have a visualization or an artifact
-        if (metadata["type"] === "Visualization") {
-          this.indexPath = `/_/${this.session}/${UUID}/data/index.html`;
-        } else {
-          this.indexPath = "";
-        }
-        this._dirty();
-      });
-
-      // Set Citations
-      this._getCitations().then((citations) => {
-        this.citations = this._dedup(citations);
-        this._dirty();
-      });
-
-      this._dirty;
     });
+    const uniquePaths = parsedPaths.filter(
+      (value, index, self) => self.indexOf(value) === index,
+    );
+
+    // http://stackoverflow.com/a/13653180
+    const uuidRegEx =
+      /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i; // eslint-disable-line max-len
+    let allInUUID = true;
+    uniquePaths.every((path) => {
+      const parts = path.split("/");
+      if (!uuidRegEx.test(parts[0])) {
+        allInUUID = false;
+        return false; // break
+      }
+      return true;
+    });
+
+    // If every path has UUID, then proceed
+    if (!allInUUID) {
+      throw error;
+    }
+
+    const UUID = uniquePaths[0].split("/")[0];
+
+    // Search for VERSION file
+    if (uniquePaths.find((path) => path === `${UUID}/VERSION`) === undefined) {
+      throw error;
+    }
+
+    this.uuid = UUID;
+    this.zipReader = zip;
+
+    // Set Metadata
+    this.metadata = await this._getYAML("metadata.yaml");
+    // Determine if we have a visualization or an artifact
+    if (this.metadata["type"] === "Visualization") {
+      this.indexPath = `/_/${this.session}/${UUID}/data/index.html`;
+    } else {
+      this.indexPath = "";
+    }
+
+    // Set Citations
+    const citations = await this._getCitations();
+    this.citations = this._dedup(citations);
+
+    const data = await this.getProvenanceTree();
+    this.height = data[0];
+    this.elements = data[1];
   }
 
   attachToServiceWorker() {
@@ -396,10 +401,6 @@ class ReaderModel {
   }
 
   getProvenanceTree() {
-    if (this.height !== undefined && this.elements.length !== undefined) {
-      return [this.height, this.elements];
-    }
-
     return Promise.all([
       this._artifactMap(this.uuid),
       this._inputMap(this.uuid),
@@ -478,9 +479,6 @@ class ReaderModel {
 
       nodes = [...actionNodes, ...nodes];
       let elements = nodes.concat(edges);
-
-      this.height = height;
-      this.elements = elements;
 
       return [height, elements];
     });
