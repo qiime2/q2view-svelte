@@ -1,12 +1,12 @@
 <script lang="ts">
   import { page } from "$app/stores"
-  import { browser } from "$app/environment";
   import readerModel from "$lib/models/readerModel";
   import { goto } from "$app/navigation";
+  import { onMount } from "svelte";
 
   export let selectedTab: string;
 
-  if (browser) {
+  onMount(async() => {
     const src = $page.url.searchParams.get("src");
 
     if (src === null) {
@@ -15,11 +15,11 @@
     }
     else {
       readerModel.selectedTab = selectedTab;
-      readerModel.readData(src);
+      await readerModel.readData(src);
     }
 
-    goto("/")
-  }
+    goto("/");
+  });
 
 // History.pushstate to add arbitrary info to url in browser use this + routing
 // To have more informative URL stuff
