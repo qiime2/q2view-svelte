@@ -12,6 +12,8 @@ import extmap from "$lib/scripts/extmap";
 import schema from "$lib/scripts/yaml-schema";
 
 class ReaderModel {
+  selectedTab = "input";
+  rawSrc = undefined;
   name: string = "";
   data: File | Blob | null = null;
   source: string = "";
@@ -71,9 +73,12 @@ class ReaderModel {
     } catch (err) {
       alert(err);
     }
+
+    this._dirty();
   }
 
   async _readData(rawSrc: File | string): Promise<void> {
+    this.rawSrc = rawSrc;
     // They gave us a file from their computer
     if (rawSrc instanceof File) {
       // TODO: Validate file first
@@ -91,15 +96,13 @@ class ReaderModel {
         rawSrc = `https://dl.dropboxusercontent.com${path}`;
       }
 
-      const data = await this.getRemoteFile(rawSrc);
+      this.data = await this.getRemoteFile(rawSrc);
       // TODO: Validate file first
-      this.data = data;
       this.name = this.parseFileNameFromURL(rawSrc);
       this.source = "remote";
     }
 
     await this.initModelFromData();
-    this._dirty();
   }
 
   private async getRemoteFile(url: string): Promise<Blob> {
@@ -199,6 +202,10 @@ class ReaderModel {
         return; // This message is meant for another tab.
       }
       switch (event.data.type) {
+        // TODO: There is currently a bug where when you switch between URL sources
+        // GET_DATA is triggered for files that were in the previous index.html but with
+        // the current uuid. No idea why. It doesn't cause real problems just outputs
+        // errors to the console
         case "GET_DATA":
           // decode should go in the SW, but that'd require an upgrade
           this._getFile(decodeURI(event.data.filename))

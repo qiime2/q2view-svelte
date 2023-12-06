@@ -1,5 +1,5 @@
 <script>
     import Redirect from "$lib/components/Redirect.svelte";
-</script>
+ </script>
 
-<Redirect/>
+<Redirect selectedTab="visualization"/>

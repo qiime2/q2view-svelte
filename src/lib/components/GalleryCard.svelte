@@ -10,7 +10,7 @@
   <h3>{title}</h3>
   <p>{desc}</p>
   <p class="text-right">
-    <a href="visualization{href}">
+    <a href="/visualization{href}">
       <button>
         Try it!
       </button>

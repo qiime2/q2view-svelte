@@ -4,7 +4,6 @@
   import readerModel from "$lib/models/readerModel";
   import cytoscape from "cytoscape";
 
-
   let self: HTMLDivElement;
 
   const cytoscapeConfig = {
