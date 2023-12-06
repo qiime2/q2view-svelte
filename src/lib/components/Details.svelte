@@ -6,9 +6,9 @@
 
 <p>Details</p>
 <p>{readerModel.name}</p>
-<JSONTree value={$readerModel.metadata}/>
+<JSONTree value={readerModel.metadata}/>
 <p>Citations</p>
-<pre id="json">{$readerModel.citations}</pre>
+<pre id="json">{readerModel.citations}</pre>
 
 <style lang="postcss">
   #json {

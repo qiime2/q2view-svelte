@@ -75,12 +75,12 @@
     <Gallery/>
   </div>
 
-  {#if $readerModel.indexPath}
+  {#if readerModel.indexPath}
     <div class="tab" class:visible={$readerModel.selectedTab === "visualization"}>
       <Iframe indexPath={$readerModel.indexPath}/>
     </div>
   {/if}
-  {#if $readerModel.data}
+  {#if readerModel.data}
     <div class="tab" class:visible={$readerModel.selectedTab === "details"}>
       <Details/>
     </div>
