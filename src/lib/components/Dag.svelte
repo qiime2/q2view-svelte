@@ -85,7 +85,7 @@
     readerModel._dirty();
   }
 
-  onMount(() =>{
+  onMount(() => {
     console.log("Mounted");
     console.log(readerModel.height);
     let displayHeight = (readerModel.height + 1) * 105;
