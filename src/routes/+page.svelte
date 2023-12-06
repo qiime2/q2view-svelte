@@ -77,13 +77,15 @@
 
   {#if readerModel.indexPath}
     <div class="tab" class:visible={$readerModel.selectedTab === "visualization"}>
-      <Iframe indexPath={$readerModel.indexPath}/>
+      <Iframe/>
     </div>
   {/if}
-  {#if readerModel.data}
+  {#if readerModel.name && readerModel.metadata && readerModel.citations}
     <div class="tab" class:visible={$readerModel.selectedTab === "details"}>
       <Details/>
     </div>
+  {/if}
+  {#if readerModel.height && readerModel.elements}
     <div class="tab" class:visible={$readerModel.selectedTab === "provenance"}>
       <Provenance/>
     </div>

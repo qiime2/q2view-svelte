@@ -79,10 +79,11 @@ class ReaderModel {
 
   async _readData(rawSrc: File | string): Promise<void> {
     this.rawSrc = rawSrc;
+    let data = rawSrc
+
     // They gave us a file from their computer
     if (rawSrc instanceof File) {
       // TODO: Validate file first
-      this.data = rawSrc;
       this.name = rawSrc.name;
       this.source = "local";
     }
@@ -96,13 +97,14 @@ class ReaderModel {
         rawSrc = `https://dl.dropboxusercontent.com${path}`;
       }
 
-      this.data = await this.getRemoteFile(rawSrc);
+      data = await this.getRemoteFile(rawSrc);
       // TODO: Validate file first
       this.name = this.parseFileNameFromURL(rawSrc);
       this.source = "remote";
     }
 
-    await this.initModelFromData();
+    await this.initModelFromData(data);
+    this.data = data;
   }
 
   private async getRemoteFile(url: string): Promise<Blob> {
@@ -125,14 +127,14 @@ class ReaderModel {
     return fileName;
   }
 
-  async initModelFromData() {
-    if (this.data === null) {
+  async initModelFromData(data) {
+    if (data === null) {
       // How did we get here?
       return;
     }
 
     const jsZip = new JSZip();
-    const zip = await jsZip.loadAsync(this.data);
+    const zip = await jsZip.loadAsync(data);
     const error = new Error("Not a valid QIIME 2 archive.");
 
     // Verify layout:
@@ -191,9 +193,10 @@ class ReaderModel {
     const citations = await this._getCitations();
     this.citations = this._dedup(citations);
 
-    const data = await this.getProvenanceTree();
-    this.height = data[0];
-    this.elements = data[1];
+    const provData = await this.getProvenanceTree();
+    this.height = provData[0];
+    this.elements = provData[1];
+    console.log(this.height);
   }
 
   attachToServiceWorker() {

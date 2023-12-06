@@ -86,6 +86,8 @@
   }
 
   onMount(() =>{
+    console.log("Mounted");
+    console.log(readerModel.height);
     let displayHeight = (readerModel.height + 1) * 105;
     self.style.setProperty("height", `${displayHeight}px`);
     let lock = false; // used to prevent recursive event storms

@@ -1,11 +1,11 @@
 <script lang="ts">
-  export let indexPath: string;
+  import readerModel from "$lib/models/readerModel";
 </script>
 
 <iframe
   id="iframe"
   frameborder="0"
-  src={indexPath}
+  src={readerModel.indexPath}
 />
 
 <style lang="postcss">
