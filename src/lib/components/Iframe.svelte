@@ -5,7 +5,7 @@
 <iframe
   id="iframe"
   frameborder="0"
-  src={readerModel.indexPath}
+  src={$readerModel.indexPath}
 />
 
 <style lang="postcss">
