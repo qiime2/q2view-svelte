@@ -74,6 +74,13 @@ class ReaderModel {
       alert(err);
     }
 
+    if (this.indexPath) {
+      this.selectedTab = "visualization";
+    }
+    else {
+      this.selectedTab = "details";
+    }
+
     this._dirty();
   }
 
