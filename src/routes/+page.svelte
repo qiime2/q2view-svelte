@@ -10,8 +10,6 @@
   import { onMount } from "svelte";
   import { browser } from "$app/environment";
 
-  // This needs to be exported because it needs to be set by external things
-  // initing this state to the tab we want
   onMount(() => {
     readerModel.attachToServiceWorker();
     fetch("/_/wakeup");
@@ -24,9 +22,8 @@
     }
 
     console.log(readerModel.selectedTab);
-    history.pushState({}, "", "/");
 
-    let newURl = readerModel.selectedTab;
+    let newURl = `/${readerModel.selectedTab}`;
 
     if (readerModel.rawSrc) {
       newURl += `/?src=${readerModel.rawSrc}`;

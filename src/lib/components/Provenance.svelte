@@ -5,7 +5,9 @@
   import Dag from "./Dag.svelte";
 </script>
 
-<Dag/>
+{#key $readerModel.uuid}
+  <Dag/>
+{/key}
 
 <p>{$readerModel.provTitle}</p>
 {#if $readerModel.provData !== undefined}
