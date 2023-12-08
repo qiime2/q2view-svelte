@@ -66,6 +66,10 @@ class ReaderModel {
   }
 
   async readData(rawSrc: File | string): Promise<void> {
+    if (!rawSrc) {
+      return;
+    }
+
     // TODO: This is some basic loading error handling. The live version
     // redirects to a nice page. We should probably do that here too.
     try {
@@ -203,7 +207,6 @@ class ReaderModel {
     const provData = await this.getProvenanceTree();
     this.height = provData[0];
     this.elements = provData[1];
-    console.log(this.height);
   }
 
   attachToServiceWorker() {

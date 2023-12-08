@@ -4,17 +4,14 @@
   import { goto } from "$app/navigation";
   import { onMount } from "svelte";
 
-  export let selectedTab: string;
 
   onMount(async() => {
     const src = $page.url.searchParams.get("src");
 
     if (src === null) {
       alert("Invalid URL. Lacking a src param.");
-      readerModel.selectedTab = "input";
     }
     else {
-      readerModel.selectedTab = selectedTab;
       await readerModel.readData(src);
     }
 
