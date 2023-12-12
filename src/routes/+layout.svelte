@@ -9,110 +9,67 @@
   import DropZone from "$lib/components/DropZone.svelte";
   import UrlInput from "$lib/components/UrlInput.svelte";
   import Provenance from "$lib/components/Provenance.svelte";
-  import { onMount, onDestroy, afterUpdate } from "svelte";
-  import { browser } from "$app/environment";
-  import { page } from "$app/stores";
+  import url from "$lib/scripts/url-store";
+  import { onMount } from "svelte";
+
+  let currentSrc = ""
 
   onMount(() => {
-    let selectedTab = $page.url.pathname.replaceAll("/", "");
-    if (selectedTab) {
-      readerModel.selectedTab = selectedTab;
-    }
-    else {
-      readerModel.selectedTab = "input";
-    }
-
     readerModel.attachToServiceWorker();
     fetch("/_/wakeup");
-    pushState();
-  })
+  });
 
   $: {
-    $readerModel.selectedTab;
-    pushState();
-  }
+    const newSrc = $url.searchParams.get("src")
 
-  function pushState() {
-    if (!browser) {
-      return;
-    }
-
-    let newURL = `/${readerModel.selectedTab}`;
-
-    if (readerModel.rawSrc) {
-      newURL += `/?src=${readerModel.rawSrc}`;
-    }
-
-    console.log(`PUSHING: ${newURL}`);
-    history.pushState({}, "", newURL);
-    readerModel._dirty();
-  }
-
-  $: {
-    const newSelectedTab = $page.url.pathname.replaceAll("/", "");
-    const newSrc = $page.url.searchParams.get("src");
-
-    if (newSelectedTab) {
-      readerModel.selectedTab = newSelectedTab;
-      readerModel._dirty();
-    }
-
-    if (newSrc && newSrc !== readerModel.rawSrc) {
-      readerModel.readData(newSrc);
+    if (newSrc !== currentSrc) {
+      if (newSrc) {
+        readerModel.readData(newSrc);
+      }
+      else {
+        readerModel.clear();
+      }
+      currentSrc = newSrc
     }
   }
 </script>
 
 <div id="navbar">
-  <button on:click={() => {
-    readerModel.selectedTab = "input";
-    readerModel._dirty();
-  }}>
+  <button on:click={() => (history.pushState({}, "", "/"+window.location.search))}>
     <img id="navlogo" src="/q2view.png" alt="QIIME 2 view logo">
   </button>
   {#if $readerModel.indexPath}
-    <button class="navbutton" on:click={() => {
-      readerModel.selectedTab = "visualization";
-      readerModel._dirty();
-    }}>
+    <button on:click={() => (history.pushState({}, "", "/visualization/"+window.location.search))}>
       Visualization
     </button>
   {/if}
   {#if $readerModel.data}
-    <button class="navbutton" on:click={() => {
-      readerModel.selectedTab = "details";
-      readerModel._dirty();
-    }}>
+    <button on:click={() => (history.pushState({}, "", "/details/"+window.location.search))}>
       Details
     </button>
-    <button class="navbutton" on:click={() => {
-      readerModel.selectedTab = "provenance";
-      readerModel._dirty();
-    }}>
+    <button on:click={() => (history.pushState({}, "", "/provenance/"+window.location.search))}>
       Provenance
     </button>
   {/if}
 </div>
 
 <div id="container">
-  <div class="tab" class:visible={$readerModel.selectedTab === "input"}>
+  <div class="tab" class:visible={$url.pathname.replaceAll("/", "") === ""}>
     <DropZone/>
     <UrlInput/>
     <Gallery/>
   </div>
 
-  {#if readerModel.indexPath}
-    <div class="tab" class:visible={$readerModel.selectedTab === "visualization"}>
+  {#if $readerModel.indexPath}
+    <div class="tab" class:visible={$url.pathname.replaceAll("/", "")  === "visualization"}>
       <Iframe/>
     </div>
   {/if}
-  {#if readerModel.name && readerModel.metadata && readerModel.citations}
-    <div class="tab" class:visible={$readerModel.selectedTab === "details"}>
+  {#if $readerModel.data}
+    <div class="tab" class:visible={$url.pathname.replaceAll("/", "") === "details"}>
       <Details/>
     </div>
-  {/if}
-  {#if readerModel.height && readerModel.elements}
-    <div class="tab" class:visible={$readerModel.selectedTab === "provenance"}>
+    <div class="tab" class:visible={$url.pathname.replaceAll("/", "")  === "provenance"}>
       <Provenance/>
     </div>
   {/if}

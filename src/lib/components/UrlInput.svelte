@@ -1,6 +1,4 @@
 <script lang="ts">
-  import readerModel from "$lib/models/readerModel";
-
   let inputMode: number = 0;
 
   function resolveURL() {
@@ -10,8 +8,8 @@
       alert("Something went wrong, please refresh the page and try again");
     }
     else {
-      let URLinput = (<HTMLInputElement>URLInputs[0]).value;
-      readerModel.readData(URLinput);
+      let URLinput = new URL((<HTMLInputElement>URLInputs[0]).value);
+      history.pushState({}, "", "/?src="+URLinput);
     }
   }
 </script>

@@ -12,8 +12,7 @@ import extmap from "$lib/scripts/extmap";
 import schema from "$lib/scripts/yaml-schema";
 
 class ReaderModel {
-  selectedTab = "input";
-  rawSrc = undefined;
+  rawSrc = "";
   name: string = "";
   data: File | Blob | null = null;
   source: string = "";
@@ -65,52 +64,94 @@ class ReaderModel {
     this.session = Math.random().toString(36).substr(2);
   }
 
-  async readData(rawSrc: File | string): Promise<void> {
-    if (!rawSrc) {
+  clear() {
+    this.rawSrc = "";
+    this.name = "";
+    this.data = null;
+    this.source = "";
+
+    this.uuid = "";
+    this.indexPath = "";
+    this.version = "";
+    this.frameworkVersion = "";
+    this.zipReader= null;
+    this.port = null;
+
+    this.citations = undefined;
+    this.metadata = {};
+
+    this.height = undefined;
+    this.elements = undefined;
+
+    this.provData = undefined;
+    this.provTitle = "Details";
+
+    this._dirty();
+  }
+
+  async readData(src: File | string): Promise<void> {
+    if (!src) {
       return;
     }
 
     // TODO: This is some basic loading error handling. The live version
     // redirects to a nice page. We should probably do that here too.
     try {
-      await this._readData(rawSrc);
-    } catch (err) {
+      await this._readData(src);
+    } catch (err: any) {
+      if (err.message.includes("Invalid URL") && this.source === "local") {
+        return;
+      }
       alert(err);
     }
 
-    if (this.indexPath) {
-      this.selectedTab = "visualization";
+    if (src instanceof File) {
+      this.rawSrc = this.uuid;
     }
     else {
-      this.selectedTab = "details";
+      this.rawSrc = src;
+    }
+
+    let tab = "";
+    if (this.indexPath) {
+      tab = "/visualization/"
+    }
+    else {
+      tab = "/details/"
+    }
+
+    if (this.source === "remote") {
+      history.replaceState({}, "", tab+"?src="+this.rawSrc);
+    }
+    else {
+      history.pushState({}, "", tab+"?src="+this.rawSrc)
     }
 
     this._dirty();
   }
 
-  async _readData(rawSrc: File | string): Promise<void> {
-    this.rawSrc = rawSrc;
-    let data = rawSrc
+  async _readData(src: File | string): Promise<void> {
+    let data = src
 
     // They gave us a file from their computer
-    if (rawSrc instanceof File) {
+    if (src instanceof File) {
       // TODO: Validate file first
-      this.name = rawSrc.name;
+      this.name = src.name;
       this.source = "local";
     }
     // They gave us some kind of URL
     else {
-      const sourceURL = new URL(rawSrc);
+      const sourceURL = new URL(src);
       // Handle potential DropBox URL weirdness to do with search params
       if (sourceURL.hostname === "www.dropbox.com") {
         sourceURL.searchParams.set("dl", "1");
         const path = `${sourceURL.pathname}?${sourceURL.searchParams}`;
-        rawSrc = `https://dl.dropboxusercontent.com${path}`;
+        src = `https://dl.dropboxusercontent.com${path}`;
       }
 
-      data = await this.getRemoteFile(rawSrc);
+      data = await this.getRemoteFile(src);
       // TODO: Validate file first
-      this.name = this.parseFileNameFromURL(rawSrc);
+      this.name = this.parseFileNameFromURL(src);
       this.source = "remote";
     }
 
