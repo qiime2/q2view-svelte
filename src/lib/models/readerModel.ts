@@ -10,12 +10,13 @@ import JSZip from "jszip";
 import { readBlobAsText } from "$lib/scripts/util";
 import extmap from "$lib/scripts/extmap";
 import schema from "$lib/scripts/yaml-schema";
+import { goto } from "$app/navigation";
 
 class ReaderModel {
-  rawSrc = "";
+  rawSrc: File | string = "";
+  urlSrc = "";
   name: string = "";
-  data: File | Blob | null = null;
-  source: string = "";
+  sourceType: string = "";
 
   uuid: string = "";
   indexPath: string = "";
@@ -66,9 +67,9 @@ class ReaderModel {
 
   clear() {
     this.rawSrc = "";
+    this.urlSrc = "";
     this.name = "";
-    this.data = null;
-    this.source = "";
+    this.sourceType = "";
 
     this.uuid = "";
     this.indexPath = "";
@@ -89,26 +90,52 @@ class ReaderModel {
     this._dirty();
   }
 
-  async readData(src: File | string): Promise<void> {
-    if (!src) {
-      return;
+  async readLocalData(src: File) {
+    const tab = await this._readData(src, "local");
+
+    this.name = src.name;
+    this.sourceType = "local";
+    this.rawSrc = src;
+    this.urlSrc = this.uuid;
+
+    history.pushState({}, "", tab + "?src=" + this.urlSrc);
+
+    this._dirty();
+  }
+
+  async readRemoteData(src: string) {
+    const sourceURL = new URL(src);
+
+    // Handle potential DropBox URL weirdness to do with search params
+    if (sourceURL.hostname === "www.dropbox.com") {
+      sourceURL.searchParams.set("dl", "1");
+      const path = `${sourceURL.pathname}?${sourceURL.searchParams}`;
+      src = `https://dl.dropboxusercontent.com${path}`;
     }
 
+    const data = await this.getRemoteFile(src);
+    const tab = await this._readData(data, "remote");
+
+    this.name = this.parseFileNameFromURL(src);
+    this.sourceType = "remote";
+    this.rawSrc = src;
+    this.urlSrc = src;
+
+    history.replaceState({}, "", tab + "?src=" + this.urlSrc);
+
+    this._dirty();
+  }
+
+  async _readData(src: File | Blob, sourceType: string) {
     // TODO: This is some basic loading error handling. The live version
     // redirects to a nice page. We should probably do that here too.
     try {
-      await this._readData(src);
+      await this.initModelFromData(src);
     } catch (err: any) {
-      if (err.message.includes("Invalid URL") && this.source === "local") {
+      if (err.message.includes("Invalid URL") && this.sourceType === "local") {
         return;
       }
-      alert(err);
-    }
-
-    if (src instanceof File) {
-      this.rawSrc = this.uuid;
-    } else {
-      this.rawSrc = src;
+      goto("/error");
     }
 
     let tab = "";
@@ -118,42 +145,7 @@ class ReaderModel {
       tab = "/details/";
     }
 
-    if (this.source === "remote") {
-      history.replaceState({}, "", tab + "?src=" + this.rawSrc);
-    } else {
-      history.pushState({}, "", tab + "?src=" + this.rawSrc);
-    }
-
-    this._dirty();
-  }
-
-  async _readData(src: File | string): Promise<void> {
-    let data = src;
-
-    // They gave us a file from their computer
-    if (src instanceof File) {
-      // TODO: Validate file first
-      this.name = src.name;
-      this.source = "local";
-    }
-    // They gave us some kind of URL
-    else {
-      const sourceURL = new URL(src);
-      // Handle potential DropBox URL weirdness to do with search params
-      if (sourceURL.hostname === "www.dropbox.com") {
-        sourceURL.searchParams.set("dl", "1");
-        const path = `${sourceURL.pathname}?${sourceURL.searchParams}`;
-        src = `https://dl.dropboxusercontent.com${path}`;
-      }
-
-      data = await this.getRemoteFile(src);
-      // TODO: Validate file first
-      this.name = this.parseFileNameFromURL(src);
-      this.source = "remote";
-    }
-
-    await this.initModelFromData(data);
-    this.data = data;
+    return tab;
   }
 
   private async getRemoteFile(url: string): Promise<Blob> {
@@ -177,11 +169,6 @@ class ReaderModel {
   }
 
   async initModelFromData(data) {
-    if (data === null) {
-      // How did we get here?
-      return;
-    }
-
     const jsZip = new JSZip();
     const zip = await jsZip.loadAsync(data);
     const error = new Error("Not a valid QIIME 2 archive.");

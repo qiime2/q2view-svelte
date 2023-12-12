@@ -1,6 +1,6 @@
 <script lang="ts">
   // Global styling
-  import "../app.css";
+  import "../../app.css";
   import readerModel from "$lib/models/readerModel";
 
   import Iframe from "$lib/components/Iframe.svelte";
@@ -11,25 +11,58 @@
   import Provenance from "$lib/components/Provenance.svelte";
   import url from "$lib/scripts/url-store";
   import { onMount } from "svelte";
+  import { goto } from "$app/navigation";
 
   let currentSrc = ""
+  const uuid4Regex = /[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}/;
 
   onMount(() => {
     readerModel.attachToServiceWorker();
     fetch("/_/wakeup");
   });
 
+  // This block runs every time the URL bar updates. It determines what to do based
+  // on the src SearchParam in the URL.
+  //
+  // Case 1, The src didn't change:
+  //  do nothing
+  //
+  // Case 2, The src changed and is a uuid that is not the currently loaded one:
+  //  We throw a fit because this URL is referencing a local source that we do
+  //  not have access to.
+  //
+  // Case 3, The src changed and it is a URL:
+  //  We load the new URL.
+  //
+  // NOTE: Anything that is not a valid uuid4 is presumed to be a URL
+  //
+  // Case 4, The src changed and it is now empty:
+  //  Reset the readerModel because we no longer have data.
   $: {
     const newSrc = $url.searchParams.get("src")
 
     if (newSrc !== currentSrc) {
-      if (newSrc) {
-        readerModel.readData(newSrc);
+      // We have a local source
+      if (uuid4Regex.test(newSrc)) {
+        // We have a local source that does not match our currently loaded data.
+        // This is an error because we do not have access to arbitray local sources
+        if (newSrc !== readerModel.uuid) {
+          goto("/error");
+        }
+        // We have a local source, but it is still the local source we have loaded
       }
       else {
-        readerModel.clear();
+        // We have a non uuid source which is presumed to be a remote source. We
+        // attempt to load it.
+        if (newSrc) {
+          readerModel.readRemoteData(newSrc);
+        }
+        // We have no source, so we reset
+        else {
+          readerModel.clear();
+        }
+        currentSrc = newSrc
       }
-      currentSrc = newSrc
     }
   }
 </script>
@@ -43,7 +76,7 @@
       Visualization
     </button>
   {/if}
-  {#if $readerModel.data}
+  {#if $readerModel.rawSrc}
     <button on:click={() => (history.pushState({}, "", "/details/"+window.location.search))}>
       Details
     </button>
@@ -65,7 +98,7 @@
       <Iframe/>
     </div>
   {/if}
-  {#if $readerModel.data}
+  {#if $readerModel.rawSrc}
     <div class="tab" class:visible={$url.pathname.replaceAll("/", "") === "details"}>
       <Details/>
     </div>
