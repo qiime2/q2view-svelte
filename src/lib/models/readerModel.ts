@@ -74,7 +74,7 @@ class ReaderModel {
     this.indexPath = "";
     this.version = "";
     this.frameworkVersion = "";
-    this.zipReader= null;
+    this.zipReader = null;
     this.port = null;
 
     this.citations = undefined;
@@ -107,31 +107,28 @@ class ReaderModel {
 
     if (src instanceof File) {
       this.rawSrc = this.uuid;
-    }
-    else {
+    } else {
       this.rawSrc = src;
     }
 
     let tab = "";
     if (this.indexPath) {
-      tab = "/visualization/"
-    }
-    else {
-      tab = "/details/"
+      tab = "/visualization/";
+    } else {
+      tab = "/details/";
     }
 
     if (this.source === "remote") {
-      history.replaceState({}, "", tab+"?src="+this.rawSrc);
-    }
-    else {
-      history.pushState({}, "", tab+"?src="+this.rawSrc)
+      history.replaceState({}, "", tab + "?src=" + this.rawSrc);
+    } else {
+      history.pushState({}, "", tab + "?src=" + this.rawSrc);
     }
 
     this._dirty();
   }
 
   async _readData(src: File | string): Promise<void> {
-    let data = src
+    let data = src;
 
     // They gave us a file from their computer
     if (src instanceof File) {
