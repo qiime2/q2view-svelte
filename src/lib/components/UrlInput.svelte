@@ -27,13 +27,13 @@
         file from the web</a>.
     </p>
   {:else if inputMode === 1}
-    <div class="absolute">
+    <div>
       <button on:click={() => (inputMode = 0)}>cancel</button>
       <input class="URLInput" placeholder="Shared link to a .qza/.qzv file on Dropbox" />
       <button on:click={() => resolveURL()}>Go!</button>
     </div>
   {:else if inputMode === 2}
-    <div class="absolute">
+    <div>
       <button on:click={() => (inputMode = 0)}>cancel</button>
       <input class="URLInput" placeholder="URL to a .qza/.qzv file on the web" />
       <button on:click={() => resolveURL()}>Go!</button>
