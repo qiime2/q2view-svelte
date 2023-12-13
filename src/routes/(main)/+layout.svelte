@@ -40,6 +40,8 @@
   //  Reset the readerModel because we no longer have data.
   $: {
     const newSrc = $url.searchParams.get("src")
+    console.log(newSrc);
+    console.log(currentSrc);
 
     if (newSrc !== currentSrc) {
       // We have a local source
@@ -47,6 +49,7 @@
         // We have a local source that does not match our currently loaded data.
         // This is an error because we do not have access to arbitray local sources
         if (newSrc !== readerModel.uuid) {
+          // history.replaceState({}, "", "/error/");
           goto("/error");
         }
         // We have a local source, but it is still the local source we have loaded
@@ -61,9 +64,10 @@
         else {
           readerModel.clear();
         }
-        currentSrc = newSrc
       }
     }
+
+    currentSrc = newSrc
   }
 </script>
 
@@ -106,6 +110,9 @@
       <Provenance/>
     </div>
   {/if}
+  <div class="tab" class:visible={$url.pathname.replaceAll("/", "")  === "error"}>
+    <Provenance/>
+  </div>
 </div>
 
 <style lang="postcss">

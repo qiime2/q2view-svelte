@@ -2,14 +2,17 @@
   let inputMode: number = 0;
 
   function resolveURL() {
-    const URLInputs = document.getElementsByClassName("URLInput");
+    const inputElements = document.getElementsByClassName("URLInput");
     // This shouldn"t happen
-    if (URLInputs.length > 1) {
+    if (inputElements.length > 1) {
       alert("Something went wrong, please refresh the page and try again");
     }
     else {
-      let URLinput = new URL((<HTMLInputElement>URLInputs[0]).value);
-      history.pushState({}, "", "/?src="+URLinput);
+      let inputElement = (<HTMLInputElement>inputElements[0]);
+      let inputURL = inputElement.value;
+      inputElement.value = "";
+
+      history.pushState({}, "", "/?src="+inputURL);
     }
   }
 </script>

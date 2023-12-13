@@ -93,6 +93,10 @@ class ReaderModel {
   async readLocalData(src: File) {
     const tab = await this._readData(src, "local");
 
+    if (tab === "error") {
+      return;
+    }
+
     this.name = src.name;
     this.sourceType = "local";
     this.rawSrc = src;
@@ -116,6 +120,10 @@ class ReaderModel {
     const data = await this.getRemoteFile(src);
     const tab = await this._readData(data, "remote");
 
+    if (tab === "error") {
+      return;
+    }
+
     this.name = this.parseFileNameFromURL(src);
     this.sourceType = "remote";
     this.rawSrc = src;
@@ -135,17 +143,16 @@ class ReaderModel {
       if (err.message.includes("Invalid URL") && this.sourceType === "local") {
         return;
       }
-      goto("/error");
+
+      alert(err);
+      return "error";
     }
 
-    let tab = "";
     if (this.indexPath) {
-      tab = "/visualization/";
+      return "/visualization/";
     } else {
-      tab = "/details/";
+      return "/details/";
     }
-
-    return tab;
   }
 
   private async getRemoteFile(url: string): Promise<Blob> {
