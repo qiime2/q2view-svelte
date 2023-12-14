@@ -13,7 +13,12 @@
   import { onMount } from "svelte";
 
   let currentSrc = ""
+  $: shareableSeleted = false;
   const uuid4Regex = /[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}/;
+
+  const handleShareableClick = () => {
+    shareableSeleted = !shareableSeleted;
+  }
 
   onMount(() => {
     readerModel.attachToServiceWorker();
@@ -89,25 +94,47 @@
       Provenance
     </button>
   {/if}
+  {#if $readerModel.sourceType === "remote"}
+    <button on:click={handleShareableClick}>
+      <img src="/link-grey.png" alt="Link" />
+    </button>
+    <div style:visibility={shareableSeleted ? "visible" : "hidden"}>
+      <!-- TODO: Should this actually be an anchor? Seems like this link is useless -->
+      <a href={$url.toString()}>
+          Shareable Link:
+      </a>
+      <input
+          readOnly
+          value={$url.toString()}
+          type="text"
+          on:select={e => e.stopPropagation()}
+      />
+    </div>
+    <!-- This will only draw if sourceType is remote and if sourceType is remote
+         rawSrc is a string, but cast here to stop it from whining -->
+    <a href={String($readerModel.rawSrc)}>
+      <img src="/download-grey.png" alt="Download" />
+    </a>
+  {/if}
 </div>
 
 <div id="container">
-  <div class="tab" class:visible={$url.pathname.replaceAll("/", "") === ""}>
+  <div class="tab" style:visibility={$url.pathname.replaceAll("/", "") === "" ? "visible" : "hidden"}>
     <DropZone/>
     <UrlInput/>
     <Gallery/>
   </div>
 
   {#if $readerModel.indexPath}
-    <div class="tab" class:visible={$url.pathname.replaceAll("/", "")  === "visualization"}>
+    <div class="tab" style:visibility={$url.pathname.replaceAll("/", "") === "visualization" ? "visible" : "hidden"}>
       <Iframe/>
     </div>
   {/if}
   {#if $readerModel.rawSrc}
-    <div class="tab" class:visible={$url.pathname.replaceAll("/", "") === "details"}>
+    <div class="tab" style:visibility={$url.pathname.replaceAll("/", "") === "details" ? "visible" : "hidden"}>
       <Details/>
     </div>
-    <div class="tab" class:visible={$url.pathname.replaceAll("/", "")  === "provenance"}>
+    <div class="tab" style:visibility={$url.pathname.replaceAll("/", "") === "provenance" ? "visible" : "hidden"}>
       <Provenance/>
     </div>
   {/if}
@@ -136,7 +163,6 @@
   }
 
   .tab {
-    visibility: hidden;
     grid-column: 1;
     grid-row: 1;
   }
