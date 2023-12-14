@@ -6,8 +6,8 @@
 </script>
 
 <div>
-  <img src={img} alt={title}>
   <h3>{title}</h3>
+  <img src={img} alt={title}>
   <p>{desc}</p>
   <p class="text-right">
     <a href="{href}">
