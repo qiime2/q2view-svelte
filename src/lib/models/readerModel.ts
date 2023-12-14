@@ -102,8 +102,7 @@ class ReaderModel {
 
     if (src instanceof File) {
       this._setLocalSrc(src);
-    }
-    else {
+    } else {
       this._setRemoteSrc(src, tab);
     }
 
@@ -129,7 +128,7 @@ class ReaderModel {
     this.rawSrc = src;
     this.urlSrc = this.uuid;
 
-    let tab = this._getTab()
+    let tab = this._getTab();
 
     history.pushState({}, "", `/${tab}/` + "?src=" + this.urlSrc);
   }
