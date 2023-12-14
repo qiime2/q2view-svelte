@@ -11,6 +11,7 @@
   import Provenance from "$lib/components/Provenance.svelte";
   import url from "$lib/scripts/url-store";
   import { onMount } from "svelte";
+  import About from "$lib/components/About.svelte";
 
   let currentSrc = ""
   const uuid4Regex = /[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}/;
@@ -94,6 +95,7 @@
       Provenance
     </button>
   {/if}
+  <!-- TODO: These buttons suck and get in the way of things right now -->
   {#if $readerModel.sourceType === "remote"}
     <button on:click={handleShareableClick}>
       <img src="/link-grey.png" alt="Link" />
@@ -123,13 +125,15 @@
     <p>
         This interface can view .qza and .qzv files
         directly in your browser without uploading to a server.
-        <span>&nbsp;<span on:click={() => (history.pushState({}, "", "/provenance/"+window.location.search))}>Click here </span> to learn more.</span>
+        <span>&nbsp;<span on:click={() => (history.pushState({}, "", "/about/"+window.location.search))}>Click here </span> to learn more.</span>
     </p>
     <DropZone/>
     <UrlInput/>
     <Gallery/>
   </div>
-
+  <div class="tab" style:visibility={$url.pathname.replaceAll("/", "") === "about" ? "visible" : "hidden"}>
+    <About/>
+  </div>
   {#if $readerModel.indexPath}
     <div class="tab" style:visibility={$url.pathname.replaceAll("/", "") === "visualization" ? "visible" : "hidden"}>
       <Iframe/>

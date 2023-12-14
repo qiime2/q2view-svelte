@@ -59,27 +59,52 @@
 
 <h2>Gallery</h2>
 <p>Don&apos;t have a QIIME 2 result of your own to view? Try one of these?</p>
-
-<div class='grid grid-cols-3 grid-rows-2'>
-  <div>
-    <GalleryCard {...taxaObj}/>
-  </div>
-  <div>
-    <GalleryCard {...volObj}/>
-  </div>
-  <div>
-    <GalleryCard {...empObj}/>
-  </div>
-  <div>
-    <GalleryCard {...sumObj}/>
-  </div>
-  <div>
-    <GalleryCard {...alphaRObj}/>
-  </div>
-  <div>
-    <GalleryCard {...alphaSObj}/>
+<!-- <div class='grid grid-cols-3 grid-rows-2'> -->
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12 col-sm-6 col-md-4">
+      <GalleryCard {...taxaObj}/>
+    </div>
+    <div class="col-xs-12 col-sm-6 col-md-4">
+      <GalleryCard {...volObj}/>
+    </div>
+    <div class="col-xs-12 col-sm-6 col-md-4">
+      <GalleryCard {...empObj}/>
+    </div>
+    <div class="col-xs-12 col-sm-6 col-md-4">
+      <GalleryCard {...sumObj}/>
+    </div>
+    <div class="col-xs-12 col-sm-6 col-md-4">
+      <GalleryCard {...alphaRObj}/>
+    </div>
+    <div class="col-xs-12 col-sm-6 col-md-4">
+      <GalleryCard {...alphaSObj}/>
+    </div>
   </div>
 </div>
+<!-- <Container>
+  <Row cols={{ lg: 3, md: 2, sm: 1 }}>
+  <Row cols={3}>
+    <Col class="max-w-xs">
+      <GalleryCard {...taxaObj}/>
+    </Col>
+    <Col class="max-w-xs">
+      <GalleryCard {...volObj}/>
+    </Col>
+    <Col class="max-w-xs">
+      <GalleryCard {...empObj}/>
+    </Col>
+    <Col class="max-w-xs">
+      <GalleryCard {...sumObj}/>
+    </Col>
+    <Col class="max-w-xs">
+      <GalleryCard {...alphaRObj}/>
+    </Col>
+    <Col class="max-w-xs">
+      <GalleryCard {...alphaSObj}/>
+    </Col>
+  </Row>
+</Container> -->
 
 <style lang='postcss'>
 </style>
