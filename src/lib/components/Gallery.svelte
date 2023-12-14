@@ -59,7 +59,6 @@
 
 <h2>Gallery</h2>
 <p>Don&apos;t have a QIIME 2 result of your own to view? Try one of these?</p>
-<!-- <div class='grid grid-cols-3 grid-rows-2'> -->
 <div class="container">
   <div class="row">
     <div class="col-xs-12 col-sm-6 col-md-4">
