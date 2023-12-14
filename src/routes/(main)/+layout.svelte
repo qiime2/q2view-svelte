@@ -13,9 +13,9 @@
   import { onMount } from "svelte";
 
   let currentSrc = ""
-  $: shareableSeleted = false;
   const uuid4Regex = /[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}/;
 
+  let shareableSeleted = false;
   const handleShareableClick = () => {
     shareableSeleted = !shareableSeleted;
   }
@@ -120,6 +120,11 @@
 
 <div id="container">
   <div class="tab" style:visibility={$url.pathname.replaceAll("/", "") === "" ? "visible" : "hidden"}>
+    <p>
+        This interface can view .qza and .qzv files
+        directly in your browser without uploading to a server.
+        <span>&nbsp;<span on:click={() => (history.pushState({}, "", "/provenance/"+window.location.search))}>Click here </span> to learn more.</span>
+    </p>
     <DropZone/>
     <UrlInput/>
     <Gallery/>
@@ -165,9 +170,5 @@
   .tab {
     grid-column: 1;
     grid-row: 1;
-  }
-
-  .visible {
-    visibility: visible;
   }
 </style>
