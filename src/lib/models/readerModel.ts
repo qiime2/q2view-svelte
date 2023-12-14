@@ -130,7 +130,9 @@ class ReaderModel {
 
     let tab = this._getTab();
 
-    history.pushState({}, "", `/${tab}/` + "?src=" + this.urlSrc);
+    // Pushes state because this change necesarily happened to move from the
+    // root page to the new default page for the provided file
+    history.pushState({}, "", `/${tab}/?src=${this.urlSrc}`);
   }
 
   _setRemoteSrc(src: string, tab: string) {
@@ -144,7 +146,22 @@ class ReaderModel {
       tab = this._getTab();
     }
 
-    history.replaceState({}, "", `/${tab}/` + "?src=" + this.urlSrc);
+    // TODO: I think there is a bit of hairiness here. We only want to push
+    // state if we are loading this file from the root of the page not if this
+    // was loaded due to a navigation event (back or forward arrow or pasting URL)
+    //
+    // NOTE: Thing that is for sure happening. If you open a remote source viz
+    // then open a different viz then use the back arrow to navigate back to the prior
+    // remote source viz then if you were on the input page with that prior
+    // remote source viz loaded it will load the vizualization page with that viz
+    // not the input page
+    //
+    // STEPS:
+    //  1: select a gallery viz
+    //  2: click the qiime2 logo to go back to the input page
+    //  3: drop in a local viz
+    //  4: hit the back arrow
+    history.replaceState({}, "", `/${tab}/?src=${this.urlSrc}`)
   }
 
   _getTab() {
