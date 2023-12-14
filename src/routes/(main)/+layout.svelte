@@ -11,7 +11,6 @@
   import Provenance from "$lib/components/Provenance.svelte";
   import url from "$lib/scripts/url-store";
   import { onMount } from "svelte";
-  import { goto } from "$app/navigation";
 
   let currentSrc = ""
   const uuid4Regex = /[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}/;
@@ -39,9 +38,8 @@
   // Case 4, The src changed and it is now empty:
   //  Reset the readerModel because we no longer have data.
   $: {
-    const newSrc = $url.searchParams.get("src")
-    console.log(newSrc);
-    console.log(currentSrc);
+    const newSrc = $url.searchParams.get("src");
+    const newTab = $url.pathname.replaceAll("/", "");
 
     if (newSrc !== currentSrc) {
       // We have a local source
@@ -49,16 +47,19 @@
         // We have a local source that does not match our currently loaded data.
         // This is an error because we do not have access to arbitray local sources
         if (newSrc !== readerModel.uuid) {
-          // history.replaceState({}, "", "/error/");
-          goto("/error");
+          history.replaceState({}, "", "/error/");
+          // goto("/error");
         }
         // We have a local source, but it is still the local source we have loaded
       }
       else {
         // We have a non uuid source which is presumed to be a remote source. We
         // attempt to load it.
+        //
+        // We also provide the tab that was in the URL so after loading the source
+        // we can default to this
         if (newSrc) {
-          readerModel.readRemoteData(newSrc);
+          readerModel.readData(newSrc, newTab);
         }
         // We have no source, so we reset
         else {
@@ -110,9 +111,6 @@
       <Provenance/>
     </div>
   {/if}
-  <div class="tab" class:visible={$url.pathname.replaceAll("/", "")  === "error"}>
-    <Provenance/>
-  </div>
 </div>
 
 <style lang="postcss">

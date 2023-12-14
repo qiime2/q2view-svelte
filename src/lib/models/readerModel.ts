@@ -10,7 +10,6 @@ import JSZip from "jszip";
 import { readBlobAsText } from "$lib/scripts/util";
 import extmap from "$lib/scripts/extmap";
 import schema from "$lib/scripts/yaml-schema";
-import { goto } from "$app/navigation";
 
 class ReaderModel {
   rawSrc: File | string = "";
@@ -90,24 +89,28 @@ class ReaderModel {
     this._dirty();
   }
 
-  async readLocalData(src: File) {
-    const tab = await this._readData(src, "local");
+  async readData(src: File | string, tab: string) {
+    let data = src instanceof File ? src : await this._readRemoteData(src);
 
-    if (tab === "error") {
+    try {
+      await this.initModelFromData(data);
+    } catch (err: any) {
+      // TODO: Might escalate this to actually showing error page
+      alert(err);
       return;
     }
 
-    this.name = src.name;
-    this.sourceType = "local";
-    this.rawSrc = src;
-    this.urlSrc = this.uuid;
-
-    history.pushState({}, "", tab + "?src=" + this.urlSrc);
+    if (src instanceof File) {
+      this._setLocalSrc(src);
+    }
+    else {
+      this._setRemoteSrc(src, tab);
+    }
 
     this._dirty();
   }
 
-  async readRemoteData(src: string) {
+  async _readRemoteData(src: string) {
     const sourceURL = new URL(src);
 
     // Handle potential DropBox URL weirdness to do with search params
@@ -117,45 +120,41 @@ class ReaderModel {
       src = `https://dl.dropboxusercontent.com${path}`;
     }
 
-    const data = await this.getRemoteFile(src);
-    const tab = await this._readData(data, "remote");
+    return await this._getRemoteFile(src);
+  }
 
-    if (tab === "error") {
-      return;
-    }
+  _setLocalSrc(src: File) {
+    this.name = src.name;
+    this.sourceType = "local";
+    this.rawSrc = src;
+    this.urlSrc = this.uuid;
 
+    let tab = this._getTab()
+
+    history.pushState({}, "", `/${tab}/` + "?src=" + this.urlSrc);
+  }
+
+  _setRemoteSrc(src: string, tab: string) {
     this.name = this.parseFileNameFromURL(src);
     this.sourceType = "remote";
     this.rawSrc = src;
     this.urlSrc = src;
 
-    history.replaceState({}, "", tab + "?src=" + this.urlSrc);
-
-    this._dirty();
-  }
-
-  async _readData(src: File | Blob, sourceType: string) {
-    // TODO: This is some basic loading error handling. The live version
-    // redirects to a nice page. We should probably do that here too.
-    try {
-      await this.initModelFromData(src);
-    } catch (err: any) {
-      if (err.message.includes("Invalid URL") && this.sourceType === "local") {
-        return;
-      }
-
-      alert(err);
-      return "error";
+    // If we were not given a tab then revert to the default behavior
+    if (!tab) {
+      tab = this._getTab();
     }
 
-    if (this.indexPath) {
-      return "/visualization/";
-    } else {
-      return "/details/";
-    }
+    history.replaceState({}, "", `/${tab}/` + "?src=" + this.urlSrc);
   }
 
-  private async getRemoteFile(url: string): Promise<Blob> {
+  _getTab() {
+    // If we have an index path we are a visualization and auto redirect to that
+    // tab otherwise we are an artifact and auto redirect to the details tab
+    return this.indexPath ? "visualization" : "details";
+  }
+
+  async _getRemoteFile(url: string): Promise<Blob> {
     return await fetch(url).then((response) => {
       if (!response.ok) {
         throw Error(`Network error, recieved ${response.status} from server.`);
@@ -175,7 +174,7 @@ class ReaderModel {
     return fileName;
   }
 
-  async initModelFromData(data) {
+  async initModelFromData(data: File | Blob) {
     const jsZip = new JSZip();
     const zip = await jsZip.loadAsync(data);
     const error = new Error("Not a valid QIIME 2 archive.");
