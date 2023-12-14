@@ -17,16 +17,3 @@
     </a>
   </p>
 </div>
-
-<!-- <Card class="max-w-xs">
-  <CardTitle>{title}</CardTitle>
-  <img src={img} alt={title}>
-  <CardText>{desc}</CardText>
-  <p class="text-right">
-    <a href="{href}">
-      <button>
-        Try it!
-      </button>
-    </a>
-  </p>
-</Card> -->

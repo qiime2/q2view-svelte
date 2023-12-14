@@ -82,29 +82,6 @@
     </div>
   </div>
 </div>
-<!-- <Container>
-  <Row cols={{ lg: 3, md: 2, sm: 1 }}>
-  <Row cols={3}>
-    <Col class="max-w-xs">
-      <GalleryCard {...taxaObj}/>
-    </Col>
-    <Col class="max-w-xs">
-      <GalleryCard {...volObj}/>
-    </Col>
-    <Col class="max-w-xs">
-      <GalleryCard {...empObj}/>
-    </Col>
-    <Col class="max-w-xs">
-      <GalleryCard {...sumObj}/>
-    </Col>
-    <Col class="max-w-xs">
-      <GalleryCard {...alphaRObj}/>
-    </Col>
-    <Col class="max-w-xs">
-      <GalleryCard {...alphaSObj}/>
-    </Col>
-  </Row>
-</Container> -->
 
 <style lang='postcss'>
 </style>
