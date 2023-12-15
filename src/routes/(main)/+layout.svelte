@@ -125,7 +125,7 @@
     <p>
         This interface can view .qza and .qzv files
         directly in your browser without uploading to a server.
-        <span>&nbsp;<span on:click={() => (history.pushState({}, "", "/about/"+window.location.search))}>Click here </span> to learn more.</span>
+        <span on:click={() => (history.pushState({}, "", "/about/"+window.location.search))}>Click here to learn more.</span>
     </p>
     <DropZone/>
     <UrlInput/>

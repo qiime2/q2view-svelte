@@ -6,3 +6,9 @@
   @apply bg-blue-300
     text-white;
 }
+
+span {
+     cursor:pointer;
+     color:blue;
+     text-decoration:underline;
+}
