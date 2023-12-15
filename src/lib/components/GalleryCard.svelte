@@ -10,10 +10,8 @@
   <img src={img} alt={title}>
   <p>{desc}</p>
   <p class="text-right">
-    <a href="{href}">
-      <button>
-        Try it!
-      </button>
-    </a>
+    <button on:click={() => (history.pushState({}, "", href))}>
+      Try it!
+    </button>
   </p>
 </div>
