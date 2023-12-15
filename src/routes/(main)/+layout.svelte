@@ -78,8 +78,9 @@
   }
 </script>
 
-<div id="navbar">
-  <button on:click={() => (history.pushState({}, "", "/"+window.location.search))}>
+<!-- <div id="navbar"> -->
+<nav class="navbar sticky-top bg-body-tertiary">
+  <button class="navbar-brand" on:click={() => (history.pushState({}, "", "/"+window.location.search))}>
     <img id="navlogo" src="/q2view.png" alt="QIIME 2 view logo">
   </button>
   {#if $readerModel.indexPath}
@@ -97,20 +98,22 @@
   {/if}
   <!-- TODO: These buttons suck and get in the way of things right now -->
   {#if $readerModel.sourceType === "remote"}
-    <button on:click={handleShareableClick}>
-      <img src="/link-grey.png" alt="Link" />
-    </button>
-    <div style:visibility={shareableSeleted ? "visible" : "hidden"}>
+    <div class="dropdown">
+      <button class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <img src="/link-grey.png" alt="Link" />
+      </button>
       <!-- TODO: Should this actually be an anchor? Seems like this link is useless -->
-      <a href={$url.toString()}>
-          Shareable Link:
-      </a>
-      <input
-          readOnly
-          value={$url.toString()}
-          type="text"
-          on:select={e => e.stopPropagation()}
-      />
+      <div class="dropdown-menu">
+        <a href={$url.toString()}>
+            Shareable Link:
+        </a>
+        <input
+            readOnly
+            value={$url.toString()}
+            type="text"
+            on:select={e => e.stopPropagation()}
+        />
+      </div>
     </div>
     <!-- This will only draw if sourceType is remote and if sourceType is remote
          rawSrc is a string, but cast here to stop it from whining -->
@@ -118,7 +121,8 @@
       <img src="/download-grey.png" alt="Download" />
     </a>
   {/if}
-</div>
+</nav>
+<!-- </div> -->
 
 <div id="container">
   <div class="tab" style:visibility={$url.pathname.replaceAll("/", "") === "" ? "visible" : "hidden"}>
