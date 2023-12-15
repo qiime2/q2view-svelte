@@ -79,48 +79,50 @@
 </script>
 
 <!-- <div id="navbar"> -->
-<nav class="navbar sticky-top bg-body-tertiary">
+<nav class="navbar navbar-expand-lg sticky-top bg-light">
   <button class="navbar-brand" on:click={() => (history.pushState({}, "", "/"+window.location.search))}>
     <img id="navlogo" src="/q2view.png" alt="QIIME 2 view logo">
   </button>
-  {#if $readerModel.indexPath}
-    <button on:click={() => (history.pushState({}, "", "/visualization/"+window.location.search))}>
-      Visualization
-    </button>
-  {/if}
-  {#if $readerModel.rawSrc}
-    <button on:click={() => (history.pushState({}, "", "/details/"+window.location.search))}>
-      Details
-    </button>
-    <button on:click={() => (history.pushState({}, "", "/provenance/"+window.location.search))}>
-      Provenance
-    </button>
-  {/if}
-  <!-- TODO: These buttons suck and get in the way of things right now -->
-  {#if $readerModel.sourceType === "remote"}
-    <div class="dropdown">
-      <button class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-        <img src="/link-grey.png" alt="Link" />
+  <div class="navbar-nav ml-auto">
+    {#if $readerModel.indexPath}
+      <button class="nav-item" on:click={() => (history.pushState({}, "", "/visualization/"+window.location.search))}>
+        Visualization
       </button>
-      <!-- TODO: Should this actually be an anchor? Seems like this link is useless -->
-      <div class="dropdown-menu">
-        <a href={$url.toString()}>
-            Shareable Link:
-        </a>
-        <input
-            readOnly
-            value={$url.toString()}
-            type="text"
-            on:select={e => e.stopPropagation()}
-        />
+    {/if}
+    {#if $readerModel.rawSrc}
+      <button class="nav-item" on:click={() => (history.pushState({}, "", "/details/"+window.location.search))}>
+        Details
+      </button>
+      <button class="nav-item" on:click={() => (history.pushState({}, "", "/provenance/"+window.location.search))}>
+        Provenance
+      </button>
+    {/if}
+    <!-- TODO: These buttons suck and get in the way of things right now -->
+    {#if $readerModel.sourceType === "remote"}
+      <div class="dropdown nav-item">
+        <button class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <img src="/link-grey.png" alt="Link" />
+        </button>
+        <!-- TODO: Should this actually be an anchor? Seems like this link is useless -->
+        <div class="dropdown-menu">
+          <a href={$url.toString()}>
+              Shareable Link:
+          </a>
+          <input
+              readOnly
+              value={$url.toString()}
+              type="text"
+              on:select={e => e.stopPropagation()}
+          />
+        </div>
       </div>
-    </div>
-    <!-- This will only draw if sourceType is remote and if sourceType is remote
-         rawSrc is a string, but cast here to stop it from whining -->
-    <a href={String($readerModel.rawSrc)}>
-      <img src="/download-grey.png" alt="Download" />
-    </a>
-  {/if}
+      <!-- This will only draw if sourceType is remote and if sourceType is remote
+          rawSrc is a string, but cast here to stop it from whining -->
+      <a class="nav-item" href={String($readerModel.rawSrc)}>
+        <img src="/download-grey.png" alt="Download" />
+      </a>
+    {/if}
+  </div>
 </nav>
 <!-- </div> -->
 
