@@ -75,7 +75,6 @@
   }
 </script>
 
-<!-- <div id="navbar"> -->
 <nav class="navbar navbar-expand-lg sticky-top bg-light">
   <button class="navbar-brand" on:click={() => (history.pushState({}, "", "/"+window.location.search))}>
     <img id="navlogo" src="/q2view.png" alt="QIIME 2 view logo">
@@ -123,7 +122,6 @@
     {/if}
   </div>
 </nav>
-<!-- </div> -->
 
 <div id="container">
   <div class="tab" style:visibility={$url.pathname.replaceAll("/", "") === "" ? "visible" : "hidden"}>
