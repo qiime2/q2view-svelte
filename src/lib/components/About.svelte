@@ -40,10 +40,10 @@
   <p>This section is for common errors you may encounter when using q2view.</p>
   <div class="card">
     <div class="row">
-      <div class="md-6">
+      <div class="col-md-6">
         <div class="alert alert-danger">TypeError: Failed to fetch</div>
       </div>
-      <div class="md-6">
+      <div class="col-md-6">
         <div class="alert alert-danger">
           TypeError: NetworkError when attempting to fetch resource.
         </div>
