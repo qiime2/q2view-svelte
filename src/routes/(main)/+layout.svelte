@@ -100,7 +100,6 @@
         Provenance
       </button>
     {/if}
-    <!-- TODO: These buttons suck and get in the way of things right now -->
     {#if $readerModel.sourceType === "remote"}
       <div class="dropdown nav-item">
         <button class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
