@@ -12,11 +12,13 @@
   import url from "$lib/scripts/url-store";
   import { onMount } from "svelte";
   import About from "$lib/components/About.svelte";
+  import { checkBrowserCompatibility } from "$lib/scripts/util";
 
   let currentSrc = ""
   const uuid4Regex = /[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}/;
 
   onMount(() => {
+    checkBrowserCompatibility();
     readerModel.attachToServiceWorker();
     fetch("/_/wakeup");
   });

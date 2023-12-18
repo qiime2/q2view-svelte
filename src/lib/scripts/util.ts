@@ -1,3 +1,5 @@
+import { goto } from "$app/navigation";
+
 export const readBlobAsText = (blob) =>
   new Promise((resolve, reject) => {
     // eslint-disable-line no-unused-vars
@@ -33,3 +35,30 @@ export const waitUntil = (condition) =>
 
 export const parseFileNameFromURL = (urlString) =>
   new URL(urlString).pathname.split("/").pop();
+
+export function checkBrowserCompatibility() {
+  if (typeof window.navigator === 'undefined') {
+      redirectToIncompatibleBrowser();
+  }
+
+  if (typeof window.navigator.serviceWorker === 'undefined') {
+      redirectToIncompatibleBrowser();
+  }
+
+  if (typeof window.MessageChannel === 'undefined') {
+      redirectToIncompatibleBrowser();
+  }
+
+  if (typeof window.history === 'undefined') {
+      redirectToIncompatibleBrowser();
+  }
+
+  if (typeof window.history.pushState === 'undefined') {
+      redirectToIncompatibleBrowser();
+  }
+}
+
+function redirectToIncompatibleBrowser() {
+  history.replaceState({}, "", "/incompatible")
+  location.reload();
+}
