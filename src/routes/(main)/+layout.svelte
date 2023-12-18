@@ -83,6 +83,9 @@
   <button class="navbar-brand" on:click={() => (history.pushState({}, "", "/"+window.location.search))}>
     <img id="navlogo" src="/q2view.png" alt="QIIME 2 view logo">
   </button>
+  <div class="navbar-text ml-auto mr-auto">
+    {$readerModel.name}
+  </div>
   <div class="navbar-nav ml-auto">
     {#if $readerModel.indexPath}
       <button class="nav-item" on:click={() => (history.pushState({}, "", "/visualization/"+window.location.search))}>
