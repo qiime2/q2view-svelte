@@ -14,6 +14,5 @@
   #json {
     height:500px;
     width: 1000px;
-    overflow-x: auto;
   }
 </style>
