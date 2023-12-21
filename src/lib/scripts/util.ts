@@ -59,6 +59,6 @@ export function checkBrowserCompatibility() {
 }
 
 function redirectToIncompatibleBrowser() {
-  history.replaceState({}, "", "/incompatible");
+  history.replaceState({}, "", "/incompatible/");
   location.reload();
 }
