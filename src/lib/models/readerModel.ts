@@ -161,7 +161,7 @@ class ReaderModel {
     //  2: click the qiime2 logo to go back to the input page
     //  3: drop in a local viz
     //  4: hit the back arrow
-    history.replaceState({}, "", `/${tab}/?src=${this.urlSrc}`)
+    history.replaceState({}, "", `/${tab}/?src=${this.urlSrc}`);
   }
 
   _getTab() {

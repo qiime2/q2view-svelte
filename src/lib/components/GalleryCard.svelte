@@ -5,12 +5,12 @@
   export let href: string;
 </script>
 
-<div>
-  <h3>{title}</h3>
+<div class="card">
+  <h3 style="font-size: 24px;">{title}</h3>
   <img src={img} alt={title}>
-  <p>{desc}</p>
-  <p class="text-right">
-    <button on:click={() => (history.pushState({}, "", href))}>
+  <p style="font-size: 14px">{desc}</p>
+  <p class="text-right" style="font-size: 14px">
+    <button class="btn btn-primary" on:click={() => (history.pushState({}, "", href))}>
       Try it!
     </button>
   </p>

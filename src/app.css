@@ -7,8 +7,25 @@
     text-white;
 }
 
+* {
+  font-family: Arial;
+}
+
 span {
-     cursor:pointer;
-     color:blue;
-     text-decoration:underline;
+  cursor: pointer;
+  color: blue;
+  text-decoration: underline;
+}
+
+p {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+h2 {
+  font-size: 30px;
+}
+
+h3 {
+  font-size: 24px;
 }
