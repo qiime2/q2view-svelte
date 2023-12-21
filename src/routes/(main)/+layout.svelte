@@ -12,9 +12,10 @@
   import url from "$lib/scripts/url-store";
   import { onMount } from "svelte";
   import About from "$lib/components/About.svelte";
-  import { checkBrowserCompatibility } from "$lib/scripts/util";
+  import { checkBrowserCompatibility, handleError } from "$lib/scripts/util";
+  import Error from "$lib/components/Error.svelte";
 
-  let currentSrc = ""
+  let currentSrc = "";
   const uuid4Regex = /[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}/;
 
   onMount(() => {
@@ -50,9 +51,13 @@
         // We have a local source that does not match our currently loaded data.
         // This is an error because we do not have access to arbitray local sources
         if (newSrc !== readerModel.uuid) {
-          history.replaceState({}, "", "/error/");
-          // goto("/error");
-        }
+          handleError("This was a temporary page based on local data. If you " +
+                      "have access to this data, please reload it. To share " +
+                      "QIIME 2 Artifacts and Visualizations, please upload your " +
+                      "file to a file hosting service and provide the resulting " +
+                      "URL to the home screen of this application.",
+                      "Expired Data");
+         }
         // We have a local source, but it is still the local source we have loaded
       }
       else {
@@ -136,6 +141,9 @@
   </div>
   <div class="tab" style:visibility={$url.pathname.replaceAll("/", "") === "about" ? "visible" : "hidden"}>
     <About/>
+  </div>
+  <div class="tab" style:visibility={$url.pathname.replaceAll("/", "") === "error" ? "visible" : "hidden"}>
+    <Error/>
   </div>
   {#if $readerModel.indexPath}
     <div class="tab" style:visibility={$url.pathname.replaceAll("/", "") === "visualization" ? "visible" : "hidden"}>

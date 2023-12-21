@@ -7,11 +7,14 @@
 import yaml from "js-yaml";
 import JSZip from "jszip";
 
-import { readBlobAsText } from "$lib/scripts/util";
+import { handleError, readBlobAsText } from "$lib/scripts/util";
 import extmap from "$lib/scripts/extmap";
 import schema from "$lib/scripts/yaml-schema";
 
 class ReaderModel {
+  error = "";
+  errorMessage = "";
+
   rawSrc: File | string = "";
   urlSrc = "";
   name: string = "";
@@ -61,10 +64,14 @@ class ReaderModel {
   //****************************************************************************
 
   constructor() {
+    console.log("contructor")
     this.session = Math.random().toString(36).substr(2);
   }
 
   clear() {
+    this.error = "";
+    this.errorMessage = "";
+
     this.rawSrc = "";
     this.urlSrc = "";
     this.name = "";
@@ -94,8 +101,9 @@ class ReaderModel {
       let data = src instanceof File ? src : await this._readRemoteData(src);
       await this.initModelFromData(data);
     } catch (err: any) {
-      // TODO: Might escalate this to actually showing error page
-      alert(err);
+      console.log("BEFORE");
+      handleError(err);
+      console.log("AFTER");
       return;
     }
 

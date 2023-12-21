@@ -1,4 +1,4 @@
-import { goto } from "$app/navigation";
+import readerModel from "$lib/models/readerModel";
 
 export const readBlobAsText = (blob) =>
   new Promise((resolve, reject) => {
@@ -61,4 +61,11 @@ export function checkBrowserCompatibility() {
 function redirectToIncompatibleBrowser() {
   history.replaceState({}, "", "/incompatible/");
   location.reload();
+}
+
+export function handleError(msg, error="Something went wrong!") {
+  readerModel.error = error;
+  readerModel.errorMessage = msg;
+  readerModel._dirty();
+  history.replaceState({}, "", "/error/")
 }
