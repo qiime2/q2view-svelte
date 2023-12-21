@@ -90,9 +90,8 @@ class ReaderModel {
   }
 
   async readData(src: File | string, tab: string) {
-    let data = src instanceof File ? src : await this._readRemoteData(src);
-
     try {
+      let data = src instanceof File ? src : await this._readRemoteData(src);
       await this.initModelFromData(data);
     } catch (err: any) {
       // TODO: Might escalate this to actually showing error page
