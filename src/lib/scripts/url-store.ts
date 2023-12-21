@@ -1,13 +1,7 @@
 // Source: https://svelte.dev/repl/5abaac000b164aa1aacc6051d5c4f584?version=3.59.2
 import { derived, writable } from "svelte/store";
 
-export function createUrlStore(ssrUrl) {
-  // Ideally a bundler constant so that it's tree-shakable
-  if (typeof window === "undefined") {
-    const { subscribe } = writable(ssrUrl);
-    return { subscribe };
-  }
-
+export function createUrlStore() {
   const href = writable(window.location.href);
 
   const originalPushState = history.pushState;
