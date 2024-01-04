@@ -100,9 +100,7 @@ class ReaderModel {
       let data = src instanceof File ? src : await this._readRemoteData(src);
       await this.initModelFromData(data);
     } catch (err: any) {
-      console.log("BEFORE");
       handleError(err);
-      console.log("AFTER");
       return;
     }
 
@@ -494,7 +492,6 @@ class ReaderModel {
       this._artifactMap(this.uuid),
       this._inputMap(this.uuid),
     ]).then(([artifacts, actions]) => {
-      console.log(artifacts);
       const findMaxDepth = (uuid) => {
         if (
           artifacts[uuid] === null ||
@@ -519,7 +516,6 @@ class ReaderModel {
 
       for (const actionUUID of Object.keys(actions)) {
         for (const mapping of actions[actionUUID]) {
-          console.log(mapping);
           edges.push({
             data: {
               id: `${Object.keys(mapping)[0]}_${
