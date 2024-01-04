@@ -446,7 +446,10 @@ class ReaderModel {
                   if (typeof e !== "string") {
                     // If we are here, this was a collection and each e is a
                     // key, value pair
-                    inputs[action.execution.uuid].add({ [`${inputName}_${Object.keys(e)[0]}`]: Object.values(e)[0] });
+                    inputs[action.execution.uuid].add({
+                      [`${inputName}_${Object.keys(e)[0]}`]:
+                        Object.values(e)[0],
+                    });
                     promises.push(this._inputMap(Object.values(e)[0]));
                   } else {
                     inputs[action.execution.uuid].add({ [inputName]: e });
@@ -516,7 +519,7 @@ class ReaderModel {
 
       for (const actionUUID of Object.keys(actions)) {
         for (const mapping of actions[actionUUID]) {
-          console.log(mapping)
+          console.log(mapping);
           edges.push({
             data: {
               id: `${Object.keys(mapping)[0]}_${

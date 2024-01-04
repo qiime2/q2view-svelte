@@ -63,9 +63,9 @@ function redirectToIncompatibleBrowser() {
   location.reload();
 }
 
-export function handleError(msg, error="Something went wrong!") {
+export function handleError(msg, error = "Something went wrong!") {
   readerModel.error = error;
   readerModel.errorMessage = msg;
   readerModel._dirty();
-  history.replaceState({}, "", "/error/")
+  history.replaceState({}, "", "/error/");
 }
