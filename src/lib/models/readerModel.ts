@@ -446,7 +446,7 @@ class ReaderModel {
                   if (typeof e !== "string") {
                     // If we are here, this was a collection and each e is a
                     // key, value pair
-                    inputs[action.execution.uuid].add({ [inputName]: Object.values(e)[0]});
+                    inputs[action.execution.uuid].add({ [`${inputName}_${Object.keys(e)[0]}`]: Object.values(e)[0] });
                     promises.push(this._inputMap(Object.values(e)[0]));
                   } else {
                     inputs[action.execution.uuid].add({ [inputName]: e });
@@ -531,7 +531,6 @@ class ReaderModel {
       }
 
       for (const actionUUID of Object.values(artifacts)) {
-        console.log(`ACTION: ${actionUUID}`);
         // These don't need to be sorted.
         if (actionUUID !== null) {
           actionNodes.push({
@@ -541,7 +540,6 @@ class ReaderModel {
       }
 
       for (const artifactUUID of Object.keys(artifacts)) {
-        console.log(`ARTIFACT: ${artifactUUID}`);
         nodes.push({
           data: {
             id: artifactUUID,
