@@ -64,7 +64,6 @@ class ReaderModel {
   //****************************************************************************
 
   constructor() {
-    console.log("contructor")
     this.session = Math.random().toString(36).substr(2);
   }
 
@@ -386,7 +385,13 @@ class ReaderModel {
                 promises.push(this._artifactMap(entry));
               } else if (entry !== null) {
                 for (const e of entry) {
-                  promises.push(this._artifactMap(e));
+                  if (typeof e !== "string") {
+                    // If we are here, this was a collection and each e is a
+                    // key, value pair
+                    promises.push(this._artifactMap(Object.values(e)[0]));
+                  } else {
+                    promises.push(this._artifactMap(e));
+                  }
                 }
               } // else optional artifact
             }
@@ -438,8 +443,15 @@ class ReaderModel {
                 promises.push(this._inputMap(entry));
               } else if (entry !== null) {
                 for (const e of entry) {
-                  inputs[action.execution.uuid].add({ [inputName]: e });
-                  promises.push(this._inputMap(e));
+                  if (typeof e !== "string") {
+                    // If we are here, this was a collection and each e is a
+                    // key, value pair
+                    inputs[action.execution.uuid].add({ [inputName]: Object.values(e)[0]});
+                    promises.push(this._inputMap(Object.values(e)[0]));
+                  } else {
+                    inputs[action.execution.uuid].add({ [inputName]: e });
+                    promises.push(this._inputMap(e));
+                  }
                 }
               } // else optional artifact
             }
@@ -479,6 +491,7 @@ class ReaderModel {
       this._artifactMap(this.uuid),
       this._inputMap(this.uuid),
     ]).then(([artifacts, actions]) => {
+      console.log(artifacts);
       const findMaxDepth = (uuid) => {
         if (
           artifacts[uuid] === null ||
@@ -503,6 +516,7 @@ class ReaderModel {
 
       for (const actionUUID of Object.keys(actions)) {
         for (const mapping of actions[actionUUID]) {
+          console.log(mapping)
           edges.push({
             data: {
               id: `${Object.keys(mapping)[0]}_${
@@ -517,6 +531,7 @@ class ReaderModel {
       }
 
       for (const actionUUID of Object.values(artifacts)) {
+        console.log(`ACTION: ${actionUUID}`);
         // These don't need to be sorted.
         if (actionUUID !== null) {
           actionNodes.push({
@@ -526,6 +541,7 @@ class ReaderModel {
       }
 
       for (const artifactUUID of Object.keys(artifacts)) {
+        console.log(`ARTIFACT: ${artifactUUID}`);
         nodes.push({
           data: {
             id: artifactUUID,
