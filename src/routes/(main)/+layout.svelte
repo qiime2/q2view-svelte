@@ -80,7 +80,66 @@
   }
 </script>
 
-<nav class="navbar navbar-expand-lg sticky-top bg-light">
+<ul id="navbar" class="flex">
+  <li class="flex m-auto">
+    <button on:click={() => (history.pushState({}, "", "/"+window.location.search))}>
+      <img id="navlogo" src="/q2view.png" alt="QIIME 2 view logo">
+    </button>
+  </li>
+  <div class="flex m-auto">
+    {$readerModel.name}
+  </div>
+  <div class="flex m-auto">
+    <!-- <li class="mr-6">
+      <a class="text-blue-500 hover:text-blue-800" href="#">Active</a>
+    </li>
+    <li class="mr-6">
+      <a class="text-blue-500 hover:text-blue-800" href="#">Link</a>
+    </li>
+    <li class="mr-6">
+      <a class="text-blue-500 hover:text-blue-800" href="#">Link</a>
+    </li>
+    <li class="mr-6">
+      <a class="text-gray-400 cursor-not-allowed" href="#">Disabled</a>
+    </li> -->
+    {#if $readerModel.indexPath}
+      <button class="flex m-auto" on:click={() => (history.pushState({}, "", "/visualization/"+window.location.search))}>
+        Visualization
+      </button>
+    {/if}
+    {#if $readerModel.rawSrc}
+      <button class="flex m-auto" on:click={() => (history.pushState({}, "", "/details/"+window.location.search))}>
+        Details
+      </button>
+      <button class="flex m-auto" on:click={() => (history.pushState({}, "", "/provenance/"+window.location.search))}>
+        Provenance
+      </button>
+    {/if}
+    {#if $readerModel.sourceType === "remote"}
+      <div class="dropdown flex m-auto">
+        <button class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <img src="/link-grey.png" alt="Link" />
+        </button>
+        <div class="dropdown-menu">
+          <a href={$url.toString()}>
+              Shareable Link:
+          </a>
+          <input
+              readOnly
+              value={$url.toString()}
+              type="text"
+              on:select={e => e.stopPropagation()}
+          />
+        </div>
+      </div>
+      <a class="flex m-auto" href={String($readerModel.rawSrc)}>
+        <img src="/download-grey.png" alt="Download" />
+      </a>
+    {/if}
+  </div>
+</ul>
+
+<!-- <nav class="navbar navbar-expand-lg sticky-top bg-light">
   <button class="navbar-brand" on:click={() => (history.pushState({}, "", "/"+window.location.search))}>
     <img id="navlogo" src="/q2view.png" alt="QIIME 2 view logo">
   </button>
@@ -106,7 +165,6 @@
         <button class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
           <img src="/link-grey.png" alt="Link" />
         </button>
-        <!-- TODO: Should this actually be an anchor? Seems like this link is useless -->
         <div class="dropdown-menu">
           <a href={$url.toString()}>
               Shareable Link:
@@ -119,14 +177,12 @@
           />
         </div>
       </div>
-      <!-- This will only draw if sourceType is remote and if sourceType is remote
-          rawSrc is a string, but cast here to stop it from whining -->
       <a class="nav-item" href={String($readerModel.rawSrc)}>
         <img src="/download-grey.png" alt="Download" />
       </a>
     {/if}
   </div>
-</nav>
+</nav> -->
 
 <div id="container">
   <div class="tab" style:visibility={$url.pathname.replaceAll("/", "") === "" ? "visible" : "hidden"}>
