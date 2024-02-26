@@ -1,0 +1,6 @@
+{
+  "title": "Feature Table Summary",
+  "desc": "Preview the impact of rarefying your data by manipulating the sampling depth to determine which samples or sample groups would be filtered.",
+  "href": "/?type=html&src=https%3A%2F%2Fdocs.qiime2.org%2F2023.2%2Fdata%2Ftutorials%2Fmoving-pictures%2Ftable.qzv",
+  "img": "/gallery/FeatureTableSummary/summarize_thumb.png"
+}

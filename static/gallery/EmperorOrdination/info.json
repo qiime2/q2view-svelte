@@ -1,0 +1,6 @@
+{
+  "title": "Emperor Ordination",
+  "desc": "View the differences between sample composition using unweighted UniFrac in ordination space. Color the samples by different metadata columns.",
+  "href": "/?type=html&src=https%3A%2F%2Fdocs.qiime2.org%2F2023.2%2Fdata%2Ftutorials%2Fmoving-pictures%2Fcore-metrics-results%2Funweighted_unifrac_emperor.qzv",
+  "img": "/gallery/EmperorOrdination/emperor_thumb.png"
+}

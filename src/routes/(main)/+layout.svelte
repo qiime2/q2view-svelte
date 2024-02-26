@@ -83,7 +83,7 @@
 <ul id="navbar" class="flex">
   <li class="flex m-auto">
     <button on:click={() => (history.pushState({}, "", "/"+window.location.search))}>
-      <img id="navlogo" src="/q2view.png" alt="QIIME 2 view logo">
+      <img id="navlogo" src="/images/q2view.png" alt="QIIME 2 view logo">
     </button>
   </li>
   <div class="flex m-auto">
@@ -118,7 +118,7 @@
     {#if $readerModel.sourceType === "remote"}
       <div class="dropdown flex m-auto">
         <button class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-          <img src="/link-grey.png" alt="Link" />
+          <img src="/images/link-grey.png" alt="Link" />
         </button>
         <div class="dropdown-menu">
           <a href={$url.toString()}>
@@ -133,7 +133,7 @@
         </div>
       </div>
       <a class="flex m-auto" href={String($readerModel.rawSrc)}>
-        <img src="/download-grey.png" alt="Download" />
+        <img src="/images/download-grey.png" alt="Download" />
       </a>
     {/if}
   </div>

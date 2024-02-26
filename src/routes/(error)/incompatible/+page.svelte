@@ -13,14 +13,14 @@
   </div>
   <div class="row show-grid">
     <div class="col-md-6 col-md-push-6" style="margin-bottom: 4em;">
-      <a href={downloadFirefox}><img src="/firefox.png" alt="Firefox" /></a>
+      <a href={downloadFirefox}><img src="/images/firefox.png" alt="Firefox" /></a>
       <h3>
         Download <strong><a href={downloadFirefox}>Mozilla Firefox&reg;</a></strong>
       </h3>
       <p>(requires version 47 or later;<br />will not work in private browsing)</p>
     </div>
   <div class="col-md-6 col-md-pull-6">
-    <a href={downloadChrome}><img src="/chrome.png" alt="Chrome" /></a>
+    <a href={downloadChrome}><img src="/images/chrome.png" alt="Chrome" /></a>
     <h3>
         Download <strong><a href={downloadChrome}>Google Chrome&reg;</a></strong>
     </h3>
