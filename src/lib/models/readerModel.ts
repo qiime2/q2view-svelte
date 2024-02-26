@@ -492,7 +492,6 @@ class ReaderModel {
       this._artifactMap(this.uuid),
       this._inputMap(this.uuid),
     ]).then(([artifacts, actions]) => {
-      console.log(`\nARTIFACTS: ${Object.keys(artifacts)}\nACTIONS: ${Object.keys(actions)}`);
       const findMaxDepth = (uuid) => {
         if (
           artifacts[uuid] === null ||
@@ -573,12 +572,9 @@ class ReaderModel {
   }
 
   getProvenanceAction(uuid) {
-    console.log(uuid);
     if (this.uuid === uuid) {
-      console.log("same");
       return this._getYAML("provenance/action/action.yaml");
     }
-    console.log("diff");
     return this._getYAML(`provenance/artifacts/${uuid}/action/action.yaml`);
   }
 
