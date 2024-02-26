@@ -1,6 +1,9 @@
 <script lang='ts'>
   import GalleryCard from './GalleryCard.svelte';
 
+  // TODO: We need to move the gallery assets to an external github repo that
+  // this data will be pulled from. This will make it so we can update the
+  // gallery dynamically without rebuilding the site.
   async function getGalleryCards() {
     const indexJSON = await (await fetch('/gallery/index.json')).json();
     let galleryEntries = [];
