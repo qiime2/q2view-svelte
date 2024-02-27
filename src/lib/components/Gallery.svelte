@@ -1,15 +1,14 @@
 <script lang='ts'>
   import GalleryCard from './GalleryCard.svelte';
+  const GALLERY_URL = 'https://oddant1.github.io/q2view-gallery';
 
-  // TODO: We need to move the gallery assets to an external github repo that
-  // this data will be pulled from. This will make it so we can update the
-  // gallery dynamically without rebuilding the site.
   async function getGalleryCards() {
-    const indexJSON = await (await fetch('/gallery/index.json')).json();
+    const indexJSON = await (await fetch(GALLERY_URL + '/gallery')).json();
     let galleryEntries = [];
 
     for (const galleryEntry of Object.values(indexJSON)) {
-      const galleryJSON = await (await fetch(galleryEntry)).json();
+      let galleryJSON = await (await fetch(GALLERY_URL + galleryEntry)).json();
+      galleryJSON['img'] =  GALLERY_URL + galleryJSON['img'];
       galleryEntries.push(galleryJSON);
     }
 
