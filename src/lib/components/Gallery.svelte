@@ -2,6 +2,7 @@
   import GalleryCard from './GalleryCard.svelte';
   const GALLERY_URL = 'https://oddant1.github.io/q2view-gallery';
 
+  // TODO: Expect 404s and other such errors to happen here and handle them
   async function getGalleryCards() {
     const indexJSON = await (await fetch(GALLERY_URL + '/gallery')).json();
     let galleryEntries = [];
