@@ -5,13 +5,28 @@
   export let href: string;
 </script>
 
-<div class="card">
+<div class="gallery-card">
   <h3 style="font-size: 24px;">{title}</h3>
   <img src={img} alt={title}>
   <p style="font-size: 14px">{desc}</p>
   <p class="text-right" style="font-size: 14px">
-    <button class="btn btn-primary" on:click={() => (history.pushState({}, "", href))}>
+    <button class="gallery-button" on:click={() => (history.pushState({}, "", href))}>
       Try it!
     </button>
   </p>
 </div>
+
+<style lang='postcss'>
+  .gallery-card {
+    @apply border
+    rounded-lg
+    p-2;
+  }
+
+  .gallery-button {
+    @apply border
+    bg-blue-400
+    rounded-lg
+    p-1;
+  }
+</style>

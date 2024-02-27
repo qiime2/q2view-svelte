@@ -19,17 +19,10 @@
 
 <h2>Gallery</h2>
 <p>Don&apos;t have a QIIME 2 result of your own to view? Try one of these?</p>
-<div class="container">
-  <div class="row">
-    {#await getGalleryCards() then galleryCards}
-      {#each galleryCards as galleryCard}
-        <div class="col-xs-12 col-sm-6 col-md-4">
-          <GalleryCard {...galleryCard}/>
-        </div>
-      {/each}
-    {/await}
+{#await getGalleryCards() then galleryCards}
+  <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    {#each galleryCards as galleryCard}
+      <GalleryCard {...galleryCard}/>
+    {/each}
   </div>
-</div>
-
-<style lang='postcss'>
-</style>
+{/await}
