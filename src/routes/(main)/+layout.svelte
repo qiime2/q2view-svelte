@@ -15,6 +15,7 @@
   import { checkBrowserCompatibility, handleError } from "$lib/scripts/util";
   import Error from "$lib/components/Error.svelte";
 
+  let isDropdownOpen = false;
   let currentSrc = "";
   const uuid4Regex = /[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}/;
 
@@ -78,114 +79,72 @@
 
     currentSrc = newSrc
   }
+
+  const handleDropdownClick = () => {
+    isDropdownOpen = !isDropdownOpen;
+  }
+
+  const handleDropdownFocusLoss = ({ relatedTarget, currentTarget }) => {
+    if (relatedTarget instanceof HTMLElement && currentTarget.contains(relatedTarget)) {
+      return;
+    }
+
+    isDropdownOpen = false;
+  }
 </script>
 
-<ul id="navbar" class="flex">
-  <li class="flex m-auto">
+<nav id="navbar">
+  <div class="container" id="nav-container">
     <button on:click={() => (history.pushState({}, "", "/"+window.location.search))}>
       <img id="navlogo" src="/images/q2view.png" alt="QIIME 2 view logo">
     </button>
-  </li>
-  <div class="flex m-auto">
-    {$readerModel.name}
-  </div>
-  <div class="flex m-auto">
-    <!-- <li class="mr-6">
-      <a class="text-blue-500 hover:text-blue-800" href="#">Active</a>
-    </li>
-    <li class="mr-6">
-      <a class="text-blue-500 hover:text-blue-800" href="#">Link</a>
-    </li>
-    <li class="mr-6">
-      <a class="text-blue-500 hover:text-blue-800" href="#">Link</a>
-    </li>
-    <li class="mr-6">
-      <a class="text-gray-400 cursor-not-allowed" href="#">Disabled</a>
-    </li> -->
-    {#if $readerModel.indexPath}
-      <button class="flex m-auto" on:click={() => (history.pushState({}, "", "/visualization/"+window.location.search))}>
-        Visualization
-      </button>
-    {/if}
-    {#if $readerModel.rawSrc}
-      <button class="flex m-auto" on:click={() => (history.pushState({}, "", "/details/"+window.location.search))}>
-        Details
-      </button>
-      <button class="flex m-auto" on:click={() => (history.pushState({}, "", "/provenance/"+window.location.search))}>
-        Provenance
-      </button>
-    {/if}
-    {#if $readerModel.sourceType === "remote"}
-      <div class="dropdown flex m-auto">
-        <button class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-          <img src="/images/link-grey.png" alt="Link" />
+    <div class="navitem">
+      {$readerModel.name}
+    </div>
+    <div class="navitem">
+      {#if $readerModel.indexPath}
+        <button on:click={() => (history.pushState({}, "", "/visualization/"+window.location.search))}>
+          Visualization
         </button>
-        <div class="dropdown-menu">
-          <a href={$url.toString()}>
-              Shareable Link:
-          </a>
-          <input
-              readOnly
-              value={$url.toString()}
-              type="text"
-              on:select={e => e.stopPropagation()}
-          />
-        </div>
-      </div>
-      <a class="flex m-auto" href={String($readerModel.rawSrc)}>
-        <img src="/images/download-grey.png" alt="Download" />
-      </a>
-    {/if}
-  </div>
-</ul>
-
-<!-- <nav class="navbar navbar-expand-lg sticky-top bg-light">
-  <button class="navbar-brand" on:click={() => (history.pushState({}, "", "/"+window.location.search))}>
-    <img id="navlogo" src="/q2view.png" alt="QIIME 2 view logo">
-  </button>
-  <div class="navbar-text ml-auto mr-auto">
-    {$readerModel.name}
-  </div>
-  <div class="navbar-nav ml-auto">
-    {#if $readerModel.indexPath}
-      <button class="nav-item" on:click={() => (history.pushState({}, "", "/visualization/"+window.location.search))}>
-        Visualization
-      </button>
-    {/if}
-    {#if $readerModel.rawSrc}
-      <button class="nav-item" on:click={() => (history.pushState({}, "", "/details/"+window.location.search))}>
-        Details
-      </button>
-      <button class="nav-item" on:click={() => (history.pushState({}, "", "/provenance/"+window.location.search))}>
-        Provenance
-      </button>
-    {/if}
-    {#if $readerModel.sourceType === "remote"}
-      <div class="dropdown nav-item">
-        <button class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-          <img src="/link-grey.png" alt="Link" />
+      {/if}
+      {#if $readerModel.rawSrc}
+        <button on:click={() => (history.pushState({}, "", "/details/"+window.location.search))}>
+          Details
         </button>
-        <div class="dropdown-menu">
-          <a href={$url.toString()}>
-              Shareable Link:
-          </a>
-          <input
-              readOnly
-              value={$url.toString()}
-              type="text"
-              on:select={e => e.stopPropagation()}
-          />
+        <button on:click={() => (history.pushState({}, "", "/provenance/"+window.location.search))}>
+          Provenance
+        </button>
+        <button on:click={() => (history.pushState({}, "", "/provenance/"+window.location.search))}>
+          Provenance
+        </button>
+      {/if}
+      {#if $readerModel.sourceType === "remote"}
+        <div class="dropdown" on:focusout={handleDropdownFocusLoss}>
+          <button on:click={handleDropdownClick}>
+            <img src="/images/link-grey.png" alt="Link" />
+          </button>
+          <div style:visibility={isDropdownOpen ? "visible" : "hidden"} class="position: absolute;">
+            <a href={$url.toString()}>
+                Shareable Link:
+            </a>
+            <input
+                readOnly
+                value={$url.toString()}
+                type="text"
+                on:select={e => e.stopPropagation()}
+            />
+          </div>
         </div>
-      </div>
-      <a class="nav-item" href={String($readerModel.rawSrc)}>
-        <img src="/download-grey.png" alt="Download" />
-      </a>
-    {/if}
+        <a href={String($readerModel.rawSrc)}>
+          <img src="/images/download-grey.png" alt="Download" />
+        </a>
+      {/if}
+    </div>
   </div>
-</nav> -->
+</nav>
 
-<div id="container">
-  <div class="tab" style:visibility={$url.pathname.replaceAll("/", "") === "" ? "visible" : "hidden"}>
+<div id="content-container">
+  <div class="tab container mx-auto" style:visibility={$url.pathname.replaceAll("/", "") === "" ? "visible" : "hidden"}>
     <p>
         This interface can view .qza and .qzv files
         directly in your browser without uploading to a server.
@@ -228,14 +187,23 @@
     bg-slate-300;
   }
 
+  #nav-container {
+    @apply m-auto
+    flex
+  }
+
   #navlogo {
     @apply h-10
     mt-2;
   }
 
-  #container {
+  #content-container {
     display: grid;
     margin-top: 75px;
+  }
+
+  .navitem {
+    @apply m-auto;
   }
 
   .tab {
