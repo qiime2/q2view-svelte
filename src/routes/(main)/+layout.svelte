@@ -101,23 +101,29 @@
     <div class="navitem">
       {$readerModel.name}
     </div>
-    <div class="navitem">
+    <ul class="navitem">
       {#if $readerModel.indexPath}
-        <button on:click={() => (history.pushState({}, "", "/visualization/"+window.location.search))}>
-          Visualization
-        </button>
+        <li>
+          <button on:click={() => (history.pushState({}, "", "/visualization/"+window.location.search))}>
+            Visualization
+          </button>
+        </li>
       {/if}
       {#if $readerModel.rawSrc}
-        <button on:click={() => (history.pushState({}, "", "/details/"+window.location.search))}>
-          Details
-        </button>
-        <button on:click={() => (history.pushState({}, "", "/provenance/"+window.location.search))}>
-          Provenance
-        </button>
+        <li>
+          <button on:click={() => (history.pushState({}, "", "/details/"+window.location.search))}>
+            Details
+          </button>
+        </li>
+        <li>
+          <button on:click={() => (history.pushState({}, "", "/provenance/"+window.location.search))}>
+            Provenance
+          </button>
+        </li>
       {/if}
       <!-- TODO: Figure out what on earth is causing this stuff not to line up -->
       {#if $readerModel.sourceType === "remote"}
-        <button>
+        <li>
           <div on:focusout={handleDropdownFocusLoss}>
             <button on:click={handleDropdownClick}>
               <img src="/images/link-grey.png" alt="Link" />
@@ -134,14 +140,14 @@
               />
             </div>
           </div>
-        </button>
-        <button>
+        </li>
+        <li>
           <a href={String($readerModel.rawSrc)}>
             <img src="/images/download-grey.png" alt="Download" />
           </a>
-        </button>
+        </li>
       {/if}
-    </div>
+    </ul>
   </div>
 </nav>
 
@@ -190,8 +196,8 @@
   }
 
   #nav-container {
-    @apply m-auto
-    flex
+    @apply flex
+    m-auto;
   }
 
   #navlogo {
@@ -205,7 +211,8 @@
   }
 
   .navitem {
-    @apply m-auto;
+    @apply flex
+    m-auto;
   }
 
   .tab {
