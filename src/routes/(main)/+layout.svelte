@@ -121,7 +121,6 @@
           </button>
         </li>
       {/if}
-      <!-- TODO: Figure out what on earth is causing this stuff not to line up -->
       {#if $readerModel.sourceType === "remote"}
         <li>
           <div on:focusout={handleDropdownFocusLoss}>
