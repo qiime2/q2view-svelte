@@ -114,11 +114,8 @@
         <button on:click={() => (history.pushState({}, "", "/provenance/"+window.location.search))}>
           Provenance
         </button>
-        <button on:click={() => (history.pushState({}, "", "/provenance/"+window.location.search))}>
-          Provenance
-        </button>
       {/if}
-        <!-- TODO: Figure out what on earth is causing this stuff not to line up -->
+      <!-- TODO: Figure out what on earth is causing this stuff not to line up -->
       {#if $readerModel.sourceType === "remote"}
         <div class="dropdown" on:focusout={handleDropdownFocusLoss}>
           <button on:click={handleDropdownClick}>
