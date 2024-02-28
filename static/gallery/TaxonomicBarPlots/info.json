@@ -1,6 +1,0 @@
-{
-  "title": "Taxonomic Bar Plots",
-  "desc": "Explore the taxonomy of samples in the Moving Pictures Tutorial. Try selecting different taxonomic levels and metadata-based sample sorting.",
-  "href": "/?type=html&src=https%3A%2F%2Fdocs.qiime2.org%2F2023.2%2Fdata%2F tutorials%2Fmoving-pictures%2Ftaxa-bar-plots.qzv",
-  "img": "/gallery/TaxonomicBarPlots/taxa_thumb.png"
-}
