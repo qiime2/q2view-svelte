@@ -95,7 +95,7 @@
 
 <nav id="navbar">
   <div class="container" id="nav-container">
-    <button on:click={() => (history.pushState({}, "", "/"+window.location.search))}>
+    <button class="navitem" on:click={() => (history.pushState({}, "", "/"+window.location.search))}>
       <img id="navlogo" src="/images/q2view.png" alt="QIIME 2 view logo">
     </button>
     <div class="navitem">
@@ -117,11 +117,11 @@
       {/if}
       <!-- TODO: Figure out what on earth is causing this stuff not to line up -->
       {#if $readerModel.sourceType === "remote"}
-        <div class="dropdown" on:focusout={handleDropdownFocusLoss}>
+        <div on:focusout={handleDropdownFocusLoss}>
           <button on:click={handleDropdownClick}>
             <img src="/images/link-grey.png" alt="Link" />
           </button>
-          <div style:visibility={isDropdownOpen ? "visible" : "hidden"} class="position: absolute;">
+          <div style:display={isDropdownOpen ? "block" : "none"} style="position: absolute;">
             <a href={$url.toString()}>
                 Shareable Link:
             </a>
