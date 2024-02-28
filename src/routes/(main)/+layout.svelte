@@ -117,25 +117,29 @@
       {/if}
       <!-- TODO: Figure out what on earth is causing this stuff not to line up -->
       {#if $readerModel.sourceType === "remote"}
-        <div on:focusout={handleDropdownFocusLoss}>
-          <button on:click={handleDropdownClick}>
-            <img src="/images/link-grey.png" alt="Link" />
-          </button>
-          <div style:display={isDropdownOpen ? "block" : "none"} style="position: absolute;">
-            <a href={$url.toString()}>
-                Shareable Link:
-            </a>
-            <input
-                readOnly
-                value={$url.toString()}
-                type="text"
-                on:select={e => e.stopPropagation()}
-            />
+        <button>
+          <div on:focusout={handleDropdownFocusLoss}>
+            <button on:click={handleDropdownClick}>
+              <img src="/images/link-grey.png" alt="Link" />
+            </button>
+            <div style:display={isDropdownOpen ? "block" : "none"} style="position: absolute;">
+              <a href={$url.toString()}>
+                  Shareable Link:
+              </a>
+              <input
+                  readOnly
+                  value={$url.toString()}
+                  type="text"
+                  on:select={e => e.stopPropagation()}
+              />
+            </div>
           </div>
-        </div>
-        <a href={String($readerModel.rawSrc)}>
-          <img src="/images/download-grey.png" alt="Download" />
-        </a>
+        </button>
+        <button>
+          <a href={String($readerModel.rawSrc)}>
+            <img src="/images/download-grey.png" alt="Download" />
+          </a>
+        </button>
       {/if}
     </div>
   </div>
