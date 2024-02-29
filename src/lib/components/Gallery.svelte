@@ -4,7 +4,7 @@
 
   // TODO: Expect 404s and other such errors to happen here and handle them
   async function getGalleryCards() {
-    const indexJSON = await (await fetch(GALLERY_URL)).json();
+    const indexJSON = await (await fetch(GALLERY_URL + '/gallery')).json();
     let galleryEntries = [];
 
     for (const galleryEntry of Object.values(indexJSON)) {
