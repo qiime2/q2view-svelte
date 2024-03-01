@@ -101,7 +101,6 @@
     <div class="navitem">
       {$readerModel.name}
     </div>
-    <!-- TODO: I want this aligned with the right side of the content -->
     <ul class="navitem">
       {#if $readerModel.indexPath}
         <li>
@@ -212,7 +211,8 @@
 
   .navitem {
     @apply flex
-    m-auto;
+    ml-auto
+    my-auto;
   }
 
   .tab {
