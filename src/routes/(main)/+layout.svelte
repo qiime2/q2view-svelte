@@ -95,12 +95,13 @@
 
 <nav id="navbar">
   <div class="container" id="nav-container">
-    <button class="navitem" on:click={() => (history.pushState({}, "", "/"+window.location.search))}>
+    <button on:click={() => (history.pushState({}, "", "/"+window.location.search))}>
       <img id="navlogo" src="/images/q2view.png" alt="QIIME 2 view logo">
     </button>
     <div class="navitem">
       {$readerModel.name}
     </div>
+    <!-- TODO: I want this aligned with the right side of the content -->
     <ul class="navitem">
       {#if $readerModel.indexPath}
         <li>
