@@ -98,60 +98,67 @@
     <button on:click={() => (history.pushState({}, "", "/"+window.location.search))}>
       <img id="navlogo" src="/images/q2view.png" alt="QIIME 2 view logo">
     </button>
-    <div class="navitem">
+    <div class="nav-section" style="margin: auto">
       {$readerModel.name}
     </div>
-    <ul class="navitem">
+    <ul class="nav-section">
       {#if $readerModel.indexPath}
         <li>
-          <button on:click={() => (history.pushState({}, "", "/visualization/"+window.location.search))}>
+          <button
+              class={$url.pathname.replaceAll("/", "") === "visualization" ? "selected-button nav-button" : "nav-button"}
+              on:click={() => (history.pushState({}, "", "/visualization/"+window.location.search))}
+          >
             Visualization
           </button>
         </li>
       {/if}
       {#if $readerModel.rawSrc}
         <li>
-          <button on:click={() => (history.pushState({}, "", "/details/"+window.location.search))}>
+          <button
+              class={$url.pathname.replaceAll("/", "") === "details" ? "selected-button nav-button" : "nav-button"}
+              on:click={() => (history.pushState({}, "", "/details/"+window.location.search))}
+          >
             Details
           </button>
         </li>
         <li>
-          <button on:click={() => (history.pushState({}, "", "/provenance/"+window.location.search))}>
+          <button
+              class={$url.pathname.replaceAll("/", "") === "provenance" ? "selected-button nav-button" : "nav-button"}
+              on:click={() => (history.pushState({}, "", "/provenance/"+window.location.search))}
+          >
             Provenance
           </button>
         </li>
       {/if}
       {#if $readerModel.sourceType === "remote"}
         <li>
-          <div on:focusout={handleDropdownFocusLoss}>
-            <button on:click={handleDropdownClick}>
-              <img src="/images/link-grey.png" alt="Link" />
-            </button>
-            <div style:display={isDropdownOpen ? "block" : "none"} style="position: absolute;">
-              <a href={$url.toString()}>
-                  Shareable Link:
-              </a>
-              <input
-                  readOnly
-                  value={$url.toString()}
-                  type="text"
-                  on:select={e => e.stopPropagation()}
-              />
-            </div>
+          <button class="nav-button" on:focusout={handleDropdownFocusLoss} on:click={handleDropdownClick}>
+            <img id="nav-thumbnail" src="/images/link-grey.png" alt="Link" />
+          </button>
+          <div style:display={isDropdownOpen ? "block" : "none"} style="position: absolute;">
+            <a href={$url.toString()}>
+                Shareable Link:
+            </a>
+            <input
+                readOnly
+                value={$url.toString()}
+                type="text"
+                on:select={e => e.stopPropagation()}
+            />
           </div>
         </li>
         <li>
-          <a href={String($readerModel.rawSrc)}>
-            <img src="/images/download-grey.png" alt="Download" />
-          </a>
+          <button class="nav-button" onclick="location.href='{String($readerModel.rawSrc)}'" type="button">
+            <img id="nav-thumbnail" src="/images/download-grey.png" alt="Download" />
+          </button>
         </li>
       {/if}
     </ul>
   </div>
 </nav>
 
-<div id="content-container">
-  <div class="tab container mx-auto" style:visibility={$url.pathname.replaceAll("/", "") === "" ? "visible" : "hidden"}>
+<div class="container" id="content-container">
+  <div class="tab container" style:visibility={$url.pathname.replaceAll("/", "") === "" ? "visible" : "hidden"}>
     <p>
         This interface can view .qza and .qzv files
         directly in your browser without uploading to a server.
@@ -191,7 +198,8 @@
     top-0
     left-0
     right-0
-    bg-slate-300;
+    bg-slate-200
+    h-auto;
   }
 
   #nav-container {
@@ -201,18 +209,35 @@
 
   #navlogo {
     @apply h-10
-    mt-2;
+    m-auto;
   }
 
   #content-container {
     display: grid;
     margin-top: 75px;
+    @apply mx-auto;
   }
 
-  .navitem {
+  .nav-thumbnail {
+    @apply h-20;
+  }
+
+  .nav-section {
     @apply flex
-    ml-auto
-    my-auto;
+    ml-auto;
+  }
+
+  .nav-button {
+    @apply p-3
+    h-full;
+  }
+
+  .nav-button:hover {
+    @apply bg-slate-400;
+  }
+
+  .selected-button {
+    @apply bg-slate-300;
   }
 
   .tab {
