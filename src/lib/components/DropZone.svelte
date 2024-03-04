@@ -48,7 +48,7 @@
   role="button"
   tabindex="0"
 >
-  <input bind:files type="file" accept=".qza, .qzv" class="opacity-0 absolute top-0 right-0 bottom-0 left-0 w-full h-full"/>
+  <input id="dropinput" bind:files type="file" accept=".qza, .qzv"/>
   <div class="text-xl text-gray-700 text-center">
     <h1 class="mt-2.5 text-2xl">Drag and drop or click here</h1>
     to view a QIIME 2 Artifact or Visualization (.qza/.qzv) from your computer.
@@ -76,5 +76,17 @@
       outline
       outline-2
       outline-blue-500;
+  }
+
+  #dropinput {
+    @apply cursor-pointer
+    opacity-0
+    absolute
+    top-0
+    right-0
+    bottom-0
+    left-0
+    w-full
+    h-full;
   }
 </style>
