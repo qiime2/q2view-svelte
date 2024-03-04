@@ -132,10 +132,10 @@
       {/if}
       {#if $readerModel.sourceType === "remote"}
         <li>
-          <button class="nav-button" on:focusout={handleDropdownFocusLoss} on:click={handleDropdownClick}>
+          <button class="nav-button" on:click={handleDropdownClick}>
             <img id="nav-thumbnail" src="/images/link-grey.png" alt="Link" />
           </button>
-          <div style:display={isDropdownOpen ? "block" : "none"} style="position: absolute;">
+          <div id="dropdown" style:display={isDropdownOpen ? "block" : "none"}>
             <a href={$url.toString()}>
                 Shareable Link:
             </a>
@@ -216,6 +216,24 @@
     display: grid;
     margin-top: 75px;
     @apply mx-auto;
+  }
+
+  #dropdown {
+    @apply absolute
+    border
+    border-black
+    rounded
+    h-auto
+    p-1
+    bg-gray-100
+    shadow;
+  }
+
+  #dropdown-input {
+    @apply border
+    border-black
+    rounded
+    w-full
   }
 
   .nav-thumbnail {
