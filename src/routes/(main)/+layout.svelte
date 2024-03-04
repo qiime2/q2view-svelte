@@ -209,7 +209,7 @@
 
   #navlogo {
     @apply h-10
-    m-auto;
+    my-1;
   }
 
   #content-container {
@@ -234,10 +234,6 @@
     border-black
     rounded
     w-full
-  }
-
-  .nav-thumbnail {
-    @apply h-20;
   }
 
   .nav-section {
