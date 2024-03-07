@@ -252,6 +252,7 @@
     grid-row: 1;
     visibility: visible;
     overflow: hidden;
+    @apply mb-4;
   }
 
   .hidden-tab {
