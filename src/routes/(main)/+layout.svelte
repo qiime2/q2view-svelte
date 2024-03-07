@@ -259,7 +259,6 @@
     grid-column: 1;
     grid-row: 1;
     height: 0;
-    width: 0;
     visibility: hidden;
     overflow: hidden;
   }
