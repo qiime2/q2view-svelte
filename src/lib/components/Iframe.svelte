@@ -10,9 +10,9 @@
 
 <style lang="postcss">
   #iframe {
-    width: 100%;
-    height: calc(100vh - 50px);
     position: absolute;
-    left: calc(-50vw + 50%);
+    width: 100%;
+    height: calc(100% - 50px);
+    left: calc(-50% + 50%);
   }
 </style>
