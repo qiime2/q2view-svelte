@@ -38,15 +38,13 @@
   </p>
   <h2 id="troubleshooting">Troubleshooting</h2>
   <p>This section is for common errors you may encounter when using q2view.</p>
-  <div class="card">
-    <div class="row">
-      <div class="col-md-6">
-        <div class="alert alert-danger">TypeError: Failed to fetch</div>
+  <div class="panel">
+    <div class="grid grid-cols-2">
+      <div class="danger-panel">
+        TypeError: Failed to fetch
       </div>
-      <div class="col-md-6">
-        <div class="alert alert-danger">
-          TypeError: NetworkError when attempting to fetch resource.
-        </div>
+      <div class="danger-panel">
+        TypeError: NetworkError when attempting to fetch resource.
       </div>
     </div>
     <p>
@@ -55,8 +53,8 @@
       support CORS and must set the <a href="#headers">required headers</a>.
     </p>
   </div>
-  <div class="card">
-    <div class="alert alert-danger">
+  <div class="panel">
+    <div class="danger-panel">
       Error: Can&apos;t find end of central directory : is this a zip file ?
       If it is, see http://stuk.github.io/jszip/documentation/howto/read_zip.html
     </div>
@@ -67,8 +65,8 @@
       instead.
     </p>
   </div>
-  <div class="card">
-    <div class="alert alert-danger">Error: Not a valid QIIME 2 archive.</div>
+  <div class="panel">
+    <div class="danger-panel">Error: Not a valid QIIME 2 archive.</div>
     <p>
       The file you have provided is a .zip file, not a .qza or .qzv file (or there is
       something terribly wrong with your .qza/.qzv file). This interface only works
@@ -111,3 +109,35 @@
     </strong> otherwise the Same-Origin Policy prevents access to the data.
   </p>
 </div>
+
+<style lang='postcss'>
+  .panel {
+    @apply border
+    border-black
+    rounded-lg
+    p-2
+    my-2
+  }
+
+  .danger-panel {
+    @apply border
+    border-red-400
+    rounded-lg
+    bg-red-200
+    p-2
+    mr-2
+  }
+
+  .table {
+    @apply text-left
+  }
+
+  p {
+    @apply pb-2
+  }
+
+  thead {
+    border-bottom: 4px;
+    border-color: black;
+  }
+</style>
