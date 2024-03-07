@@ -116,7 +116,7 @@
     border-black
     rounded-lg
     p-2
-    my-2
+    my-2;
   }
 
   .danger-panel {
@@ -125,19 +125,20 @@
     rounded-lg
     bg-red-200
     p-2
-    mr-2
+    mr-2;
   }
 
   .table {
     @apply text-left
+    w-full
+    mb-2;
   }
 
   p {
-    @apply pb-2
+    @apply pb-2;
   }
 
-  thead {
-    border-bottom: 4px;
-    border-color: black;
+  th {
+    border-bottom: 2px solid;
   }
 </style>

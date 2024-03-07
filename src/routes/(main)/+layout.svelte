@@ -193,7 +193,7 @@
   #navbar {
     @apply fixed
     rounded-none
-    shadow
+    drop-shadow-md
     z-10
     top-0
     left-0
@@ -203,6 +203,7 @@
   }
 
   #nav-container {
+    width: 66%;
     @apply flex
     m-auto;
   }
@@ -215,6 +216,7 @@
   #content-container {
     display: grid;
     margin-top: 75px;
+    width: 66%;
     @apply mx-auto;
   }
 
@@ -226,7 +228,7 @@
     h-auto
     p-1
     bg-gray-100
-    shadow;
+    drop-shadow-md;
   }
 
   #dropdown-input {

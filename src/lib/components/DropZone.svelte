@@ -61,12 +61,14 @@
       border-dashed
       border-gray-300
       rounded-lg
+      drop-shadow-lg
       w-full
       p-12
       bg-gray-200
       flex
       flex-row
-      justify-center;
+      justify-center
+      mb-4;
   }
 
   #dropzone.isDragging {
