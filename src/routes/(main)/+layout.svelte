@@ -150,7 +150,7 @@
 </nav>
 
 <div class="container" id="content-container">
-  <div class="tab" style:visibility={$url.pathname.replaceAll("/", "") === "" ? "visible" : "hidden"}>
+  <div class={$url.pathname.replaceAll("/", "") === "" ? "tab" : "hidden-tab"}>
     <p>
         This interface can view .qza and .qzv files
         directly in your browser without uploading to a server.
@@ -160,22 +160,22 @@
     <UrlInput/>
     <Gallery/>
   </div>
-  <div class="tab" style:visibility={$url.pathname.replaceAll("/", "") === "about" ? "visible" : "hidden"}>
+  <div class={$url.pathname.replaceAll("/", "") === "about" ? "tab" : "hidden-tab"}>
     <About/>
   </div>
-  <div class="tab" style:visibility={$url.pathname.replaceAll("/", "") === "error" ? "visible" : "hidden"}>
+  <div class={$url.pathname.replaceAll("/", "") === "error" ? "tab" : "hidden-tab"}>
     <Error/>
   </div>
   {#if $readerModel.indexPath}
-    <div class="tab" style:visibility={$url.pathname.replaceAll("/", "") === "visualization" ? "visible" : "hidden"}>
+    <div class={$url.pathname.replaceAll("/", "") === "visualization" ? "tab" : "hidden-tab"}>
       <Iframe/>
     </div>
   {/if}
   {#if $readerModel.rawSrc}
-    <div class="tab" style:visibility={$url.pathname.replaceAll("/", "") === "details" ? "visible" : "hidden"}>
+    <div class={$url.pathname.replaceAll("/", "") === "details" ? "tab" : "hidden-tab"}>
       <Details/>
     </div>
-    <div class="tab" style:visibility={$url.pathname.replaceAll("/", "") === "provenance" ? "visible" : "hidden"}>
+    <div class={$url.pathname.replaceAll("/", "") === "provenance" ? "tab" : "hidden-tab"}>
       <Provenance/>
     </div>
   {/if}
@@ -206,7 +206,7 @@
 
   #content-container {
     display: grid;
-    margin-top: 75px;
+    margin-top: 50px;
     width: 66%;
     @apply mx-auto;
   }
@@ -250,8 +250,16 @@
   .tab {
     grid-column: 1;
     grid-row: 1;
-    width: auto;
-    height: auto;
+    visibility: visible;
+    overflow: hidden;
+  }
+
+  .hidden-tab {
+    grid-column: 1;
+    grid-row: 1;
+    height: 0;
+    width: 0;
+    visibility: hidden;
     overflow: hidden;
   }
 </style>
