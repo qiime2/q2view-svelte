@@ -83,14 +83,6 @@
   const handleDropdownClick = () => {
     isDropdownOpen = !isDropdownOpen;
   }
-
-  const handleDropdownFocusLoss = ({ relatedTarget, currentTarget }) => {
-    if (relatedTarget instanceof HTMLElement && currentTarget.contains(relatedTarget)) {
-      return;
-    }
-
-    isDropdownOpen = false;
-  }
 </script>
 
 <nav id="navbar">
