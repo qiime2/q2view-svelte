@@ -83,7 +83,7 @@
       rel="noopener noreferrer"
     >Same-Origin Policy</a>.
   </p>
-  <div class="table">
+  <table class="table">
     <thead>
       <tr>
         <th>Header Name</th>
@@ -92,7 +92,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr>
+      <tr class="border-bottom">
         <td>Access-Control-Allow-Origin</td>
         <td>view.qiime2.org</td>
         <td>(using * as the value is also acceptable)</td>
@@ -103,7 +103,7 @@
         <td>(more methods may be provided, but these must at least be present)</td>
       </tr>
     </tbody>
-  </div>
+  </table>
   <p>
     Additionally, the <strong>server must provide its content using HTTPS
     </strong> otherwise the Same-Origin Policy prevents access to the data.
@@ -114,16 +114,16 @@
   .panel {
     @apply border
     border-black
-    rounded-lg
+    rounded-md
     p-2
     my-2;
   }
 
   .danger-panel {
     @apply border
-    border-red-400
-    rounded-lg
-    bg-red-200
+    border-red-300
+    rounded-md
+    bg-red-100
     p-2
     mr-2;
   }
@@ -132,6 +132,10 @@
     @apply text-left
     w-full
     mb-2;
+  }
+
+  .border-bottom {
+    border-bottom: 1px solid;
   }
 
   p {
