@@ -11,7 +11,7 @@
 <style lang="postcss">
   #iframe {
     width: 100%;
-    height: calc(100% - 50px);
+    height: calc(100vw - 50px);
     position: absolute;
     left: calc(-50vw + 50%);
   }
