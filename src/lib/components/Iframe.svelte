@@ -10,8 +10,9 @@
 
 <style lang="postcss">
   #iframe {
-    @apply h-full
-    w-full
-    overflow-auto;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: calc(-50vw + 50%);
   }
 </style>
