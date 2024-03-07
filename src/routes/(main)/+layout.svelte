@@ -150,7 +150,7 @@
 </nav>
 
 <div class="container" id="content-container">
-  <div class="tab container" style:visibility={$url.pathname.replaceAll("/", "") === "" ? "visible" : "hidden"}>
+  <div class="tab" style:visibility={$url.pathname.replaceAll("/", "") === "" ? "visible" : "hidden"}>
     <p>
         This interface can view .qza and .qzv files
         directly in your browser without uploading to a server.
@@ -190,8 +190,7 @@
     top-0
     left-0
     right-0
-    bg-slate-200
-    h-auto;
+    bg-slate-200;
   }
 
   #nav-container {
@@ -251,5 +250,8 @@
   .tab {
     grid-column: 1;
     grid-row: 1;
+    width: auto;
+    height: auto;
+    overflow: hidden;
   }
 </style>
