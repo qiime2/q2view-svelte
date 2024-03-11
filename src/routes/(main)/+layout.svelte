@@ -86,7 +86,7 @@
 </script>
 
 <nav id="navbar">
-  <div class="container" id="nav-container">
+  <div id="nav-container">
     <button on:click={() => (history.pushState({}, "", "/"+window.location.search))}>
       <img id="navlogo" src="/images/q2view.png" alt="QIIME 2 view logo">
     </button>
@@ -183,6 +183,7 @@
 
 <style lang="postcss">
   #navbar {
+    width: 100vw;
     @apply fixed
     rounded-none
     drop-shadow-md
