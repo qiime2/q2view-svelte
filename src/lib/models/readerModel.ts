@@ -11,6 +11,13 @@ import { handleError, readBlobAsText } from "$lib/scripts/util";
 import extmap from "$lib/scripts/extmap";
 import schema from "$lib/scripts/yaml-schema";
 
+interface ResultDetails {
+  name: string | null;
+  uuid: string;
+  type: string;
+  format: string | null;
+}
+
 class ReaderModel {
   error = "";
   errorMessage = "";
@@ -244,6 +251,7 @@ class ReaderModel {
 
     // Set Metadata
     this.metadata = await this._getYAML("metadata.yaml");
+
     // Determine if we have a visualization or an artifact
     if (this.metadata["type"] === "Visualization") {
       this.indexPath = `/_/${this.session}/${UUID}/data/index.html`;

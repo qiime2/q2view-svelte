@@ -11,6 +11,6 @@
 
 <p>{$readerModel.provTitle}</p>
 {#if $readerModel.provData !== undefined}
-  <JSONTree value={readerModel.provData}/>
+  <JSONTree value={readerModel.provData} defaultExpandedLevel={100} shouldShowPreview={false} />
 {:else}
 {/if}

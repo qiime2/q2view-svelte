@@ -1,3 +1,7 @@
+<script lang="ts">
+  import Panel from "$lib/components/Panel.svelte";
+</script>
+
 <div class="container">
   <h2>About QIIME 2 View</h2>
   <p>
@@ -38,7 +42,7 @@
   </p>
   <h2 id="troubleshooting">Troubleshooting</h2>
   <p>This section is for common errors you may encounter when using q2view.</p>
-  <div class="panel">
+  <Panel>
     <div class="grid grid-cols-2">
       <div class="danger-panel">
         TypeError: Failed to fetch
@@ -52,8 +56,8 @@
       does not exist, you&apos;ve lost your internet connection, or the server does not
       support CORS and must set the <a href="#headers">required headers</a>.
     </p>
-  </div>
-  <div class="panel">
+  </Panel>
+  <Panel>
     <div class="danger-panel">
       Error: Can&apos;t find end of central directory : is this a zip file ?
       If it is, see http://stuk.github.io/jszip/documentation/howto/read_zip.html
@@ -64,15 +68,15 @@
       case, try to find the link that is a <em>direct download</em> and provide that
       instead.
     </p>
-  </div>
-  <div class="panel">
+  </Panel>
+  <Panel>
     <div class="danger-panel">Error: Not a valid QIIME 2 archive.</div>
     <p>
       The file you have provided is a .zip file, not a .qza or .qzv file (or there is
       something terribly wrong with your .qza/.qzv file). This interface only works
       on QIIME 2 files.
     </p>
-  </div>
+  </Panel>
   <h2 id="headers">Required Headers</h2>
   <p>
     The following headers must be returned by the server in order for view.qiime2.org to
@@ -111,23 +115,6 @@
 </div>
 
 <style lang='postcss'>
-  .panel {
-    @apply border
-    border-black
-    rounded-md
-    p-2
-    my-2;
-  }
-
-  .danger-panel {
-    @apply border
-    border-red-300
-    rounded-md
-    bg-red-100
-    p-2
-    mr-2;
-  }
-
   .table {
     @apply text-left
     w-full
