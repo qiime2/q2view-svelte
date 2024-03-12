@@ -43,7 +43,7 @@ class ReaderModel {
   elements: Array<Object> | undefined = undefined;
 
   provData: Object | undefined = undefined;
-  provTitle: String = "Details";
+  provTitle: string = "Details";
 
   //****************************************************************************
   // Start boilerplate to make this a subscribable svelte store

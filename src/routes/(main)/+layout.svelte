@@ -149,7 +149,7 @@
   </div>
 </nav>
 
-<div class="container" id="content-container">
+<div id="content-container">
   <div class={$url.pathname.replaceAll("/", "") === "" ? "tab" : "hidden-tab"}>
     <p>
         This interface can view .qza and .qzv files
@@ -201,7 +201,7 @@
   }
 
   #nav-container {
-    width: 66%;
+    width: 66vw;
     @apply flex
     m-auto;
   }
@@ -214,7 +214,7 @@
   #content-container {
     display: grid;
     margin-top: 65px;
-    width: 66%;
+    width: 66vw;
     @apply mx-auto;
   }
 
