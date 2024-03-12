@@ -19,8 +19,8 @@
     border-black
     bg-gray-100
     overflow-x-auto
-    rounded-md
     p-2
+    m-2
     text-xs;
   }
 </style>
