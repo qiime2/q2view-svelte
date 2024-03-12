@@ -182,6 +182,12 @@
 </div>
 
 <style lang="postcss">
+  span {
+    cursor: pointer;
+    color: blue;
+    text-decoration: underline;
+  }
+
   #navbar {
     width: 100vw;
     @apply fixed

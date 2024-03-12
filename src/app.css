@@ -11,12 +11,6 @@
   font-family: Arial;
 }
 
-span {
-  cursor: pointer;
-  color: blue;
-  text-decoration: underline;
-}
-
 a {
   cursor: pointer;
   color: blue;
@@ -37,4 +31,16 @@ h2 {
 
 h3 {
   font-size: 24px;
+}
+
+.JSONTree {
+  --json-tree-operator-color: rgb(81, 132, 152);
+  --json-tree-arrow-color: rgb(81, 132, 151);
+  --json-tree-label-color: rgb(81, 132, 151);
+  --json-tree-property-color: rgb(81, 132, 151);
+  --json-tree-string-color: rgb(108, 128, 55);
+  --json-tree-date-color: rgb(108, 128, 55);
+  --json-tree-boolean-color: rgb(173, 103, 41);
+  --json-tree-number-color: rgb(173, 103, 40);
+  --json-tree-null-color: rgb(173, 103, 40);
 }

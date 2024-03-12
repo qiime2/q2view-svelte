@@ -40,3 +40,11 @@
     </div>
   {/if}
 </div>
+
+<style lang="postcss">
+  span {
+    cursor: pointer;
+    color: blue;
+    text-decoration: underline;
+  }
+</style>
