@@ -1,14 +1,14 @@
 <script lang="ts">
   import JSONTree from "svelte-json-tree";
 
+  import Panel from "$lib/components/Panel.svelte";
   import readerModel from "$lib/models/readerModel";
   import ResultDetails from "$lib/components/ResultDetails.svelte";
 </script>
 
-<p>Details</p>
-<p>{$readerModel.name}</p>
-<ResultDetails resultJSON={$readerModel.metadata}/>
-<JSONTree value={$readerModel.metadata} defaultExpandedLevel={100}/>
+<Panel header="Details of {$readerModel.name}">
+  <ResultDetails resultJSON={$readerModel.metadata}/>
+</Panel>
 <p>Citations</p>
 <pre id="json">{$readerModel.citations}</pre>
 

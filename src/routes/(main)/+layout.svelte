@@ -207,7 +207,7 @@
 
   #content-container {
     display: grid;
-    margin-top: 50px;
+    margin-top: 65px;
     width: 66%;
     @apply mx-auto;
   }
