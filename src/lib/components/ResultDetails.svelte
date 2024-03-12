@@ -31,6 +31,8 @@
     </label>
     "{resultJSON.type}"
   </li>
+<!-- TODO: This way of styling this sucks. I need to more generically
+  style strings vs non-strings in these json dumps -->
 {#if resultJSON.format === null}
   <li id="null">
     <label>
