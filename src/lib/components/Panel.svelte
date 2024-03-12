@@ -55,7 +55,9 @@
     border-right-width: 1px;
     border-left-width: 1px;
     @apply border-black
-    rounded-t-md;
+    rounded-t-md
+    pl-2
+    bg-gray-200;
   }
 </style>
 

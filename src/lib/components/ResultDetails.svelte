@@ -1,28 +1,63 @@
 
 <script lang="ts">
   interface ResultDetails {
-    name: string | null;
     uuid: string;
     type: string;
     format: string | null;
   }
 
+  export let name: string | null = null;
   export let resultJSON: ResultDetails;
 </script>
 
 <ul>
-  {#if resultJSON.name !== null}
+  {#if name !== null}
     <li>
-      name: "{resultJSON.name}"
+      <label>
+        name:
+      </label>
+      "{name}"
     </li>
   {/if}
   <li>
-    uuid: "{resultJSON.uuid}"
+    <label>
+      uuid:
+    </label>
+    "{resultJSON.uuid}"
   </li>
   <li>
-    type: "{resultJSON.type}"
+    <label>
+      type:
+    </label>
+    "{resultJSON.type}"
   </li>
+{#if resultJSON.format === null}
+  <li id="null">
+    <label>
+      format:
+    </label>
+    {resultJSON.format}
+  </li>
+{:else}
   <li>
-    format: "{resultJSON.format}"
+    <label>
+      format:
+    </label>
+    "{resultJSON.format}"
   </li>
+{/if}
 </ul>
+
+<style lang="postcss">
+  li {
+    @apply text-green-700;
+  }
+
+  label {
+    @apply text-blue-700;
+  }
+
+  #null {
+    @apply text-red-700;
+  }
+</style>

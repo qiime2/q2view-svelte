@@ -7,15 +7,14 @@
 </script>
 
 <Panel header="Details of {$readerModel.name}">
-  <ResultDetails resultJSON={$readerModel.metadata}/>
+  <ResultDetails name={$readerModel.name} resultJSON={$readerModel.metadata}/>
 </Panel>
-<p>Citations</p>
-<pre id="json">{$readerModel.citations}</pre>
+<Panel header="Citations">
+  <pre id="json">{$readerModel.citations}</pre>
+</Panel>
 
 <style lang="postcss">
   #json {
-    height:500px;
-    width: 1000px;
-    overflow: auto;
+    @apply overflow-x-auto;
   }
 </style>
