@@ -15,6 +15,12 @@
 
 <style lang="postcss">
   #json {
-    @apply overflow-x-auto;
+    @apply border
+    border-black
+    bg-gray-100
+    overflow-x-auto
+    rounded-md
+    p-2
+    text-xs;
   }
 </style>
