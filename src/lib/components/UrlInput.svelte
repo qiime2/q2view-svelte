@@ -40,6 +40,51 @@
     </div>
   {/if}
 </div>
+{#if inputMode == 1}
+<h3>
+  Dropbox Instructions:
+</h3>
+<ol class="pl-10" style="list-style: decimal">
+  <li>
+    Find the file you would like to share.
+  </li>
+  <li>
+    Create a shared link to it.
+  </li>
+  <li>
+    Provide that link in the input form above and hit "Go!"
+  </li>
+</ol>
+{:else if inputMode == 2}
+<div class="grid lg:grid-cols-2">
+  <div>
+    <h3>
+      Web URL Instructions
+    </h3>
+    <p>Provide a link to your file in the input form above and hit "Go!"</p>
+    <p>Note: the server that is hosting your file must support CORS. See Required Headers for more information.</p>
+  </div>
+  <div>
+    <h3>
+      Known Supported Websites:
+    </h3>
+    <ul class="pl-10" style="list-style: disc">
+      <li>
+        docs.qiime2.org
+      </li>
+      <li>
+        forum.qiime2.org
+      </li>
+      <li>
+        websites hosted on Github Pages
+      </li>
+      <li>
+        &lt;your webserver here&gt; (see Required Headers)
+      </li>
+    </ul>
+  </div>
+</div>
+{/if}
 
 <style lang="postcss">
   span {
@@ -60,6 +105,7 @@
     @apply mr-auto
     px-2;
   }
+
   #URLInput {
     @apply w-full
     pl-2;
