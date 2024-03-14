@@ -90,10 +90,12 @@
     <button on:click={() => (history.pushState({}, "", "/"+window.location.search))}>
       <img id="navlogo" src="/images/q2view.png" alt="QIIME 2 view logo">
     </button>
-    <div class="nav-section" style="margin: auto">
-      {$readerModel.name}
-    </div>
-    <ul class="nav-section">
+    {#if $readerModel.name}
+      <div class="nav-section" id="file-text">
+        File: {$readerModel.name}
+      </div>
+    {/if}
+    <ul class="nav-section invisible md:visible">
       {#if $readerModel.indexPath}
         <li>
           <button
@@ -190,43 +192,47 @@
 
   #navbar {
     width: 100vw;
+    box-shadow: rgb(153, 153, 153) 0px 1px 5px;
+    background-color: #f8f8f8;
+    margin-bottom: 21px;
     @apply fixed
     rounded-none
-    drop-shadow-md
     z-10
     top-0
     left-0
-    right-0
-    bg-slate-200;
+    right-0;
   }
 
   #nav-container {
-    width: 66vw;
+    max-width: 66vw;
     @apply flex
     m-auto;
   }
 
   #navlogo {
-    @apply h-10
-    my-1;
+    min-width: 125px;
+    min-height: 40px;
+    max-width: 125px;
+    max-height: 40px;
+    @apply my-1;
   }
 
   #content-container {
     display: grid;
     margin-top: 65px;
-    width: 66vw;
+    max-width: 66vw;
     @apply mx-auto;
   }
 
   #dropdown {
+    box-shadow: rgb(153, 153, 153) 0px 1px 5px;
     @apply absolute
     border
     border-black
     rounded
     h-auto
     p-1
-    bg-gray-100
-    drop-shadow-md;
+    bg-gray-100;
   }
 
   #dropdown-input {
@@ -234,6 +240,13 @@
     border-black
     rounded
     w-full
+  }
+
+  #file-text {
+    margin: auto;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .nav-section {
