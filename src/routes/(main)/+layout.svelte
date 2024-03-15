@@ -16,7 +16,8 @@
   import Error from "$lib/components/Error.svelte";
   import NavHamburger from "$lib/components/NavHamburger.svelte";
 
-  let isDropdownOpen = false;
+  let isNavMenuDropdownOpen = false;
+  let isShareableDropdownOpen = false;
   let currentSrc = "";
   const uuid4Regex = /[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}/;
 
@@ -81,8 +82,12 @@
     currentSrc = newSrc
   }
 
-  const handleDropdownClick = () => {
-    isDropdownOpen = !isDropdownOpen;
+  const handleNavMenuDropdownClick = () => {
+    isNavMenuDropdownOpen = !isNavMenuDropdownOpen;
+  }
+
+  const handleShareableDropdownClick = () => {
+    isShareableDropdownOpen = !isShareableDropdownOpen;
   }
 </script>
 
@@ -96,7 +101,7 @@
         File: {$readerModel.name}
       </div>
     {/if}
-    <ul class="nav-section hidden md:flex">
+    <ul class="nav-section hidden lg:flex">
       {#if $readerModel.indexPath}
         <li>
           <button
@@ -127,10 +132,10 @@
       {/if}
       {#if $readerModel.sourceType === "remote"}
         <li>
-          <button class="nav-button" on:click={handleDropdownClick}>
+          <button class="nav-button" on:click={handleShareableDropdownClick}>
             <img class="nav-thumbnail" src="/images/link-grey.png" alt="Link" />
           </button>
-          <div id="dropdown" style:display={isDropdownOpen ? "block" : "none"}>
+          <div id="dropdown" style:display={isShareableDropdownOpen ? "block" : "none"}>
             <a href={$url.toString()}>
                 Shareable Link:
             </a>
@@ -149,39 +154,69 @@
         </li>
       {/if}
     </ul>
-    <div class="nav-section flex md:hidden">
-      <NavHamburger>
-        {#if $readerModel.indexPath}
-          <li>
-            <button
-                class={$url.pathname.replaceAll("/", "") === "visualization" ? "selected-button nav-button" : "nav-button"}
-                on:click={() => (history.pushState({}, "", "/visualization/"+window.location.search))}
-            >
-              Visualization
-            </button>
-          </li>
+    <div class="nav-section flex lg:hidden">
+      <button class="btn m-1" on:click={handleNavMenuDropdownClick}>
+        {#if isNavMenuDropdownOpen}
+          <svg
+            fill="none"
+            viewBox="0 0 24 24"
+            class="inline-block h-6 w-6 stroke-current">
+            <title>Close Dropdown</title>
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        {:else}
+          <svg
+            fill="none"
+            viewBox="0 0 24 24"
+            class="inline-block h-6 w-6 stroke-current">
+            <title>Open Dropdown</title>
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
         {/if}
-        {#if $readerModel.rawSrc}
-          <li>
-            <button
-                class={$url.pathname.replaceAll("/", "") === "details" ? "selected-button nav-button" : "nav-button"}
-                on:click={() => (history.pushState({}, "", "/details/"+window.location.search))}
-            >
-              Details
-            </button>
-          </li>
-          <li>
-            <button
-                class={$url.pathname.replaceAll("/", "") === "provenance" ? "selected-button nav-button" : "nav-button"}
-                on:click={() => (history.pushState({}, "", "/provenance/"+window.location.search))}
-            >
-              Provenance
-            </button>
-          </li>
-        {/if}
-      </NavHamburger>
+      </button>
     </div>
   </div>
+  <ul id="nav-dropdown" style:display={isNavMenuDropdownOpen ? 'block' : 'none'}>
+    {#if $readerModel.indexPath}
+      <li>
+        <button
+            class={$url.pathname.replaceAll("/", "") === "visualization" ? "selected-button nav-button" : "nav-button"}
+            on:click={() => (history.pushState({}, "", "/visualization/"+window.location.search))}
+            style="width: 100vw"
+        >
+          Visualization
+        </button>
+      </li>
+    {/if}
+    {#if $readerModel.rawSrc}
+      <li>
+        <button
+            class={$url.pathname.replaceAll("/", "") === "details" ? "selected-button nav-button" : "nav-button"}
+            on:click={() => (history.pushState({}, "", "/details/"+window.location.search))}
+            style="width: 100vw"
+        >
+          Details
+        </button>
+      </li>
+      <li>
+        <button
+            class={$url.pathname.replaceAll("/", "") === "provenance" ? "selected-button nav-button" : "nav-button"}
+            on:click={() => (history.pushState({}, "", "/provenance/"+window.location.search))}
+            style="width: 100vw"
+        >
+          Provenance
+        </button>
+      </li>
+    {/if}
+  </ul>
 </nav>
 
 <div id="content-container">
@@ -237,9 +272,11 @@
   }
 
   #nav-container {
-    max-width: 66vw;
+    /* max-width: 66vw; */
     @apply flex
-    m-auto;
+    m-auto
+    max-w-6xl
+    px-10;
   }
 
   #navlogo {
@@ -253,8 +290,10 @@
   #content-container {
     display: grid;
     margin-top: 65px;
-    max-width: 66vw;
-    @apply mx-auto;
+    /* max-width: 66vw; */
+    @apply mx-auto
+    max-w-6xl
+    px-10;
   }
 
   #dropdown {
