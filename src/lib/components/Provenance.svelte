@@ -6,7 +6,7 @@
   import Dag from "./Dag.svelte";
 </script>
 
-<div class="grid md:grid-cols-1 lg:grid-cols-2">
+<div class="grid md:grid-cols-1 lg:grid-cols-2 gap-2">
   <div>
     {#key $readerModel.uuid}
       <Dag />
