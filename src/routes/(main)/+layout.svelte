@@ -14,6 +14,7 @@
   import About from "$lib/components/About.svelte";
   import { checkBrowserCompatibility, handleError } from "$lib/scripts/util";
   import Error from "$lib/components/Error.svelte";
+  import NavHamburger from "$lib/components/NavHamburger.svelte";
 
   let isDropdownOpen = false;
   let currentSrc = "";
@@ -91,11 +92,11 @@
       <img id="navlogo" src="/images/q2view.png" alt="QIIME 2 view logo">
     </button>
     {#if $readerModel.name}
-      <div class="nav-section" id="file-text">
+      <div class="nav-section flex" id="file-text">
         File: {$readerModel.name}
       </div>
     {/if}
-    <ul class="nav-section invisible md:visible">
+    <ul class="nav-section hidden md:flex">
       {#if $readerModel.indexPath}
         <li>
           <button
@@ -127,7 +128,7 @@
       {#if $readerModel.sourceType === "remote"}
         <li>
           <button class="nav-button" on:click={handleDropdownClick}>
-            <img id="nav-thumbnail" src="/images/link-grey.png" alt="Link" />
+            <img class="nav-thumbnail" src="/images/link-grey.png" alt="Link" />
           </button>
           <div id="dropdown" style:display={isDropdownOpen ? "block" : "none"}>
             <a href={$url.toString()}>
@@ -143,11 +144,66 @@
         </li>
         <li>
           <button class="nav-button" onclick="location.href='{String($readerModel.rawSrc)}'" type="button">
-            <img id="nav-thumbnail" src="/images/download-grey.png" alt="Download" />
+            <img class="nav-thumbnail" src="/images/download-grey.png" alt="Download" />
           </button>
         </li>
       {/if}
     </ul>
+    <div class="nav-section flex md:hidden">
+      <NavHamburger>
+        {#if $readerModel.indexPath}
+          <li>
+            <button
+                class={$url.pathname.replaceAll("/", "") === "visualization" ? "selected-button nav-button" : "nav-button"}
+                on:click={() => (history.pushState({}, "", "/visualization/"+window.location.search))}
+            >
+              Visualization
+            </button>
+          </li>
+        {/if}
+        {#if $readerModel.rawSrc}
+          <li>
+            <button
+                class={$url.pathname.replaceAll("/", "") === "details" ? "selected-button nav-button" : "nav-button"}
+                on:click={() => (history.pushState({}, "", "/details/"+window.location.search))}
+            >
+              Details
+            </button>
+          </li>
+          <li>
+            <button
+                class={$url.pathname.replaceAll("/", "") === "provenance" ? "selected-button nav-button" : "nav-button"}
+                on:click={() => (history.pushState({}, "", "/provenance/"+window.location.search))}
+            >
+              Provenance
+            </button>
+          </li>
+        {/if}
+        {#if $readerModel.sourceType === "remote"}
+          <li>
+            <button class="nav-button" on:click={handleDropdownClick}>
+              <img class="nav-thumbnail" src="/images/link-grey.png" alt="Link" />
+            </button>
+            <div id="dropdown" style:display={isDropdownOpen ? "absolute" : "none"}>
+              <a href={$url.toString()}>
+                  Shareable Link:
+              </a>
+              <input
+                  readOnly
+                  value={$url.toString()}
+                  type="text"
+                  on:select={e => e.stopPropagation()}
+              />
+            </div>
+          </li>
+          <li>
+            <button class="nav-button" onclick="location.href='{String($readerModel.rawSrc)}'" type="button">
+              <img class="nav-thumbnail" src="/images/download-grey.png" alt="Download" />
+            </button>
+          </li>
+        {/if}
+      </NavHamburger>
+    </div>
   </div>
 </nav>
 
@@ -250,8 +306,7 @@
   }
 
   .nav-section {
-    @apply flex
-    ml-auto;
+    @apply ml-auto;
   }
 
   .nav-button {
@@ -261,6 +316,13 @@
 
   .nav-button:hover {
     @apply bg-slate-400;
+  }
+
+  .nav-thumbnail {
+    min-height: 20px;
+    min-width: 20px;
+    max-height: 20px;
+    max-width: 20px;
   }
 
   .selected-button {
@@ -282,4 +344,10 @@
     visibility: hidden;
     overflow: hidden;
   }
+
+  .break {
+    flex-basis: 100%;
+    height: 0;
+  }
+
 </style>

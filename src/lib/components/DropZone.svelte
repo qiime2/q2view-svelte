@@ -57,11 +57,11 @@
 
 <style lang="postcss">
   #dropzone {
+    box-shadow: rgb(153, 153, 153) 5px 5px 5px;
     @apply border-4
       border-dashed
       border-gray-300
       rounded-lg
-      drop-shadow-lg
       w-full
       p-12
       bg-gray-200
