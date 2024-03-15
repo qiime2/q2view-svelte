@@ -87,7 +87,7 @@
 </script>
 
 <nav id="navbar">
-  <div class="container" id="nav-container">
+  <div id="nav-container">
     <button on:click={() => (history.pushState({}, "", "/"+window.location.search))}>
       <img id="navlogo" src="/images/q2view.png" alt="QIIME 2 view logo">
     </button>
@@ -184,7 +184,7 @@
   </div>
 </nav>
 
-<div class="container" id="content-container">
+<div id="content-container">
   <div class={$url.pathname.replaceAll("/", "") === "" ? "tab" : "hidden-tab"}>
     <p>
         This interface can view .qza and .qzv files
@@ -321,10 +321,4 @@
     visibility: hidden;
     overflow: hidden;
   }
-
-  .break {
-    flex-basis: 100%;
-    height: 0;
-  }
-
 </style>
