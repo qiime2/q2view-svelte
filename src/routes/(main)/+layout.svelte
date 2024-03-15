@@ -97,7 +97,7 @@
       <img id="navlogo" src="/images/q2view.png" alt="QIIME 2 view logo">
     </button>
     {#if $readerModel.name}
-      <div class="nav-section flex" id="file-text">
+      <div class="nav-section flex hidden lg:block" id="file-text">
         File: {$readerModel.name}
       </div>
     {/if}
@@ -280,10 +280,8 @@
   }
 
   #navlogo {
-    min-width: 125px;
-    min-height: 40px;
-    max-width: 125px;
-    max-height: 40px;
+    width: 125px;
+    height: 40px;
     @apply my-1;
   }
 
@@ -335,10 +333,8 @@
   }
 
   .nav-thumbnail {
-    min-height: 20px;
-    min-width: 20px;
-    max-height: 20px;
-    max-width: 20px;
+    height: 20px;
+    width: 20px;
   }
 
   .selected-button {
