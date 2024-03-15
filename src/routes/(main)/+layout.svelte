@@ -179,29 +179,6 @@
             </button>
           </li>
         {/if}
-        {#if $readerModel.sourceType === "remote"}
-          <li>
-            <button class="nav-button" on:click={handleDropdownClick}>
-              <img class="nav-thumbnail" src="/images/link-grey.png" alt="Link" />
-            </button>
-            <div id="dropdown" style:display={isDropdownOpen ? "absolute" : "none"}>
-              <a href={$url.toString()}>
-                  Shareable Link:
-              </a>
-              <input
-                  readOnly
-                  value={$url.toString()}
-                  type="text"
-                  on:select={e => e.stopPropagation()}
-              />
-            </div>
-          </li>
-          <li>
-            <button class="nav-button" onclick="location.href='{String($readerModel.rawSrc)}'" type="button">
-              <img class="nav-thumbnail" src="/images/download-grey.png" alt="Download" />
-            </button>
-          </li>
-        {/if}
       </NavHamburger>
     </div>
   </div>
