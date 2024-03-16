@@ -272,7 +272,6 @@
   }
 
   #nav-container {
-    /* max-width: 66vw; */
     @apply flex
     m-auto
     max-w-6xl
@@ -288,7 +287,6 @@
   #content-container {
     display: grid;
     margin-top: 65px;
-    /* max-width: 66vw; */
     @apply mx-auto
     max-w-6xl
     px-10;
