@@ -207,7 +207,7 @@
   </div>
   <div id="nav-dropdown">
     {#if $open}
-      <ul use:melt={$content} transition:slide>
+      <ul use:melt={$content} transition:slide class="lg:hidden">
         {#if $readerModel.indexPath}
           <li>
             <button
