@@ -17,6 +17,7 @@
 
   import { createCollapsible, melt } from '@melt-ui/svelte';
   import { slide } from 'svelte/transition';
+    import NavButtons from "$lib/components/NavButtons.svelte";
 
   let isShareableDropdownOpen = false;
   let currentSrc = "";
@@ -123,34 +124,7 @@
       </div>
     {/if}
     <ul class="nav-section hidden lg:flex">
-      {#if $readerModel.indexPath}
-        <li>
-          <button
-              class={$url.pathname.replaceAll("/", "") === "visualization" ? "selected-button nav-button" : "nav-button"}
-              on:click={() => (history.pushState({}, "", "/visualization/"+window.location.search))}
-          >
-            Visualization
-          </button>
-        </li>
-      {/if}
-      {#if $readerModel.rawSrc}
-        <li>
-          <button
-              class={$url.pathname.replaceAll("/", "") === "details" ? "selected-button nav-button" : "nav-button"}
-              on:click={() => (history.pushState({}, "", "/details/"+window.location.search))}
-          >
-            Details
-          </button>
-        </li>
-        <li>
-          <button
-              class={$url.pathname.replaceAll("/", "") === "provenance" ? "selected-button nav-button" : "nav-button"}
-              on:click={() => (history.pushState({}, "", "/provenance/"+window.location.search))}
-          >
-            Provenance
-          </button>
-        </li>
-      {/if}
+      <NavButtons {readerModel}/>
       {#if $readerModel.sourceType === "remote"}
         <li>
           <button class="nav-button" on:click={handleShareableDropdownClick}>
@@ -208,37 +182,7 @@
   <div id="nav-dropdown">
     {#if $open}
       <ul use:melt={$content} transition:slide class="lg:hidden">
-        {#if $readerModel.indexPath}
-          <li>
-            <button
-                class={$url.pathname.replaceAll("/", "") === "visualization" ? "selected-button nav-button" : "nav-button"}
-                on:click={() => (history.pushState({}, "", "/visualization/"+window.location.search))}
-                style="width: 100vw"
-            >
-              Visualization
-            </button>
-          </li>
-        {/if}
-        {#if $readerModel.rawSrc}
-          <li>
-            <button
-                class={$url.pathname.replaceAll("/", "") === "details" ? "selected-button nav-button" : "nav-button"}
-                on:click={() => (history.pushState({}, "", "/details/"+window.location.search))}
-                style="width: 100vw"
-            >
-              Details
-            </button>
-          </li>
-          <li>
-            <button
-                class={$url.pathname.replaceAll("/", "") === "provenance" ? "selected-button nav-button" : "nav-button"}
-                on:click={() => (history.pushState({}, "", "/provenance/"+window.location.search))}
-                style="width: 100vw"
-            >
-              Provenance
-            </button>
-          </li>
-        {/if}
+      <NavButtons {readerModel}/>
       </ul>
     {/if}
   </div>
@@ -346,22 +290,9 @@
     @apply ml-auto;
   }
 
-  .nav-button {
-    @apply p-3
-    h-full;
-  }
-
-  .nav-button:hover {
-    @apply bg-slate-400;
-  }
-
   .nav-thumbnail {
     height: 20px;
     width: 20px;
-  }
-
-  .selected-button {
-    @apply bg-slate-300;
   }
 
   .tab {
@@ -378,5 +309,19 @@
     height: 0;
     visibility: hidden;
     overflow: hidden;
+  }
+
+  .nav-button {
+    width: 100%;
+    @apply p-3
+    h-full;
+  }
+
+  .nav-button:hover {
+    @apply bg-slate-400;
+  }
+
+  .selected-nav-button {
+    @apply bg-slate-300;
   }
 </style>
