@@ -16,7 +16,9 @@
   import Error from "$lib/components/Error.svelte";
   import NavHamburger from "$lib/components/NavHamburger.svelte";
 
-  let isNavMenuDropdownOpen = false;
+  import { createCollapsible, melt } from '@melt-ui/svelte';
+  import { slide } from 'svelte/transition';
+
   let isShareableDropdownOpen = false;
   let currentSrc = "";
   const uuid4Regex = /[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}/;
@@ -82,17 +84,20 @@
     currentSrc = newSrc
   }
 
-  const handleNavMenuDropdownClick = () => {
-    isNavMenuDropdownOpen = !isNavMenuDropdownOpen;
-  }
-
   const handleShareableDropdownClick = () => {
     isShareableDropdownOpen = !isShareableDropdownOpen;
   }
+
+  const {
+    elements: { root, content, trigger },
+    states: { open },
+  } = createCollapsible({
+    // forceVisible: true,
+  });
 </script>
 
 <nav id="navbar">
-  <div id="nav-container">
+  <div use:melt={$root} id="nav-container">
     <button on:click={() => (history.pushState({}, "", "/"+window.location.search))}>
       <img id="navlogo" src="/images/q2view.png" alt="QIIME 2 view logo">
     </button>
@@ -155,8 +160,8 @@
       {/if}
     </ul>
     <div class="nav-section flex lg:hidden">
-      <button class="btn m-1" on:click={handleNavMenuDropdownClick}>
-        {#if isNavMenuDropdownOpen}
+      <button use:melt={$trigger} class="btn m-1">
+        {#if $open}
           <svg
             fill="none"
             viewBox="0 0 24 24"
@@ -184,39 +189,41 @@
       </button>
     </div>
   </div>
-  <ul id="nav-dropdown" style:display={isNavMenuDropdownOpen ? 'block' : 'none'}>
-    {#if $readerModel.indexPath}
-      <li>
-        <button
-            class={$url.pathname.replaceAll("/", "") === "visualization" ? "selected-button nav-button" : "nav-button"}
-            on:click={() => (history.pushState({}, "", "/visualization/"+window.location.search))}
-            style="width: 100vw"
-        >
-          Visualization
-        </button>
-      </li>
-    {/if}
-    {#if $readerModel.rawSrc}
-      <li>
-        <button
-            class={$url.pathname.replaceAll("/", "") === "details" ? "selected-button nav-button" : "nav-button"}
-            on:click={() => (history.pushState({}, "", "/details/"+window.location.search))}
-            style="width: 100vw"
-        >
-          Details
-        </button>
-      </li>
-      <li>
-        <button
-            class={$url.pathname.replaceAll("/", "") === "provenance" ? "selected-button nav-button" : "nav-button"}
-            on:click={() => (history.pushState({}, "", "/provenance/"+window.location.search))}
-            style="width: 100vw"
-        >
-          Provenance
-        </button>
-      </li>
-    {/if}
-  </ul>
+  {#if $open}
+    <ul use:melt={$content} transition:slide id="nav-dropdown">
+      {#if $readerModel.indexPath}
+        <li>
+          <button
+              class={$url.pathname.replaceAll("/", "") === "visualization" ? "selected-button nav-button" : "nav-button"}
+              on:click={() => (history.pushState({}, "", "/visualization/"+window.location.search))}
+              style="width: 100vw"
+          >
+            Visualization
+          </button>
+        </li>
+      {/if}
+      {#if $readerModel.rawSrc}
+        <li>
+          <button
+              class={$url.pathname.replaceAll("/", "") === "details" ? "selected-button nav-button" : "nav-button"}
+              on:click={() => (history.pushState({}, "", "/details/"+window.location.search))}
+              style="width: 100vw"
+          >
+            Details
+          </button>
+        </li>
+        <li>
+          <button
+              class={$url.pathname.replaceAll("/", "") === "provenance" ? "selected-button nav-button" : "nav-button"}
+              on:click={() => (history.pushState({}, "", "/provenance/"+window.location.search))}
+              style="width: 100vw"
+          >
+            Provenance
+          </button>
+        </li>
+      {/if}
+    </ul>
+  {/if}
 </nav>
 
 <div id="content-container">
