@@ -52,7 +52,7 @@
         <img class="nav-thumbnail" src="/images/link-grey.png" alt="Link" />
       </button>
       {#if $open}
-        <div use:melt={$menu} id="dropdown" style:display={isShareableDropdownOpen ? "block" : "none"}>
+        <div use:melt={$menu} transition:fly id="dropdown" style:display={isShareableDropdownOpen ? "block" : "none"}>
           <a href={$url.toString()}>
               Shareable Link:
           </a>
