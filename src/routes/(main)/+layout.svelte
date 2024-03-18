@@ -19,7 +19,6 @@
   import { slide } from 'svelte/transition';
     import NavButtons from "$lib/components/NavButtons.svelte";
 
-  let isShareableDropdownOpen = false;
   let currentSrc = "";
   const uuid4Regex = /[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}/;
 
@@ -87,10 +86,6 @@
     currentSrc = newSrc
   }
 
-  const handleShareableDropdownClick = () => {
-    isShareableDropdownOpen = !isShareableDropdownOpen;
-  }
-
   const {
     elements: { root, content, trigger },
     states: { open },
@@ -125,29 +120,6 @@
     {/if}
     <ul class="nav-section hidden lg:flex">
       <NavButtons {readerModel}/>
-      {#if $readerModel.sourceType === "remote"}
-        <li>
-          <button class="nav-button" on:click={handleShareableDropdownClick}>
-            <img class="nav-thumbnail" src="/images/link-grey.png" alt="Link" />
-          </button>
-          <div id="dropdown" style:display={isShareableDropdownOpen ? "block" : "none"}>
-            <a href={$url.toString()}>
-                Shareable Link:
-            </a>
-            <input
-                readOnly
-                value={$url.toString()}
-                type="text"
-                on:select={e => e.stopPropagation()}
-            />
-          </div>
-        </li>
-        <li>
-          <button class="nav-button" onclick="location.href='{String($readerModel.rawSrc)}'" type="button">
-            <img class="nav-thumbnail" src="/images/download-grey.png" alt="Download" />
-          </button>
-        </li>
-      {/if}
     </ul>
     <div class="nav-section flex lg:hidden">
       <button use:melt={$trigger} class="btn m-1">
@@ -261,24 +233,6 @@
     px-10;
   }
 
-  #dropdown {
-    box-shadow: rgb(153, 153, 153) 0px 1px 5px;
-    @apply absolute
-    border
-    border-black
-    rounded
-    h-auto
-    p-1
-    bg-gray-100;
-  }
-
-  #dropdown-input {
-    @apply border
-    border-black
-    rounded
-    w-full
-  }
-
   #file-text {
     margin: auto;
     white-space: nowrap;
@@ -309,19 +263,5 @@
     height: 0;
     visibility: hidden;
     overflow: hidden;
-  }
-
-  .nav-button {
-    width: 100%;
-    @apply p-3
-    h-full;
-  }
-
-  .nav-button:hover {
-    @apply bg-slate-400;
-  }
-
-  .selected-nav-button {
-    @apply bg-slate-300;
   }
 </style>
