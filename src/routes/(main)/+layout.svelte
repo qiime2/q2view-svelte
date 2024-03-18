@@ -27,6 +27,9 @@
     checkBrowserCompatibility();
     readerModel.attachToServiceWorker();
     fetch("/_/wakeup");
+
+    const nav_dropdown = document.getElementById("nav-dropdown") as Element;
+    observer.observe(nav_dropdown);
   });
 
   // This block runs every time the URL bar updates. It determines what to do based
@@ -91,13 +94,27 @@
   const {
     elements: { root, content, trigger },
     states: { open },
-  } = createCollapsible({
-    // forceVisible: true,
-  });
+  } = createCollapsible({});
+
+  function updateNavDropdownHeight() {
+    const nav_dropdown = document.getElementById("nav-dropdown") as Element;
+    let content_container: Element = document.getElementById("content-container") as Element;
+    const iframe = document.getElementById("iframe") as Element;
+    let nav_dropdown_height = nav_dropdown.clientHeight;
+    console.log(nav_dropdown_height);
+
+    let margin = 65 + nav_dropdown_height;
+    let offset = 50 + nav_dropdown_height;
+    content_container.style.marginTop = `${margin}px`;
+    iframe.style.height = `calc(100% - ${offset}px)`;
+    iframe.style.top = `calc(0% + ${offset}px)`
+  }
+
+  const observer  = new ResizeObserver(updateNavDropdownHeight);
 </script>
 
-<nav id="navbar">
-  <div use:melt={$root} id="nav-container">
+<nav id="navbar" use:melt={$root}>
+  <div id="nav-container">
     <button on:click={() => (history.pushState({}, "", "/"+window.location.search))}>
       <img id="navlogo" src="/images/q2view.png" alt="QIIME 2 view logo">
     </button>
@@ -189,8 +206,8 @@
       </button>
     </div>
   </div>
-  {#if $open}
-    <ul use:melt={$content} transition:slide id="nav-dropdown">
+  <ul use:melt={$content} transition:slide id="nav-dropdown">
+    {#if $open}
       {#if $readerModel.indexPath}
         <li>
           <button
@@ -222,8 +239,8 @@
           </button>
         </li>
       {/if}
-    </ul>
-  {/if}
+    {/if}
+  </ul>
 </nav>
 
 <div id="content-container">
