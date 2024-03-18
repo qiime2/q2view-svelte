@@ -14,7 +14,6 @@
   import About from "$lib/components/About.svelte";
   import { checkBrowserCompatibility, handleError } from "$lib/scripts/util";
   import Error from "$lib/components/Error.svelte";
-  import NavHamburger from "$lib/components/NavHamburger.svelte";
 
   import { createCollapsible, melt } from '@melt-ui/svelte';
   import { slide } from 'svelte/transition';
@@ -105,6 +104,7 @@
 
     let margin = 65 + nav_dropdown_height;
     let offset = 50 + nav_dropdown_height;
+
     content_container.style.marginTop = `${margin}px`;
     iframe.style.height = `calc(100% - ${offset}px)`;
     iframe.style.top = `calc(0% + ${offset}px)`
@@ -206,41 +206,43 @@
       </button>
     </div>
   </div>
-  <ul use:melt={$content} transition:slide id="nav-dropdown">
+  <div id="nav-dropdown">
     {#if $open}
-      {#if $readerModel.indexPath}
-        <li>
-          <button
-              class={$url.pathname.replaceAll("/", "") === "visualization" ? "selected-button nav-button" : "nav-button"}
-              on:click={() => (history.pushState({}, "", "/visualization/"+window.location.search))}
-              style="width: 100vw"
-          >
-            Visualization
-          </button>
-        </li>
-      {/if}
-      {#if $readerModel.rawSrc}
-        <li>
-          <button
-              class={$url.pathname.replaceAll("/", "") === "details" ? "selected-button nav-button" : "nav-button"}
-              on:click={() => (history.pushState({}, "", "/details/"+window.location.search))}
-              style="width: 100vw"
-          >
-            Details
-          </button>
-        </li>
-        <li>
-          <button
-              class={$url.pathname.replaceAll("/", "") === "provenance" ? "selected-button nav-button" : "nav-button"}
-              on:click={() => (history.pushState({}, "", "/provenance/"+window.location.search))}
-              style="width: 100vw"
-          >
-            Provenance
-          </button>
-        </li>
-      {/if}
+      <ul use:melt={$content} transition:slide>
+        {#if $readerModel.indexPath}
+          <li>
+            <button
+                class={$url.pathname.replaceAll("/", "") === "visualization" ? "selected-button nav-button" : "nav-button"}
+                on:click={() => (history.pushState({}, "", "/visualization/"+window.location.search))}
+                style="width: 100vw"
+            >
+              Visualization
+            </button>
+          </li>
+        {/if}
+        {#if $readerModel.rawSrc}
+          <li>
+            <button
+                class={$url.pathname.replaceAll("/", "") === "details" ? "selected-button nav-button" : "nav-button"}
+                on:click={() => (history.pushState({}, "", "/details/"+window.location.search))}
+                style="width: 100vw"
+            >
+              Details
+            </button>
+          </li>
+          <li>
+            <button
+                class={$url.pathname.replaceAll("/", "") === "provenance" ? "selected-button nav-button" : "nav-button"}
+                on:click={() => (history.pushState({}, "", "/provenance/"+window.location.search))}
+                style="width: 100vw"
+            >
+              Provenance
+            </button>
+          </li>
+        {/if}
+      </ul>
     {/if}
-  </ul>
+  </div>
 </nav>
 
 <div id="content-container">
