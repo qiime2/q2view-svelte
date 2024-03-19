@@ -14,7 +14,7 @@
     position: absolute;
     width: 100%;
     height: calc(100% - 50px);
-    left: calc(-50% + 50%);
-    top: calc(0% + 50px)
+    left: 0%;
+    top: 50px
   }
 </style>

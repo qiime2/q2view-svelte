@@ -173,36 +173,38 @@
   </div>
 </nav>
 
-<div id="content-container">
-  <div class={$url.pathname.replaceAll("/", "") === "" ? "tab" : "hidden-tab"}>
-    <p>
-        This interface can view .qza and .qzv files
-        directly in your browser without uploading to a server.
-        <span on:click={() => (history.pushState({}, "", "/about/"+window.location.search))}>Click here to learn more.</span>
-    </p>
-    <DropZone/>
-    <UrlInput/>
-    <Gallery/>
-  </div>
-  <div class={$url.pathname.replaceAll("/", "") === "about" ? "tab" : "hidden-tab"}>
-    <About/>
-  </div>
-  <div class={$url.pathname.replaceAll("/", "") === "error" ? "tab" : "hidden-tab"}>
-    <Error/>
-  </div>
-  {#if $readerModel.indexPath}
-    <div class={$url.pathname.replaceAll("/", "") === "visualization" ? "tab" : "hidden-tab"}>
-      <Iframe/>
+<div id="container">
+  <div id="content-container">
+    <div class={$url.pathname.replaceAll("/", "") === "" ? "tab" : "hidden-tab"}>
+      <p>
+          This interface can view .qza and .qzv files
+          directly in your browser without uploading to a server.
+          <span on:click={() => (history.pushState({}, "", "/about/"+window.location.search))}>Click here to learn more.</span>
+      </p>
+      <DropZone/>
+      <UrlInput/>
+      <Gallery/>
     </div>
-  {/if}
-  {#if $readerModel.rawSrc}
-    <div class={$url.pathname.replaceAll("/", "") === "details" ? "tab" : "hidden-tab"}>
-      <Details/>
+    <div class={$url.pathname.replaceAll("/", "") === "about" ? "tab" : "hidden-tab"}>
+      <About/>
     </div>
-    <div class={$url.pathname.replaceAll("/", "") === "provenance" ? "tab" : "hidden-tab"}>
-      <Provenance/>
+    <div class={$url.pathname.replaceAll("/", "") === "error" ? "tab" : "hidden-tab"}>
+      <Error/>
     </div>
-  {/if}
+    {#if $readerModel.indexPath}
+      <div class={$url.pathname.replaceAll("/", "") === "visualization" ? "tab" : "hidden-tab"}>
+        <Iframe/>
+      </div>
+    {/if}
+    {#if $readerModel.rawSrc}
+      <div class={$url.pathname.replaceAll("/", "") === "details" ? "tab" : "hidden-tab"}>
+        <Details/>
+      </div>
+      <div class={$url.pathname.replaceAll("/", "") === "provenance" ? "tab" : "hidden-tab"}>
+        <Provenance/>
+      </div>
+    {/if}
+  </div>
 </div>
 
 <style lang="postcss">
