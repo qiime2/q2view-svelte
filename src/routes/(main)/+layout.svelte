@@ -15,8 +15,8 @@
   import { checkBrowserCompatibility, handleError } from "$lib/scripts/util";
   import Error from "$lib/components/Error.svelte";
 
-  import { createCollapsible, melt } from '@melt-ui/svelte';
-  import { slide } from 'svelte/transition';
+  import { createCollapsible, melt } from "@melt-ui/svelte";
+  import { slide } from "svelte/transition";
   import NavButtons from "$lib/components/NavButtons.svelte";
 
   let currentSrc = "";
@@ -60,16 +60,17 @@
         // We have a local source that does not match our currently loaded data.
         // This is an error because we do not have access to arbitray local sources
         if (newSrc !== readerModel.uuid) {
-          handleError("This was a temporary page based on local data. If you " +
-                      "have access to this data, please reload it. To share " +
-                      "QIIME 2 Artifacts and Visualizations, please upload your " +
-                      "file to a file hosting service and provide the resulting " +
-                      "URL to the home screen of this application.",
-                      "Expired Data");
-         }
+          handleError(
+            "This was a temporary page based on local data. If you " +
+              "have access to this data, please reload it. To share " +
+              "QIIME 2 Artifacts and Visualizations, please upload your " +
+              "file to a file hosting service and provide the resulting " +
+              "URL to the home screen of this application.",
+            "Expired Data",
+          );
+        }
         // We have a local source, but it is still the local source we have loaded
-      }
-      else {
+      } else {
         // We have a non uuid source which is presumed to be a remote source. We
         // attempt to load it.
         //
@@ -84,7 +85,7 @@
         }
       }
 
-      currentSrc = newSrc
+      currentSrc = newSrc;
     }
   }
 
@@ -94,9 +95,8 @@
   } = createCollapsible({});
 
   function updateNavDropdownHeight() {
-    const iframe = document.getElementById("iframe");
     const nav_dropdown = document.getElementById("nav-dropdown");
-    const content_container = document.getElementById("content-container");
+    let positioned_container = document.getElementById("positioned-container");
 
     // This entire function is predicated on this element existing and using
     // its height to offset other elements
@@ -105,26 +105,24 @@
     }
 
     const nav_dropdown_height = nav_dropdown.clientHeight;
-    const margin = 65 + nav_dropdown_height;
     const offset = 50 + nav_dropdown_height;
 
-    if (content_container !== null) {
-      content_container.style.marginTop = `${margin}px`;
-    }
+    if (positioned_container !== null) {
+      positioned_container.style.top = `${offset}px`;
+      positioned_container.style.height = `calc(100% - ${offset}px)`;
 
-    if (iframe !== null) {
-      iframe.style.height = `calc(100% - ${offset}px)`;
-      iframe.style.top = `calc(0% + ${offset}px)`;
     }
   }
 
-  const observer  = new ResizeObserver(updateNavDropdownHeight);
+  const observer = new ResizeObserver(updateNavDropdownHeight);
 </script>
 
 <nav id="navbar" use:melt={$root}>
   <div id="nav-container">
-    <button on:click={() => (history.pushState({}, "", "/"+window.location.search))}>
-      <img id="navlogo" src="/images/q2view.png" alt="QIIME 2 view logo">
+    <button
+      on:click={() => history.pushState({}, "", "/" + window.location.search)}
+    >
+      <img id="navlogo" src="/images/q2view.png" alt="QIIME 2 view logo" />
     </button>
     {#if $readerModel.name}
       <div class="nav-section flex hidden lg:block" id="file-text">
@@ -132,7 +130,7 @@
       </div>
     {/if}
     <ul class="nav-section hidden lg:flex">
-      <NavButtons {readerModel}/>
+      <NavButtons {readerModel} />
     </ul>
     <div class="nav-section flex lg:hidden">
       <button use:melt={$trigger} class="btn m-1">
@@ -140,25 +138,29 @@
           <svg
             fill="none"
             viewBox="0 0 24 24"
-            class="inline-block h-6 w-6 stroke-current">
+            class="inline-block h-6 w-6 stroke-current"
+          >
             <title>Close Dropdown</title>
             <path
               stroke-linecap="round"
               stroke-linejoin="round"
               stroke-width="2"
-              d="M6 18L18 6M6 6l12 12" />
+              d="M6 18L18 6M6 6l12 12"
+            />
           </svg>
         {:else}
           <svg
             fill="none"
             viewBox="0 0 24 24"
-            class="inline-block h-6 w-6 stroke-current">
+            class="inline-block h-6 w-6 stroke-current"
+          >
             <title>Open Dropdown</title>
             <path
               stroke-linecap="round"
               stroke-linejoin="round"
               stroke-width="2"
-              d="M4 6h16M4 12h16M4 18h16" />
+              d="M4 6h16M4 12h16M4 18h16"
+            />
           </svg>
         {/if}
       </button>
@@ -167,41 +169,67 @@
   <div id="nav-dropdown">
     {#if $open}
       <ul use:melt={$content} transition:slide class="lg:hidden">
-      <NavButtons {readerModel}/>
+        <NavButtons {readerModel} />
       </ul>
     {/if}
   </div>
 </nav>
 
-<div id="container">
+<div id="positioned-container">
   <div id="content-container">
-    <div class={$url.pathname.replaceAll("/", "") === "" ? "tab" : "hidden-tab"}>
+    <div
+      class={$url.pathname.replaceAll("/", "") === "" ? "tab" : "hidden-tab"}
+    >
       <p>
-          This interface can view .qza and .qzv files
-          directly in your browser without uploading to a server.
-          <span on:click={() => (history.pushState({}, "", "/about/"+window.location.search))}>Click here to learn more.</span>
+        This interface can view .qza and .qzv files directly in your browser
+        without uploading to a server.
+        <span
+          on:click={() =>
+            history.pushState({}, "", "/about/" + window.location.search)}
+          >Click here to learn more.</span
+        >
       </p>
-      <DropZone/>
-      <UrlInput/>
-      <Gallery/>
+      <DropZone />
+      <UrlInput />
+      <Gallery />
     </div>
-    <div class={$url.pathname.replaceAll("/", "") === "about" ? "tab" : "hidden-tab"}>
-      <About/>
+    <div
+      class={$url.pathname.replaceAll("/", "") === "about"
+        ? "tab"
+        : "hidden-tab"}
+    >
+      <About />
     </div>
-    <div class={$url.pathname.replaceAll("/", "") === "error" ? "tab" : "hidden-tab"}>
-      <Error/>
+    <div
+      class={$url.pathname.replaceAll("/", "") === "error"
+        ? "tab"
+        : "hidden-tab"}
+    >
+      <Error />
     </div>
     {#if $readerModel.indexPath}
-      <div class={$url.pathname.replaceAll("/", "") === "visualization" ? "tab" : "hidden-tab"}>
-        <Iframe/>
+      <div
+        class={$url.pathname.replaceAll("/", "") === "visualization"
+          ? "tab"
+          : "hidden-tab"}
+      >
+        <Iframe />
       </div>
     {/if}
     {#if $readerModel.rawSrc}
-      <div class={$url.pathname.replaceAll("/", "") === "details" ? "tab" : "hidden-tab"}>
-        <Details/>
+      <div
+        class={$url.pathname.replaceAll("/", "") === "details"
+          ? "tab"
+          : "hidden-tab"}
+      >
+        <Details />
       </div>
-      <div class={$url.pathname.replaceAll("/", "") === "provenance" ? "tab" : "hidden-tab"}>
-        <Provenance/>
+      <div
+        class={$url.pathname.replaceAll("/", "") === "provenance"
+          ? "tab"
+          : "hidden-tab"}
+      >
+        <Provenance />
       </div>
     {/if}
   </div>
@@ -218,7 +246,6 @@
     width: 100vw;
     box-shadow: rgb(153, 153, 153) 0px 1px 5px;
     background-color: #f8f8f8;
-    margin-bottom: 21px;
     @apply fixed
     rounded-none
     z-10
@@ -229,7 +256,7 @@
 
   #nav-container {
     @apply flex
-    m-auto
+    mx-auto
     max-w-6xl
     px-10;
   }
@@ -240,12 +267,21 @@
     @apply my-1;
   }
 
+  #positioned-container {
+    position: absolute;
+    top: 50px;
+    width: 100%;
+    height: calc(100% - 50px);
+    overflow: auto;
+    /* Prevent content from repositioning in Chromium when a scrollbar appears */
+    scrollbar-gutter: stable both-edges;
+  }
+
   #content-container {
     display: grid;
-    margin-top: 65px;
     @apply mx-auto
-    max-w-6xl
-    px-10;
+    px-10
+    max-w-6xl;
   }
 
   #file-text {

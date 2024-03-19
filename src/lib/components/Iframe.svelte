@@ -13,8 +13,8 @@
   #iframe {
     position: absolute;
     width: 100%;
-    height: calc(100% - 50px);
+    height: 100vw;
     left: 0%;
-    top: 50px
+    top: inherit;
   }
 </style>
