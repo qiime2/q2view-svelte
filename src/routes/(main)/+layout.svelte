@@ -92,17 +92,28 @@
   } = createCollapsible({});
 
   function updateNavDropdownHeight() {
-    const iframe = document.getElementById("iframe") as Element;
-    const nav_dropdown = document.getElementById("nav-dropdown") as Element;
-    const content_container: Element = document.getElementById("content-container") as Element;
-    const nav_dropdown_height = nav_dropdown.clientHeight;
+    const iframe = document.getElementById("iframe");
+    const nav_dropdown = document.getElementById("nav-dropdown");
+    const content_container = document.getElementById("content-container");
 
+    // This entire function is predicated on this element existing and using
+    // its height to offset other elements
+    if (nav_dropdown === null) {
+      return;
+    }
+
+    const nav_dropdown_height = nav_dropdown.clientHeight;
     const margin = 65 + nav_dropdown_height;
     const offset = 50 + nav_dropdown_height;
 
-    content_container.style.marginTop = `${margin}px`;
-    iframe.style.height = `calc(100% - ${offset}px)`;
-    iframe.style.top = `calc(0% + ${offset}px)`
+    if (content_container !== null) {
+      content_container.style.marginTop = `${margin}px`;
+    }
+
+    if (iframe !== null) {
+      iframe.style.height = `calc(100% - ${offset}px)`;
+      iframe.style.top = `calc(0% + ${offset}px)`;
+    }
   }
 
   const observer  = new ResizeObserver(updateNavDropdownHeight);
