@@ -52,14 +52,14 @@
 
 <style lang="postcss">
   li {
-    @apply text-green-700;
+    color: rgb(108, 129, 55);
   }
 
   label {
-    @apply text-blue-700;
+    color: rgb(81, 132, 152);
   }
 
   #null {
-    @apply text-red-700;
+    color: rgb(173, 103, 40);
   }
 </style>
