@@ -48,6 +48,8 @@
   //
   // Case 4, The src changed and it is now empty:
   //  Reset the readerModel because we no longer have data.
+  //
+  // NOTE: If we were redirected to the error page we skip this.
   $: {
     const newSrc = $url.searchParams.get("src");
     const newTab = $url.pathname.replaceAll("/", "");
