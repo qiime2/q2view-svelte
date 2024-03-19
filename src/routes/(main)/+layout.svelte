@@ -96,7 +96,7 @@
 
   function updateNavDropdownHeight() {
     const nav_dropdown = document.getElementById("nav-dropdown");
-    let positioned_container = document.getElementById("positioned-container");
+    const positioned_container = document.getElementById("positioned-container");
 
     // This entire function is predicated on this element existing and using
     // its height to offset other elements
@@ -110,7 +110,6 @@
     if (positioned_container !== null) {
       positioned_container.style.top = `${offset}px`;
       positioned_container.style.height = `calc(100% - ${offset}px)`;
-
     }
   }
 
@@ -301,11 +300,11 @@
   }
 
   .tab {
+    margin-top: 21px;
     grid-column: 1;
     grid-row: 1;
     visibility: visible;
     overflow: hidden;
-    margin-top: 21px;
     @apply mb-4;
   }
 

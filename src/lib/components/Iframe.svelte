@@ -13,9 +13,9 @@
   #iframe {
     margin-top: -21px;
     position: absolute;
+    top: 50px;
     width: 100%;
-    height: 100vw;
+    height: calc(100% - 50px);
     left: 0%;
-    top: inherit;
   }
 </style>
