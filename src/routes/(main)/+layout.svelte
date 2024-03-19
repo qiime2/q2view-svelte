@@ -305,6 +305,7 @@
     grid-row: 1;
     visibility: visible;
     overflow: hidden;
+    margin-top: 21px;
     @apply mb-4;
   }
 
