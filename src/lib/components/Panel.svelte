@@ -13,7 +13,6 @@
     </slot>
   </div>
 </div>
-<!-- {header === "" ? "headerless-panel" : "panel"}> -->
 
 <style lang='postcss'>
   .headerless-panel {

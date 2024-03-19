@@ -143,4 +143,5 @@
 <div
   bind:this={self}
   id="cy"
+  class="pr-2"
 />
