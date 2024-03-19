@@ -1,39 +1,17 @@
 <script lang="ts">
-    import { format } from "prettier";
-
   let inputMode = 0;
-  let placeHolder = "";
-  const alertMessage = "Something went wrong, please refresh the page and try again.";
 
   function resolveURL() {
     const inputElement = document.getElementById("URLInput") as HTMLInputElement;
 
     // This shouldn"t happen. If the user is able to click the button a URLInput
     if (inputElement === null) {
-      alert(alertMessage);
+      alert("Something went wrong, please refresh the page and try again.");
     }
     else {
       let inputURL = inputElement.value;
-      console.log(`${inputElement} ${inputURL}`);
-      inputElement.innerText = "";
-
-      history.pushState({}, "", "/?src="+inputURL);
-    }
-  }
-
-  function setInputMode(mode: number) {
-    inputMode = mode;
-
-    if (inputMode === 0) {
-      placeHolder = "";
-    } else if (inputMode === 1) {
-      placeHolder = "Shared link to a .qza/.qzv file on Dropbox";
-    } else if (inputMode === 2) {
-      placeHolder = "URL to a .qza/.qzv file on the web";
-    } else {
       inputMode = 0;
-      placeHolder = "";
-      alert(alertMessage);
+      history.pushState({}, "", "/?src="+inputURL);
     }
   }
 </script>
@@ -42,15 +20,15 @@
   {#if inputMode === 0}
     <p>
       You can also provide a link to
-      a <span on:click|preventDefault={() => setInputMode(1)} role="button" >
+      a <span on:click|preventDefault={() => {inputMode = 1}} role="button" >
         file on Dropbox</span> or
-      a <span on:click|preventDefault={() => setInputMode(2)} role="button">
+      a <span on:click|preventDefault={() => {inputMode = 2}} role="button">
         file from the web</span>.
     </p>
   {:else}
     <div id="input">
-      <button id="cancel-button" on:click={() => setInputMode(0)}>cancel</button>
-      {#if inputMode == 1}
+      <button id="cancel-button" on:click={() => {inputMode = 0}}>cancel</button>
+      {#if inputMode === 1}
         <input id="URLInput" placeholder="Shared link to a .qza/.qzv file on Dropbox" />
       {:else}
         <input id="URLInput" placeholder="URL to a .qza/.qzv file on the web" />
@@ -59,50 +37,50 @@
     </div>
   {/if}
 </div>
-{#if inputMode == 1}
-<h3>
-  Dropbox Instructions:
-</h3>
-<ol class="pl-10" style="list-style: decimal">
-  <li>
-    Find the file you would like to share.
-  </li>
-  <li>
-    Create a shared link to it.
-  </li>
-  <li>
-    Provide that link in the input form above and hit "Go!"
-  </li>
-</ol>
-{:else if inputMode == 2}
-<div class="grid lg:grid-cols-2">
-  <div>
-    <h3>
-      Web URL Instructions
-    </h3>
-    <p>Provide a link to your file in the input form above and hit "Go!"</p>
-    <p>Note: the server that is hosting your file must support CORS. See Required Headers for more information.</p>
+{#if inputMode === 1}
+  <h3>
+    Dropbox Instructions:
+  </h3>
+  <ol class="pl-10" style="list-style: decimal">
+    <li>
+      Find the file you would like to share.
+    </li>
+    <li>
+      Create a shared link to it.
+    </li>
+    <li>
+      Provide that link in the input form above and hit "Go!"
+    </li>
+  </ol>
+{:else if inputMode === 2}
+  <div class="grid lg:grid-cols-2">
+    <div>
+      <h3>
+        Web URL Instructions
+      </h3>
+      <p>Provide a link to your file in the input form above and hit "Go!"</p>
+      <p>Note: the server that is hosting your file must support CORS. See Required Headers for more information.</p>
+    </div>
+    <div>
+      <h3>
+        Known Supported Websites:
+      </h3>
+      <ul class="pl-10" style="list-style: disc">
+        <li>
+          docs.qiime2.org
+        </li>
+        <li>
+          forum.qiime2.org
+        </li>
+        <li>
+          websites hosted on Github Pages
+        </li>
+        <li>
+          &lt;your webserver here&gt; (see Required Headers)
+        </li>
+      </ul>
+    </div>
   </div>
-  <div>
-    <h3>
-      Known Supported Websites:
-    </h3>
-    <ul class="pl-10" style="list-style: disc">
-      <li>
-        docs.qiime2.org
-      </li>
-      <li>
-        forum.qiime2.org
-      </li>
-      <li>
-        websites hosted on Github Pages
-      </li>
-      <li>
-        &lt;your webserver here&gt; (see Required Headers)
-      </li>
-    </ul>
-  </div>
-</div>
 {/if}
 
 <style lang="postcss">
