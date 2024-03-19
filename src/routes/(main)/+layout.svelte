@@ -17,7 +17,7 @@
 
   import { createCollapsible, melt } from '@melt-ui/svelte';
   import { slide } from 'svelte/transition';
-    import NavButtons from "$lib/components/NavButtons.svelte";
+  import NavButtons from "$lib/components/NavButtons.svelte";
 
   let currentSrc = "";
   const uuid4Regex = /[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}/;
@@ -52,7 +52,7 @@
     const newSrc = $url.searchParams.get("src");
     const newTab = $url.pathname.replaceAll("/", "");
 
-    if (newSrc !== currentSrc) {
+    if (newTab !== "error" && newSrc !== currentSrc) {
       // We have a local source
       if (uuid4Regex.test(newSrc)) {
         // We have a local source that does not match our currently loaded data.
@@ -81,9 +81,9 @@
           readerModel.clear();
         }
       }
-    }
 
-    currentSrc = newSrc
+      currentSrc = newSrc
+    }
   }
 
   const {

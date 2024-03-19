@@ -1,20 +1,39 @@
 <script lang="ts">
     import { format } from "prettier";
 
-  let inputMode: number = 0;
+  let inputMode = 0;
+  let placeHolder = "";
+  const alertMessage = "Something went wrong, please refresh the page and try again.";
 
   function resolveURL() {
-    const inputElements = document.getElementsByClassName("URLInput");
-    // This shouldn"t happen
-    if (inputElements.length > 1) {
-      alert("Something went wrong, please refresh the page and try again");
+    const inputElement = document.getElementById("URLInput") as HTMLInputElement;
+
+    // This shouldn"t happen. If the user is able to click the button a URLInput
+    if (inputElement === null) {
+      alert(alertMessage);
     }
     else {
-      let inputElement = (<HTMLInputElement>inputElements[0]);
       let inputURL = inputElement.value;
-      inputElement.value = "";
+      console.log(`${inputElement} ${inputURL}`);
+      inputElement.innerText = "";
 
       history.pushState({}, "", "/?src="+inputURL);
+    }
+  }
+
+  function setInputMode(mode: number) {
+    inputMode = mode;
+
+    if (inputMode === 0) {
+      placeHolder = "";
+    } else if (inputMode === 1) {
+      placeHolder = "Shared link to a .qza/.qzv file on Dropbox";
+    } else if (inputMode === 2) {
+      placeHolder = "URL to a .qza/.qzv file on the web";
+    } else {
+      inputMode = 0;
+      placeHolder = "";
+      alert(alertMessage);
     }
   }
 </script>
@@ -23,14 +42,14 @@
   {#if inputMode === 0}
     <p>
       You can also provide a link to
-      a <span on:click|preventDefault={() => (inputMode = 1)} role="button" >
+      a <span on:click|preventDefault={() => setInputMode(1)} role="button" >
         file on Dropbox</span> or
-      a <span on:click|preventDefault={() => (inputMode = 2)} role="button">
+      a <span on:click|preventDefault={() => setInputMode(2)} role="button">
         file from the web</span>.
     </p>
   {:else}
     <div id="input">
-      <button id="cancel-button" on:click={() => (inputMode = 0)}>cancel</button>
+      <button id="cancel-button" on:click={() => setInputMode(0)}>cancel</button>
       {#if inputMode == 1}
         <input id="URLInput" placeholder="Shared link to a .qza/.qzv file on Dropbox" />
       {:else}
@@ -108,7 +127,7 @@
 
   #URLInput {
     @apply w-full
-    pl-2;
+    px-2;
   }
 
   #submit-button {
