@@ -63,39 +63,41 @@
     <ul class="nav-section hidden lg:flex">
       <NavButtons {readerModel} />
     </ul>
-    <div class="nav-section flex lg:hidden">
-      <button use:melt={$triggerCollapsible} class="btn p-3">
-        {#if $openCollapsible}
-          <svg
-            fill="none"
-            viewBox="0 0 24 24"
-            class="inline-block h-6 w-6 stroke-current"
-          >
-            <title>Close Dropdown</title>
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M6 18L18 6M6 6l12 12"
-            />
-          </svg>
-        {:else}
-          <svg
-            fill="none"
-            viewBox="0 0 24 24"
-            class="inline-block h-6 w-6 stroke-current"
-          >
-            <title>Open Dropdown</title>
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M4 6h16M4 12h16M4 18h16"
-            />
-          </svg>
-        {/if}
-      </button>
-    </div>
+    {#if $readerModel.indexPath || $readerModel.rawSrc}
+      <div class="nav-section flex lg:hidden">
+        <button use:melt={$triggerCollapsible} class="btn p-3">
+          {#if $openCollapsible}
+            <svg
+              fill="none"
+              viewBox="0 0 24 24"
+              class="inline-block h-6 w-6 stroke-current"
+            >
+              <title>Close Dropdown</title>
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          {:else}
+            <svg
+              fill="none"
+              viewBox="0 0 24 24"
+              class="inline-block h-6 w-6 stroke-current"
+            >
+              <title>Open Dropdown</title>
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M4 6h16M4 12h16M4 18h16"
+              />
+            </svg>
+          {/if}
+        </button>
+      </div>
+    {/if}
     {#if $readerModel.sourceType === "remote"}
       <ul class="flex">
         <li>
