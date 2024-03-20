@@ -23,30 +23,12 @@
     mb-2;
   }
 
-  .headerless-panel :global(.danger-panel) {
-    @apply border
-    border-red-300
-    rounded-md
-    bg-red-100
-    p-2
-    mr-2;
-  }
-
   .panel {
     @apply border
     border-black
     rounded-b-md
     p-2
     mb-2;
-  }
-
-  .panel :global(.danger-panel) {
-    @apply border
-    border-red-300
-    rounded-md
-    bg-red-100
-    p-2
-    mr-2;
   }
 
   .panel-header {
@@ -57,6 +39,15 @@
     rounded-t-md
     pl-2
     bg-gray-200;
+  }
+
+  :global(.danger-panel) {
+    @apply border
+    border-red-300
+    rounded-md
+    bg-red-100
+    p-2
+    mr-2;
   }
 </style>
 
