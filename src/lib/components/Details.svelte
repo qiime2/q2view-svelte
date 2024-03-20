@@ -3,8 +3,11 @@
   import readerModel from "$lib/models/readerModel";
   import ResultDetails from "$lib/components/ResultDetails.svelte";
 
-  const blob = new Blob([$readerModel.citations], { type: "text/plain" })
-  const download = URL.createObjectURL(blob);
+
+  function getDownload() {
+    const blob = new Blob([$readerModel.citations], { type: "text/plain" })
+    return URL.createObjectURL(blob);
+  }
 </script>
 
 <Panel header="Details of {$readerModel.name}">
@@ -17,8 +20,12 @@
       <option value="bibtex">BibTex</option>
     </select>
   </label>
-  <a href={download} download={`${$readerModel.metadata.uuid}.bib`} style="float: right">Download</a>
-  <pre id="json">{$readerModel.citations}</pre>
+  {#if readerModel.citations !== undefined}
+    <a href={getDownload()} download={`${$readerModel.metadata.uuid}.bib`} style="float: right">Download</a>
+    <pre id="json">{$readerModel.citations}</pre>
+  {:else}
+    <pre id="json">{$readerModel.citations}</pre>
+  {/if}
 </Panel>
 
 <style lang="postcss">
