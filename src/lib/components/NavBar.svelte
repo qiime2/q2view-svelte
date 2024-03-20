@@ -64,7 +64,7 @@
       <NavButtons {readerModel} />
     </ul>
     <div class="nav-section flex lg:hidden">
-      <button use:melt={$triggerCollapsible} class="btn m-1">
+      <button use:melt={$triggerCollapsible} class="btn p-3">
         {#if $openCollapsible}
           <svg
             fill="none"
