@@ -15,8 +15,8 @@
   import { checkBrowserCompatibility, handleError } from "$lib/scripts/util";
   import Error from "$lib/components/Error.svelte";
 
-  import { createCollapsible, melt } from "@melt-ui/svelte";
-  import { slide } from "svelte/transition";
+  import { createCollapsible, createDropdownMenu, melt } from "@melt-ui/svelte";
+  import { slide, fly } from "svelte/transition";
   import NavButtons from "$lib/components/NavButtons.svelte";
 
   let currentSrc = "";
@@ -90,9 +90,14 @@
   }
 
   const {
-    elements: { root, content, trigger },
-    states: { open },
+    elements: { root, content, trigger: triggerCollapsible },
+    states: { open: openCollapsible },
   } = createCollapsible({});
+
+  const {
+    elements: { menu, trigger: triggerDropdown },
+    states: { open: openDropdown },
+  } = createDropdownMenu({});
 
   function updateNavDropdownHeight() {
     const nav_dropdown = document.getElementById("nav-dropdown");
@@ -132,8 +137,8 @@
       <NavButtons {readerModel} />
     </ul>
     <div class="nav-section flex lg:hidden">
-      <button use:melt={$trigger} class="btn m-1">
-        {#if $open}
+      <button use:melt={$triggerCollapsible} class="btn m-1">
+        {#if $openCollapsible}
           <svg
             fill="none"
             viewBox="0 0 24 24"
@@ -164,9 +169,37 @@
         {/if}
       </button>
     </div>
+    {#if $readerModel.sourceType === "remote"}
+      <ul class="flex">
+        <li>
+          <button use:melt={$triggerDropdown} class="nav-button">
+            <img class="nav-thumbnail" src="/images/link-grey.png" alt="Link" />
+          </button>
+          {#if $openDropdown}
+            <div use:melt={$menu} transition:fly id="dropdown">
+              <a href={$url.toString()}>
+                  Shareable Link:
+              </a>
+              <input
+                  id="dropdown-input"
+                  readOnly
+                  value={$url.toString()}
+                  type="text"
+                  on:select={e => e.stopPropagation()}
+              />
+            </div>
+          {/if}
+        </li>
+        <li>
+          <button class="nav-button" onclick="location.href='{String($readerModel.rawSrc)}'" type="button">
+            <img class="nav-thumbnail" src="/images/download-grey.png" alt="Download" />
+          </button>
+        </li>
+      </ul>
+    {/if}
   </div>
   <div id="nav-dropdown">
-    {#if $open}
+    {#if $openCollapsible}
       <ul use:melt={$content} transition:slide class="lg:hidden">
         <NavButtons {readerModel} />
       </ul>
@@ -314,5 +347,38 @@
     height: 0;
     visibility: hidden;
     overflow: hidden;
+  }
+
+  #dropdown {
+    box-shadow: rgb(153, 153, 153) 0px 1px 5px;
+    @apply absolute
+    border
+    border-black
+    rounded
+    h-auto
+    p-1
+    bg-gray-100
+    z-10;
+  }
+
+  #dropdown-input {
+    @apply border
+    border-black
+    rounded
+    w-full
+  }
+
+  :global(.nav-button) {
+    width: 100%;
+    @apply p-3
+    h-full;
+  }
+
+  :global(.nav-button:hover) {
+    @apply bg-slate-400;
+  }
+
+  :global(.selected-nav-button) {
+    @apply bg-slate-300;
   }
 </style>
