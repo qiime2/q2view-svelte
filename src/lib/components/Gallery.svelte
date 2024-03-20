@@ -21,7 +21,10 @@
         galleryJSON["img"] =  GALLERY_URL + galleryJSON["img"];
       } catch(error) {
         galleryJSON["title"] = "Missing Asset";
-        galleryJSON["desc"] = "Asset failed to load."
+        galleryJSON["desc"] = "This asset failed to load with the following " +
+          `error: "${error}." This could be a temporary local error resolved ` +
+          "by reloading the page, or it could be an issue with the site " +
+          "hosting the asset.";
       }
 
       galleryEntries.push(galleryJSON);
