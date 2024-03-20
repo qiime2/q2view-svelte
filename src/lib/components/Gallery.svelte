@@ -1,15 +1,29 @@
-<script lang='ts'>
-  import GalleryCard from './GalleryCard.svelte';
-  const GALLERY_URL = 'https://oddant1.github.io/q2view-gallery';
+<script lang="ts">
+  import GalleryCard from "./GalleryCard.svelte";
+  const GALLERY_URL = "https://oddant1.github.io/q2view-gallery";
 
   // TODO: Expect 404s and other such errors to happen here and handle them
   async function getGalleryCards() {
-    const indexJSON = await (await fetch(GALLERY_URL + '/gallery')).json();
+    let indexJSON;
     let galleryEntries = [];
 
-    for (const galleryEntry of Object.values(indexJSON)) {
-      let galleryJSON = await (await fetch(GALLERY_URL + galleryEntry)).json();
-      galleryJSON['img'] =  GALLERY_URL + galleryJSON['img'];
+    try {
+      indexJSON = await (await fetch(GALLERY_URL + "/gallery")).json();
+    } catch(error) {
+      return galleryEntries;
+    }
+
+    for(const galleryEntry of Object.values(indexJSON)) {
+      let galleryJSON = Object();
+
+      try {
+        galleryJSON = await (await fetch(GALLERY_URL + galleryEntry)).json();
+        galleryJSON["img"] =  GALLERY_URL + galleryJSON["img"];
+      } catch(error) {
+        galleryJSON["title"] = "Missing Asset";
+        galleryJSON["desc"] = "Asset failed to load."
+      }
+
       galleryEntries.push(galleryJSON);
     }
 
