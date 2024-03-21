@@ -76,6 +76,12 @@
 </div>
 
 <style lang="postcss">
+  span {
+    cursor: pointer;
+    color: blue;
+    text-decoration: underline;
+  }
+
   #positioned-container {
     position: absolute;
     top: 50px;
