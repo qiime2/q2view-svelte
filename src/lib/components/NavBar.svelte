@@ -137,12 +137,6 @@
 </nav>
 
 <style lang="postcss">
-  span {
-    cursor: pointer;
-    color: blue;
-    text-decoration: underline;
-  }
-
   #navbar {
     width: 100vw;
     box-shadow: rgb(153, 153, 153) 0px 1px 5px;
@@ -210,10 +204,10 @@
   }
 
   :global(.nav-button:hover) {
-    @apply bg-slate-400;
+    @apply bg-gray-300;
   }
 
   :global(.selected-nav-button) {
-    @apply bg-slate-300;
+    @apply bg-gray-200;
   }
 </style>

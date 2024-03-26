@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 ::selection {
-  @apply bg-blue-300
-    text-white;
+  background-color: rgb(51, 122, 183);
+  @apply text-white;
 }
 
 * {
@@ -33,31 +33,17 @@ h3 {
   font-size: 24px;
 }
 
-a:link {
-  color: (internal value);
+a {
+  color: rgb(51, 122, 183);
   text-decoration: underline;
-  cursor: auto;
-}
-
-a:visited {
-  color: (internal value);
-  text-decoration: underline;
-  cursor: auto;
-}
-
-a:link:active {
-  color: (internal value);
-}
-
-a:visited:active {
-  color: (internal value);
+  cursor: pointer;
 }
 
 .JSONTree {
-  --json-tree-operator-color: rgb(81, 132, 152);
-  --json-tree-arrow-color: rgb(81, 132, 151);
-  --json-tree-label-color: rgb(81, 132, 151);
-  --json-tree-property-color: rgb(81, 132, 151);
+  --json-tree-operator-color: rgb(51, 122, 183);
+  --json-tree-arrow-color: rgb(51, 122, 183);
+  --json-tree-label-color: rgb(51, 122, 183);
+  --json-tree-property-color: rgb(51, 122, 183);
   --json-tree-string-color: rgb(108, 128, 55);
   --json-tree-date-color: rgb(108, 128, 55);
   --json-tree-boolean-color: rgb(173, 103, 41);

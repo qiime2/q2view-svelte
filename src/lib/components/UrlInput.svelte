@@ -20,10 +20,10 @@
   {#if inputMode === 0}
     <p>
       You can also provide a link to
-      a <span on:click|preventDefault={() => {inputMode = 1}} role="button" >
-        file on Dropbox</span> or
-      a <span on:click|preventDefault={() => {inputMode = 2}} role="button">
-        file from the web</span>.
+      a <a on:click|preventDefault={() => {inputMode = 1}} role="button" >
+        file on Dropbox</a> or
+      a <a on:click|preventDefault={() => {inputMode = 2}} role="button">
+        file from the web</a>.
     </p>
   {:else}
     <div id="input">
@@ -84,12 +84,6 @@
 {/if}
 
 <style lang="postcss">
-  span {
-    cursor: pointer;
-    color: blue;
-    text-decoration: underline;
-  }
-
   #input {
     @apply flex
     border
@@ -109,9 +103,10 @@
   }
 
   #submit-button {
+    color: white;
+    background-color: rgb(51, 122, 183);
     border-left: 1px solid;
     @apply ml-auto
     px-2
-    bg-blue-400;
   }
 </style>

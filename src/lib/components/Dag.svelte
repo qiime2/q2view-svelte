@@ -51,10 +51,10 @@
       {
         selector: ":selected",
         css: {
-          "background-color": "rgb(81, 132, 151)",
-          "line-color": "rgb(81, 132, 151)",
-          "target-arrow-color": "rgb(81, 132, 151)",
-          "source-arrow-color": "rgb(81, 132, 151)"
+          "background-color": "rgb(51, 122, 183)",
+          "line-color": "rgb(51, 122, 183))",
+          "target-arrow-color": "rgb(51, 122, 183)",
+          "source-arrow-color": "rgb(51, 122, 183)"
         }
       }
     ]

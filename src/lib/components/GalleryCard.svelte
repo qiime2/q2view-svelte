@@ -24,9 +24,9 @@
   }
 
   .gallery-button {
+    color: white;
+    background-color: rgb(51, 122, 183);
     @apply border
-    bg-blue-400
     rounded-lg
-    p-1;
-  }
+    p-1;  }
 </style>

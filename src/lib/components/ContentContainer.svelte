@@ -23,11 +23,11 @@
       <p>
         This interface can view .qza and .qzv files directly in your browser
         without uploading to a server.
-        <span
+        <a
           on:click={() =>
             history.pushState({}, "", "/about/" + window.location.search)}
-          >Click here to learn more.</span
-        >
+          >Click here to learn more.
+        </a>
       </p>
       <DropZone />
       <UrlInput />
@@ -76,17 +76,12 @@
 </div>
 
 <style lang="postcss">
-  span {
-    cursor: pointer;
-    color: blue;
-    text-decoration: underline;
-  }
-
   #positioned-container {
     position: absolute;
     top: 50px;
     width: 100%;
     height: calc(100% - 50px);
+    left: calc(0% - 8px);
     overflow: auto;
     /* Prevent content from repositioning in Chromium when a scrollbar appears */
     scrollbar-gutter: stable both-edges;
@@ -100,12 +95,14 @@
   }
 
   .tab {
+    width: calc(100% + 8px);
     margin-top: 21px;
     grid-column: 1;
     grid-row: 1;
     visibility: visible;
     overflow: hidden;
-    @apply mb-4;
+    @apply mb-4
+    px-2;
   }
 
   .hidden-tab {

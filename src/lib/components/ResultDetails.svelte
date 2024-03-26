@@ -56,7 +56,7 @@
   }
 
   label {
-    color: rgb(81, 132, 152);
+    color: rgb(51, 122, 183);
   }
 
   #null {
