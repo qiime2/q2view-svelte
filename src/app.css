@@ -12,9 +12,9 @@
 }
 
 a {
-  cursor: pointer;
-  color: blue;
+  color: #6900ff;
   text-decoration: underline;
+  cursor: auto;
 }
 
 p {
@@ -31,6 +31,26 @@ h2 {
 
 h3 {
   font-size: 24px;
+}
+
+a:link {
+  color: (internal value);
+  text-decoration: underline;
+  cursor: auto;
+}
+
+a:visited {
+  color: (internal value);
+  text-decoration: underline;
+  cursor: auto;
+}
+
+a:link:active {
+  color: (internal value);
+}
+
+a:visited:active {
+  color: (internal value);
 }
 
 .JSONTree {
