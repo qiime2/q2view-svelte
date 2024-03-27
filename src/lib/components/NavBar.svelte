@@ -152,7 +152,7 @@
   #nav-container {
     @apply flex
     mx-auto
-    max-w-6xl
+    max-w-7xl
     px-10;
   }
 

@@ -91,7 +91,7 @@
     display: grid;
     @apply mx-auto
     px-10
-    max-w-6xl;
+    max-w-7xl;
   }
 
   .tab {
