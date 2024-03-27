@@ -34,8 +34,7 @@
       // files just ignore it
     } else if (files.length > 1) {
       alert("Please only provide a single file.");
-    }
-    else {
+    } else {
       readerModel.readData(files[0]);
     }
   }
