@@ -16,7 +16,7 @@
   }
 </script>
 
-<div style="text-align: center">
+<div style="text-align: center" class="py-4">
   {#if inputMode === 0}
     <p>
       You can also provide a link to
@@ -38,22 +38,24 @@
   {/if}
 </div>
 {#if inputMode === 1}
-  <h3>
-    Dropbox Instructions:
-  </h3>
-  <ol class="pl-10" style="list-style: decimal">
-    <li>
-      Find the file you would like to share.
-    </li>
-    <li>
-      Create a shared link to it.
-    </li>
-    <li>
-      Provide that link in the input form above and hit "Go!"
-    </li>
-  </ol>
+  <div class="pb-4">
+    <h3>
+      Dropbox Instructions:
+    </h3>
+    <ol class="pl-10" style="list-style: decimal">
+      <li>
+        Find the file you would like to share.
+      </li>
+      <li>
+        Create a shared link to it.
+      </li>
+      <li>
+        Provide that link in the input form above and hit "Go!"
+      </li>
+    </ol>
+  </div>
 {:else if inputMode === 2}
-  <div class="grid lg:grid-cols-2">
+  <div class="grid lg:grid-cols-2 pb-4">
     <div>
       <h3>
         Web URL Instructions
@@ -85,15 +87,18 @@
 
 <style lang="postcss">
   #input {
+    font-size: 20px;
+    height: 50px;
     @apply flex
     border
-    border-black
+    border-gray-300
     rounded-md;
   }
 
   #cancel-button {
     border-right: 1px solid;
-    @apply mr-auto
+    @apply border-gray-300
+    mr-auto
     px-2;
   }
 
@@ -106,7 +111,8 @@
     color: white;
     background-color: rgb(51, 122, 183);
     border-left: 1px solid;
-    @apply ml-auto
+    @apply border-gray-300
+    ml-auto
     px-2
   }
 </style>

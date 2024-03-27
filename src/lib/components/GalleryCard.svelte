@@ -19,6 +19,7 @@
 <style lang='postcss'>
   .gallery-card {
     @apply border
+    border-gray-300
     rounded-lg
     p-2;
   }
@@ -27,6 +28,7 @@
     color: white;
     background-color: rgb(51, 122, 183);
     @apply border
+    border-gray-300
     rounded-lg
     p-1;  }
 </style>

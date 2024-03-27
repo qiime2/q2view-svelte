@@ -20,7 +20,7 @@
     <div
       class={$url.pathname.replaceAll("/", "") === "" ? "tab" : "hidden-tab"}
     >
-      <p>
+      <p class="pb-4">
         This interface can view .qza and .qzv files directly in your browser
         without uploading to a server.
         <a
