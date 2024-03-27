@@ -49,4 +49,6 @@ a {
   --json-tree-boolean-color: rgb(173, 103, 41);
   --json-tree-number-color: rgb(173, 103, 40);
   --json-tree-null-color: rgb(173, 103, 40);
+  --json-tree-font-size: 14px;
+  --json-tree-font-family: Arial;
 }
