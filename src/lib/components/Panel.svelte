@@ -38,6 +38,7 @@
     @apply border-gray-300
     rounded-t-md
     p-2
+    px-4
     bg-gray-200;
   }
 
