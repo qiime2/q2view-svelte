@@ -110,7 +110,10 @@
   #submit-button {
     color: white;
     background-color: rgb(51, 122, 183);
+    overflow: hidden;
     border-left: 1px solid;
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
     @apply border-gray-300
     ml-auto
     px-2
