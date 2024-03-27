@@ -35,7 +35,7 @@
 </script>
 
 <h2>Gallery</h2>
-<p>Don&apos;t have a QIIME 2 result of your own to view? Try one of these?</p>
+<p class="pb-4">Don&apos;t have a QIIME 2 result of your own to view? Try one of these?</p>
 {#await getGalleryCards()}
   <h3>Fetching Gallery...</h3>
 {:then galleryCards}

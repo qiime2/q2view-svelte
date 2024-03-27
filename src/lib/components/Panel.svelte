@@ -17,27 +17,27 @@
 <style lang='postcss'>
   .headerless-panel {
     @apply border
-    border-black
+    border-gray-300
     rounded-md
-    p-2
-    mb-2;
+    p-4
+    mb-4;
   }
 
   .panel {
     @apply border
-    border-black
+    border-gray-300
     rounded-b-md
-    p-2
-    mb-2;
+    p-4
+    mb-4;
   }
 
   .panel-header {
     border-top-width: 1px;
     border-right-width: 1px;
     border-left-width: 1px;
-    @apply border-black
+    @apply border-gray-300
     rounded-t-md
-    pl-2
+    p-2
     bg-gray-200;
   }
 
@@ -46,7 +46,7 @@
     border-red-300
     rounded-md
     bg-red-100
-    p-2
+    p-4
     mr-2;
   }
 </style>

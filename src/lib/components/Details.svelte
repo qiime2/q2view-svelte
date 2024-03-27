@@ -31,7 +31,7 @@
 <style lang="postcss">
   #json {
     @apply border
-    border-black
+    border-gray-300
     bg-gray-100
     overflow-x-auto
     p-2

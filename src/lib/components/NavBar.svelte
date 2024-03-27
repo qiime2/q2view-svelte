@@ -166,7 +166,7 @@
     box-shadow: rgb(153, 153, 153) 0px 1px 5px;
     @apply absolute
     border
-    border-black
+    border-gray-300
     rounded
     h-auto
     p-1
@@ -176,7 +176,7 @@
 
   #dropdown-input {
     @apply border
-    border-black
+    border-gray-300
     rounded
     w-full
   }

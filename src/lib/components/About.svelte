@@ -123,6 +123,7 @@
 
   .border-bottom {
     border-bottom: 1px solid;
+    @apply border-gray-300;
   }
 
   p {
@@ -131,5 +132,6 @@
 
   th {
     border-bottom: 2px solid;
+    @apply border-gray-300;
   }
 </style>

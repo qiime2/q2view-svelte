@@ -30,5 +30,7 @@
     @apply border
     border-gray-300
     rounded-lg
-    p-1;  }
+    py-1
+    px-4;
+  }
 </style>
