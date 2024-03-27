@@ -26,7 +26,13 @@
   }
 
   $: if (files) {
-    if (files.length > 1) {
+    if (files.length < 1) {
+      // Do nothing.
+      //
+      // If you open the file input window then close it, you get an empty file
+      // list which can trigger this code. If this code was triggered with no
+      // files just ignore it
+    } else if (files.length > 1) {
       alert("Please only provide a single file.");
     }
     else {
