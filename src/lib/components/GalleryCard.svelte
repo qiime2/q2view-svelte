@@ -6,6 +6,8 @@
   export let desc: string;
   export let href: string;
 
+  // This function ensures that every time you click a "Try it!" button the referenced
+  // viz reloads entirely to have consistent behavior
   function galleryButton() {
     readerModel.clear();
     history.pushState({}, "", "/visualization/" + href);
