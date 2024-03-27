@@ -89,8 +89,10 @@
   }
 
   onMount(() => {
+    // Set this height so we center the DAG based on this height
     let displayHeight = (readerModel.height + 1) * 105;
     self.style.setProperty("height", `${displayHeight}px`);
+
     let lock = false; // used to prevent recursive event storms
     let selectedExists = false;
     let cy = cytoscape({
@@ -136,13 +138,23 @@
       }
     });
 
+    // Now center the DAG in the small canvas
     cy.center();
-    self.style.setProperty("height", "100vh");
+
+    // Now expand the canvas post facto to give them space to move things around
+    self.style.setProperty("height", `calc(2 * ${displayHeight}px)`);
   });
 </script>
 
 <div
   bind:this={self}
   id="cy"
-  class="pr-2 border border-gray-300"
 />
+
+<style lang="postcss">
+  #cy {
+    @apply mx-2
+    border
+    border-gray-300
+  }
+</style>
