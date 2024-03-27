@@ -52,7 +52,7 @@
         selector: ":selected",
         css: {
           "background-color": "rgb(51, 122, 183)",
-          "line-color": "rgb(51, 122, 183))",
+          "line-color": "rgb(51, 122, 183)",
           "target-arrow-color": "rgb(51, 122, 183)",
           "source-arrow-color": "rgb(51, 122, 183)"
         }

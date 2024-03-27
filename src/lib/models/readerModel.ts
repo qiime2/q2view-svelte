@@ -130,7 +130,6 @@ class ReaderModel {
       src = `https://dl.dropboxusercontent.com${path}`;
     }
 
-    console.log(src);
     return await this._getRemoteFile(src);
   }
 

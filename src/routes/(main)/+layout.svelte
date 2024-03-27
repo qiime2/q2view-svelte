@@ -9,7 +9,6 @@
   import NavBar from "$lib/components/NavBar.svelte";
   import ContentContainer from "$lib/components/ContentContainer.svelte";
 
-  let currentSrc = "";
   const uuid4Regex = /[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}/;
 
   onMount(() => {
@@ -41,7 +40,7 @@
     const newSrc = $url.searchParams.get("src");
     const newTab = $url.pathname.replaceAll("/", "");
 
-    if (newTab !== "error" && newSrc !== currentSrc) {
+    if (newTab !== "error" && newSrc !== readerModel.rawSrc) {
       // We have a local source
       if (uuid4Regex.test(newSrc)) {
         // We have a local source that does not match our currently loaded data.
@@ -71,8 +70,6 @@
           readerModel.clear();
         }
       }
-
-      currentSrc = newSrc;
     }
   }
 </script>

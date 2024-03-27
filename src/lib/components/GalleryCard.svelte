@@ -1,8 +1,15 @@
 <script lang="ts">
+  import readerModel from "$lib/models/readerModel";
+
   export let img: string;
   export let title: string;
   export let desc: string;
   export let href: string;
+
+  function galleryButton() {
+    readerModel.clear();
+    history.pushState({}, "", "/visualization/" + href);
+  }
 </script>
 
 <div class="gallery-card">
@@ -10,7 +17,7 @@
   <img src={img} alt={title}>
   <p style="font-size: 14px">{desc}</p>
   <p class="text-right" style="font-size: 14px">
-    <button class="gallery-button" on:click={() => (history.pushState({}, "", href))}>
+    <button class="gallery-button" on:click={galleryButton}>
       Try it!
     </button>
   </p>
