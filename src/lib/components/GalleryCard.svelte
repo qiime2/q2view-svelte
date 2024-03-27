@@ -36,8 +36,7 @@
   .gallery-button {
     color: white;
     background-color: rgb(51, 122, 183);
-    @apply border
-    border-gray-300
+    @apply
     rounded-lg
     py-1
     px-4;
