@@ -137,11 +137,12 @@
     });
 
     cy.center();
+    self.style.setProperty("height", "100vh");
   });
 </script>
 
 <div
   bind:this={self}
   id="cy"
-  class="pr-2"
+  class="pr-2 border border-gray-300"
 />
