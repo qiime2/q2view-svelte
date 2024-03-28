@@ -65,7 +65,7 @@
     </ul>
     {#if $readerModel.indexPath || $readerModel.rawSrc}
       <div class="nav-section flex ml-auto lg:hidden">
-        <button use:melt={$triggerCollapsible} class="nav-button">
+        <button use:melt={$triggerCollapsible} class={$openCollapsible ? "selected-nav-button" : "nav-button"}>
           {#if $openCollapsible}
             <svg
               fill="none"
@@ -222,6 +222,9 @@
   }
 
   :global(.selected-nav-button) {
-    @apply bg-gray-200;
+    width: 100%;
+    @apply p-3
+    h-full
+    bg-gray-200;
   }
 </style>
