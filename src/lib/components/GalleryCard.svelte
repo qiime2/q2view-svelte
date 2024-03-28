@@ -36,7 +36,6 @@
   .gallery-button {
     @apply border
     bg-blue-700
-    border-gray-300
     text-white
     rounded-md
     py-1
