@@ -42,18 +42,18 @@
     // Return difference in widths, this is the width of the scrollbar
     return (withoutScrollWidth - withScrollWidth);
   };
-
-  $: console.log(getScrollBarWidth());
 </script>
 
 <!-- The width and left are calculated to fill the scroll-gutters on the
-   positioned-container -->
+   positioned-container.
+
+  The +8px is to make up for the positioning of the positioned container-->
 <iframe
   id="iframe"
   frameborder="0"
   src={$readerModel.indexPath}
-  style:width={getScrollBarWidth() == 0 ? "100%" : `calc(100% + 1.5 * ${getScrollBarWidth()}px)`}
-  style:left={getScrollBarWidth() == 0 ? "0%" : `calc(0% - ${getScrollBarWidth() / 2}px)`}
+  style:width={`calc(100% + 2 * ${getScrollBarWidth()}px)`}
+  style:left={`calc(0% - ${getScrollBarWidth()}px + 8px)`}
 />
 
 <!-- Position this manually so it takes up basically the entire viewport -->
