@@ -23,6 +23,8 @@
   {#if readerModel.citations !== undefined}
     <a href={getDownload()} download={`${$readerModel.metadata.uuid}.bib`} style="float: right">Download</a>
     <pre id="json">{$readerModel.citations}</pre>
+  {:else}
+    <pre id="json">No Citations</pre>
   {/if}
 </Panel>
 
