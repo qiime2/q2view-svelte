@@ -32,13 +32,13 @@
     border-gray-300
     rounded-lg
     p-2
-    pb-10;
+    pb-11;
   }
 
   .gallery-button {
     position: absolute;
-    bottom: 4px;
-    right: 4px;
+    bottom: 8px;
+    right: 8px;
     @apply border
     bg-blue-700
     text-white
