@@ -55,7 +55,7 @@
 >
   <input id="dropinput" bind:files type="file" accept=".qza, .qzv"/>
   <div class="text-xl text-gray-700 text-center">
-    <h1 class="mt-2.5 text-3xl">Drag and drop or click here</h1>
+    <h1 class="mt-2.5 mb-1 text-4xl">Drag and drop or click here</h1>
     to view a QIIME 2 Artifact or Visualization (.qza/.qzv) from your computer.
   </div>
 </div>
