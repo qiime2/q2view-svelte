@@ -18,7 +18,7 @@
   <h3 style="font-size: 24px;">{title}</h3>
   <img src={img} alt={title}>
   <p style="font-size: 14px">{desc}</p>
-  <p class="text-right" style="font-size: 14px">
+  <p class="galler-button-wrapper" style="font-size: 14px">
     <button class="gallery-button" on:click={galleryButton}>
       Try it!
     </button>
@@ -27,13 +27,18 @@
 
 <style lang='postcss'>
   .gallery-card {
+    position: relative;
     @apply border
     border-gray-300
     rounded-lg
-    p-2;
+    p-2
+    pb-10;
   }
 
   .gallery-button {
+    position: absolute;
+    bottom: 4px;
+    right: 4px;
     @apply border
     bg-blue-700
     text-white
