@@ -65,33 +65,35 @@
     </ul>
     {#if $readerModel.indexPath || $readerModel.rawSrc}
       <div class="nav-section flex ml-auto lg:hidden">
-        <button use:melt={$triggerCollapsible} class="btn p-3">
+        <button use:melt={$triggerCollapsible} class="nav-button">
           {#if $openCollapsible}
             <svg
               fill="none"
-              viewBox="0 0 24 24"
-              class="inline-block h-6 w-6 stroke-current"
+              viewBox="0 0 20 20"
+              class="nav-thumbnail"
             >
               <title>Close Dropdown</title>
               <path
                 stroke-linecap="round"
                 stroke-linejoin="round"
-                stroke-width="2"
-                d="M6 18L18 6M6 6l12 12"
+                stroke-width="3"
+                stroke="black"
+                d="M2 18L18 2M18 18L2 2"
               />
             </svg>
           {:else}
             <svg
               fill="none"
-              viewBox="0 0 24 24"
-              class="inline-block h-6 w-6 stroke-current"
+              viewBox="0 0 20 20"
+              class="nav-thumbnail"
             >
               <title>Open Dropdown</title>
               <path
                 stroke-linecap="round"
                 stroke-linejoin="round"
-                stroke-width="2"
-                d="M4 6h16M4 12h16M4 18h16"
+                stroke-width="3"
+                stroke="black"
+                d="M2 2L18 2M2 10L18 10M2 18L18 18"
               />
             </svg>
           {/if}
@@ -133,15 +135,15 @@
             }}>
             <svg
               fill="none"
-              viewBox="0 0 24 24"
-              class="inline-block h-6 w-6 stroke-current"
+              viewBox="0 0 20 20"
+              class="nav-thumbnail"
             >
               <path
                 stroke-linecap="round"
                 stroke-linejoin="round"
-                stroke-width="2"
+                stroke-width="3"
                 stroke="rgb(119, 119, 119)"
-                d="M6 18L18 6M6 6l12 12"
+                d="M2 18L18 2M18 18L2 2"
               />
             </svg>
           </button>
