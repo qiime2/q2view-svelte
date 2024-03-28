@@ -64,7 +64,7 @@
       <NavButtons {readerModel} />
     </ul>
     {#if $readerModel.indexPath || $readerModel.rawSrc}
-      <div class="nav-section flex lg:hidden">
+      <div class="nav-section flex ml-auto lg:hidden">
         <button use:melt={$triggerCollapsible} class="btn p-3">
           {#if $openCollapsible}
             <svg
@@ -186,10 +186,6 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-  }
-
-  .nav-section {
-    @apply ml-auto;
   }
 
   .nav-thumbnail {
