@@ -74,8 +74,6 @@
             >
               <title>Close Dropdown</title>
               <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
                 stroke-width="3"
                 stroke="black"
                 d="M2 18L18 2M18 18L2 2"
@@ -89,8 +87,6 @@
             >
               <title>Open Dropdown</title>
               <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
                 stroke-width="3"
                 stroke="black"
                 d="M2 2L18 2M2 10L18 10M2 18L18 18"
@@ -139,8 +135,6 @@
               class="nav-thumbnail"
             >
               <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
                 stroke-width="3"
                 stroke="rgb(119, 119, 119)"
                 d="M2 18L18 2M18 18L2 2"
