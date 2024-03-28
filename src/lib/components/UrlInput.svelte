@@ -10,8 +10,11 @@
     }
     else {
       let inputURL = inputElement.value;
-      inputMode = 0;
-      history.pushState({}, "", "/?src="+inputURL);
+
+      if (inputURL) {
+        inputMode = 0;
+        history.pushState({}, "", "/?src="+inputURL);
+      }
     }
   }
 </script>
