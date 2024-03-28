@@ -72,7 +72,7 @@
               viewBox="0 0 20 20"
               class="nav-thumbnail"
             >
-              <title>Close Dropdown</title>
+              <title>Close Collapsible</title>
               <path
                 stroke-width="3"
                 stroke="black"
@@ -85,7 +85,7 @@
               viewBox="0 0 20 20"
               class="nav-thumbnail"
             >
-              <title>Open Dropdown</title>
+              <title>Open Collapsible</title>
               <path
                 stroke-width="3"
                 stroke="black"
