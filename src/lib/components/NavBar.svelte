@@ -98,8 +98,8 @@
         </button>
       </div>
     {/if}
-    {#if $readerModel.sourceType === "remote"}
-      <ul class="flex">
+    <ul class="flex">
+      {#if $readerModel.sourceType === "remote"}
         <li>
           <button use:melt={$triggerDropdown} class="nav-button">
             <img class="nav-thumbnail" src="/images/link-grey.png" alt="Link" />
@@ -124,8 +124,29 @@
             <img class="nav-thumbnail" src="/images/download-grey.png" alt="Download" />
           </button>
         </li>
-      </ul>
-    {/if}
+      {/if}
+      {#if $readerModel.indexPath || $readerModel.rawSrc}
+        <li>
+          <button class="nav-button" on:click={() => {
+              readerModel.clear();
+              history.pushState({}, "", "/");
+            }}>
+            <svg
+              fill="none"
+              viewBox="0 0 24 24"
+              class="inline-block h-6 w-6 stroke-current"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+        </li>
+      {/if}
+    </ul>
   </div>
   <div id="nav-dropdown">
     {#if $openCollapsible}
