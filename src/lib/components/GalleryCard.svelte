@@ -34,12 +34,16 @@
   }
 
   .gallery-button {
-    color: white;
-    background-color: rgb(51, 122, 183);
     @apply border
+    bg-blue-700
     border-gray-300
+    text-white
     rounded-md
     py-1
     px-4;
+  }
+
+  .gallery-button:hover {
+    @apply bg-blue-800;
   }
 </style>

@@ -1,4 +1,6 @@
 <script lang="ts">
+  import "../../app.css";
+
   import { onMount } from "svelte";
 
   import readerModel from "$lib/models/readerModel";
@@ -51,10 +53,10 @@
       {
         selector: ":selected",
         css: {
-          "background-color": "rgb(51, 122, 183)",
-          "line-color": "rgb(51, 122, 183)",
-          "target-arrow-color": "rgb(51, 122, 183)",
-          "source-arrow-color": "rgb(51, 122, 183)"
+          "background-color": "rgb(29, 78, 216)",
+          "line-color": "rgb(29, 78, 216)",
+          "target-arrow-color": "rgb(29, 78, 216)",
+          "source-arrow-color": "rb(29, 78, 216)"
         }
       }
     ]

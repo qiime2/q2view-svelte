@@ -2,19 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --tailwind-blue-700: rgb(29, 78, 216);
+  --tailwind-green-700: rgb(21, 128, 61);
+  --tailwind-red-700: rgb(185, 28, 28);
+}
+
 ::selection {
-  background-color: rgb(51, 122, 183);
-  @apply text-white;
+  @apply text-white
+  bg-blue-700;
 }
 
 * {
   font-family: Arial;
-}
-
-a {
-  color: #6900ff;
-  text-decoration: underline;
-  cursor: auto;
 }
 
 p {
@@ -34,21 +34,21 @@ h3 {
 }
 
 a {
-  color: rgb(51, 122, 183);
   text-decoration: underline;
   cursor: pointer;
+  @apply text-blue-700;
 }
 
 .JSONTree {
-  --json-tree-operator-color: rgb(51, 122, 183);
-  --json-tree-arrow-color: rgb(51, 122, 183);
-  --json-tree-label-color: rgb(51, 122, 183);
-  --json-tree-property-color: rgb(51, 122, 183);
-  --json-tree-string-color: rgb(108, 128, 55);
-  --json-tree-date-color: rgb(108, 128, 55);
-  --json-tree-boolean-color: rgb(173, 103, 41);
-  --json-tree-number-color: rgb(173, 103, 40);
-  --json-tree-null-color: rgb(173, 103, 40);
+  --json-tree-operator-color: var(--tailwind-blue-700);
+  --json-tree-arrow-color: var(--tailwind-blue-700);
+  --json-tree-label-color: var(--tailwind-blue-700);
+  --json-tree-property-color: var(--tailwind-blue-700);
+  --json-tree-string-color: var(--tailwind-green-700);
+  --json-tree-date-color: var(--tailwind-green-700);
+  --json-tree-boolean-color: var(--tailwind-red-700);
+  --json-tree-number-color: var(--tailwind-red-700);
+  --json-tree-null-color: var(--tailwind-red-700);
   --json-tree-font-size: 14px;
   --json-tree-font-family: Arial;
 }

@@ -98,8 +98,13 @@
   #cancel-button {
     border-right: 1px solid;
     @apply border-gray-300
+    bg-gray-100
     mr-auto
     px-2;
+  }
+
+  #cancel-button:hover {
+    @apply bg-gray-300;
   }
 
   #URLInput {
@@ -109,13 +114,17 @@
 
   #submit-button {
     color: white;
-    background-color: rgb(51, 122, 183);
     overflow: hidden;
     border-left: 1px solid;
     border-top-right-radius: 6px;
     border-bottom-right-radius: 6px;
     @apply border-gray-300
+    bg-blue-700
     ml-auto
     px-2
+  }
+
+  #submit-button:hover {
+    @apply bg-blue-800;
   }
 </style>
