@@ -35,6 +35,7 @@
     bg-gray-100
     overflow-x-auto
     p-2
-    text-xs;
+    text-xs
+    mt-2;
   }
 </style>
