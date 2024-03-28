@@ -52,8 +52,8 @@
   id="iframe"
   frameborder="0"
   src={$readerModel.indexPath}
-  style:width={`calc(100% + 1.5 * ${getScrollBarWidth()}px)`}
-  style:left={`calc(0% - ${getScrollBarWidth() / 2}px)`}
+  style:width={getScrollBarWidth() == 0 ? "100%" : `calc(100% + 1.5 * ${getScrollBarWidth()}px)`}
+  style:left={getScrollBarWidth() == 0 ? "0%" : `calc(0% - ${getScrollBarWidth() / 2}px)`}
 />
 
 <!-- Position this manually so it takes up basically the entire viewport -->
