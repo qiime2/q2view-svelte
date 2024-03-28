@@ -51,7 +51,7 @@
         TypeError: NetworkError when attempting to fetch resource.
       </div>
     </div>
-    <p>
+    <p class="pt-4">
       This can happen for a variety of reasons, but the most common are either the URL
       does not exist, you&apos;ve lost your internet connection, or the server does not
       support CORS and must set the <a href="#headers">required headers</a>.
@@ -62,7 +62,7 @@
       Error: Can&apos;t find end of central directory : is this a zip file ?
       If it is, see http://stuk.github.io/jszip/documentation/howto/read_zip.html
     </div>
-    <p>
+    <p class="pt-4">
       What you have provided is not a QIIME 2 .qza or .qzv file. It is possible that
       q2view is seeing an HTML page which may contain a .qza/.qzv file. If that is the
       case, try to find the link that is a <em>direct download</em> and provide that
@@ -71,7 +71,7 @@
   </Panel>
   <Panel>
     <div class="danger-panel">Error: Not a valid QIIME 2 archive.</div>
-    <p>
+    <p class="pt-4">
       The file you have provided is a .zip file, not a .qza or .qzv file (or there is
       something terribly wrong with your .qza/.qzv file). This interface only works
       on QIIME 2 files.
@@ -89,19 +89,19 @@
   </p>
   <table class="table">
     <thead>
-      <tr>
+      <tr class="my-4">
         <th>Header Name</th>
         <th>Header Value</th>
         <th>Notes</th>
       </tr>
     </thead>
     <tbody>
-      <tr class="border-bottom">
+      <tr class="border-bottom my-4">
         <td>Access-Control-Allow-Origin</td>
         <td>view.qiime2.org</td>
         <td>(using * as the value is also acceptable)</td>
       </tr>
-      <tr>
+      <tr class="my-4">
         <td>Access-Control-Allow-Methods</td>
         <td>GET, HEAD</td>
         <td>(more methods may be provided, but these must at least be present)</td>
@@ -118,7 +118,7 @@
   .table {
     @apply text-left
     w-full
-    mb-2;
+    mb-4;
   }
 
   .border-bottom {
@@ -126,12 +126,21 @@
     @apply border-gray-300;
   }
 
+  h2 {
+    @apply pb-4;
+  }
+
   p {
-    @apply pb-2;
+    @apply pb-4;
   }
 
   th {
     border-bottom: 2px solid;
-    @apply border-gray-300;
+    @apply border-gray-300
+    py-2;
+  }
+
+  td {
+    @apply py-2;
   }
 </style>
