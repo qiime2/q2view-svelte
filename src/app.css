@@ -17,10 +17,6 @@
   font-family: Arial;
 }
 
-p {
-  font-size: 18px;
-}
-
 h1 {
   font-size: 36px;
 }
@@ -33,10 +29,20 @@ h3 {
   font-size: 24px;
 }
 
-a {
-  text-decoration: underline;
-  cursor: pointer;
+p {
+  font-size: 18px;
+}
+
+a:link {
   @apply text-blue-700;
+}
+
+a:visited {
+  @apply text-purple-700;
+}
+
+a:hover{
+  @apply text-blue-800;
 }
 
 .JSONTree {

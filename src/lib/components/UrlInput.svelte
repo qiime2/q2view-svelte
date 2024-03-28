@@ -20,9 +20,9 @@
   {#if inputMode === 0}
     <p>
       You can also provide a link to
-      a <a on:click|preventDefault={() => {inputMode = 1}} role="button" >
+      a <a href="#" on:click|preventDefault={() => {inputMode = 1}} role="button" >
         file on Dropbox</a> or
-      a <a on:click|preventDefault={() => {inputMode = 2}} role="button">
+      a <a href="#" on:click|preventDefault={() => {inputMode = 2}} role="button">
         file from the web</a>.
     </p>
   {:else}

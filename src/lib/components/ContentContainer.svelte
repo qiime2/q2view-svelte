@@ -24,6 +24,7 @@
         This interface can view .qza and .qzv files directly in your browser
         without uploading to a server.
         <a
+          href="#"
           on:click={() =>
             history.pushState({}, "", "/about/" + window.location.search)}
           >Click here to learn more.
