@@ -134,6 +134,7 @@
               viewBox="0 0 20 20"
               class="nav-thumbnail"
             >
+              <title>Unload File</title>
               <path
                 stroke-width="3"
                 stroke="rgb(119, 119, 119)"
