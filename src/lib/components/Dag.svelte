@@ -56,7 +56,7 @@
           "background-color": "rgb(29, 78, 216)",
           "line-color": "rgb(29, 78, 216)",
           "target-arrow-color": "rgb(29, 78, 216)",
-          "source-arrow-color": "rb(29, 78, 216)"
+          "source-arrow-color": "rgb(29, 78, 216)"
         }
       }
     ]
