@@ -37,6 +37,10 @@ self.addEventListener("fetch", (fetchEvent) => {
         clients.forEach((client) => {
           const channel = new MessageChannel();
           channel.port1.onmessage = (event) => {
+            if (event.data.type === "error") {
+              resolve(new Response(null, { status: 404 }));
+            }
+
             const blob = new Blob([event.data.byteArray], {
               type: event.data.type,
             });
@@ -44,9 +48,6 @@ self.addEventListener("fetch", (fetchEvent) => {
             if (!event.data.type) {
               // unknown extension, so invoke download dialog
               init.headers = { "Content-Disposition": "attachment" };
-            }
-            if (event.data.type === "error") {
-              resolve(new Response(blob, { status: 404 }));
             }
             resolve(new Response(blob, init));
           };
