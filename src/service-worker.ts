@@ -45,6 +45,9 @@ self.addEventListener("fetch", (fetchEvent) => {
               // unknown extension, so invoke download dialog
               init.headers = { "Content-Disposition": "attachment" };
             }
+            if (event.data.type === "error") {
+              resolve(new Response(blob, {status: 404}));
+            }
             resolve(new Response(blob, init));
           };
 
