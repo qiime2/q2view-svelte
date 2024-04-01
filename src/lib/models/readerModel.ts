@@ -285,7 +285,12 @@ class ReaderModel {
               // the request should provide a port for later response
               event.ports[0].postMessage(data);
             })
-            .catch((error) => console.error(error)); // eslint-disable-line no-console
+            .catch((error) => {
+              console.error(error);
+              // Post a "we got an error" response asap to avoid the browser
+              // waiting on a file that will never exist
+              event.ports[0].postMessage({ data: "", type: "error" });
+            }); // eslint-disable-line no-console
           break;
         default:
           console.log(`Unknown SW event type: ${event.data.type}`); // eslint-disable-line no-console
