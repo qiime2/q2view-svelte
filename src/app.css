@@ -43,7 +43,7 @@ a:visited {
   @apply text-purple-700;
 }
 
-a:hover{
+a:hover {
   @apply text-blue-800;
 }
 
