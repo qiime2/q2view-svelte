@@ -35,6 +35,7 @@
     } else if (files.length > 1) {
       alert("Please only provide a single file.");
     } else {
+      readerModel.clear();
       readerModel.readData(files[0]);
     }
   }

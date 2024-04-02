@@ -1,4 +1,6 @@
 <script lang="ts">
+  import readerModel from "$lib/models/readerModel";
+
   let inputMode = 0;
 
   function resolveURL() {
@@ -13,6 +15,7 @@
 
       if (inputURL) {
         inputMode = 0;
+        readerModel.clear();
         history.pushState({}, "", "/?src="+inputURL);
       }
     }
