@@ -18,7 +18,7 @@
   <h3 style="font-size: 24px;" class="pb-2">{title}</h3>
   <img src={img} alt={title} class="pb-2">
   <p style="font-size: 14px">{desc}</p>
-  <p class="galler-button-wrapper" style="font-size: 14px">
+  <p style="font-size: 14px">
     <button class="gallery-button" on:click={galleryButton}>
       Try it!
     </button>
