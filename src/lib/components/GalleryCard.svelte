@@ -15,8 +15,8 @@
 </script>
 
 <div class="gallery-card">
-  <h3 style="font-size: 24px;">{title}</h3>
-  <img src={img} alt={title}>
+  <h3 style="font-size: 24px;" class="pb-1">{title}</h3>
+  <img src={img} alt={title} class="pb-1">
   <p style="font-size: 14px">{desc}</p>
   <p class="galler-button-wrapper" style="font-size: 14px">
     <button class="gallery-button" on:click={galleryButton}>
