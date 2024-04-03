@@ -95,14 +95,14 @@
   #input {
     font-size: 20px;
     height: 50px;
+    border-radius: 6px;
     @apply flex
     border
-    border-gray-300
-    rounded-md;
+    border-gray-300;
   }
 
   #cancel-button {
-    border-top-leftradius: 6px;
+    border-top-left-radius: 6px;
     border-bottom-left-radius: 6px;
     border-right: 1px solid;
     @apply border-gray-300
