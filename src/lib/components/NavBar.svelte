@@ -57,15 +57,38 @@
       <img id="navlogo" src="/images/q2view.png" alt="QIIME 2 view logo" />
     </button>
     {#if $readerModel.name}
-      <div class="nav-section flex hidden lg:block" id="file-text">
-        File: {$readerModel.name}
-      </div>
+      <ul class="mx-auto flex">
+        <li class="hidden lg:block" id="file-text">
+          File: {$readerModel.name}
+        </li>
+        {#if $readerModel.indexPath || $readerModel.rawSrc}
+          <li>
+            <button class="nav-button" on:click={() => {
+                readerModel.clear();
+                history.pushState({}, "", "/");
+              }}>
+              <svg
+                fill="none"
+                viewBox="0 0 20 20"
+                class="nav-thumbnail"
+              >
+                <title>Unload File</title>
+                <path
+                  stroke-width="3"
+                  stroke="rgb(119, 119, 119)"
+                  d="M2 18L18 2M18 18L2 2"
+                />
+              </svg>
+            </button>
+          </li>
+        {/if}
+      </ul>
     {/if}
-    <ul class="nav-section hidden lg:flex">
+    <ul class="hidden lg:flex">
       <NavButtons {readerModel} />
     </ul>
     {#if $readerModel.indexPath || $readerModel.rawSrc}
-      <div class="nav-section flex ml-auto lg:hidden">
+      <div class="flex ml-auto lg:hidden">
         <button use:melt={$triggerCollapsible} class={$openCollapsible ? "selected-nav-button" : "nav-button"}>
           {#if $openCollapsible}
             <svg
@@ -124,27 +147,6 @@
           </button>
         </li>
       {/if}
-      {#if $readerModel.indexPath || $readerModel.rawSrc}
-        <li>
-          <button class="nav-button" on:click={() => {
-              readerModel.clear();
-              history.pushState({}, "", "/");
-            }}>
-            <svg
-              fill="none"
-              viewBox="0 0 20 20"
-              class="nav-thumbnail"
-            >
-              <title>Unload File</title>
-              <path
-                stroke-width="3"
-                stroke="rgb(119, 119, 119)"
-                d="M2 18L18 2M18 18L2 2"
-              />
-            </svg>
-          </button>
-        </li>
-      {/if}
     </ul>
   </div>
   <div id="nav-dropdown">
@@ -161,8 +163,6 @@
     width: 100vw;
     box-shadow: rgb(153, 153, 153) 0px 1px 5px;
     background-color: #f8f8f8;
-    /* Prevent content from repositioning in Chromium when a scrollbar appears */
-    /* scrollbar-gutter: stable both-edges; */
     @apply fixed
     z-10
     top-0
