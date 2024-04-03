@@ -102,6 +102,8 @@
   }
 
   #cancel-button {
+    border-top-leftradius: 6px;
+    border-bottom-left-radius: 6px;
     border-right: 1px solid;
     @apply border-gray-300
     bg-gray-100
