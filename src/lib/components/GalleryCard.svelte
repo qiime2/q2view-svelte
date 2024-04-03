@@ -39,8 +39,7 @@
     position: absolute;
     bottom: 8px;
     right: 8px;
-    @apply border
-    bg-blue-700
+    @apply bg-blue-700
     text-white
     rounded-md
     py-1

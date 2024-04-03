@@ -80,9 +80,10 @@
   #positioned-container {
     position: absolute;
     top: 50px;
-    width: calc(100% + 8px);
+    /* left: calc(0% + 10px); */
+    /* width: calc(100% + 10px); */
+    width: 100%;
     height: calc(100% - 50px);
-    left: calc(0% - 8px);
     overflow: auto;
     /* Prevent content from repositioning in Chromium when a scrollbar appears */
     scrollbar-gutter: stable both-edges;
@@ -96,14 +97,13 @@
   }
 
   .tab {
-    width: calc(100% + 8px);
     margin-top: 21px;
     grid-column: 1;
     grid-row: 1;
     visibility: visible;
     overflow: hidden;
-    @apply mb-4
-    px-2;
+    padding-right: 10px;
+    @apply mb-4;
   }
 
   .hidden-tab {

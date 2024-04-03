@@ -7,6 +7,7 @@
   import url from "$lib/scripts/url-store";
 
   import NavButtons from "$lib/components/NavButtons.svelte";
+  import { getScrollBarWidth } from "$lib/scripts/util";
 
   import { createCollapsible, createDropdownMenu, melt } from "@melt-ui/svelte";
   import { slide, fly } from "svelte/transition";
@@ -48,7 +49,7 @@
   }
 </script>
 
-<nav id="navbar" use:melt={$root}>
+<nav id="navbar" style:padding-right={`${getScrollBarWidth()}px`} style:padding-left={`${getScrollBarWidth()}px`} use:melt={$root}>
   <div id="nav-container">
     <button
       on:click={() => history.pushState({}, "", "/" + window.location.search)}
@@ -160,8 +161,9 @@
     width: 100vw;
     box-shadow: rgb(153, 153, 153) 0px 1px 5px;
     background-color: #f8f8f8;
+    /* Prevent content from repositioning in Chromium when a scrollbar appears */
+    /* scrollbar-gutter: stable both-edges; */
     @apply fixed
-    rounded-none
     z-10
     top-0
     left-0
