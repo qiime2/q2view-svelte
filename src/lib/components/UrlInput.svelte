@@ -95,44 +95,58 @@
   #input {
     font-size: 20px;
     height: 50px;
-    border-radius: 6px;
-    @apply flex
-    border
-    border-gray-300;
+    @apply flex;
   }
 
   #cancel-button {
-    border-top-left-radius: 6px;
-    border-bottom-left-radius: 6px;
-    border-right: 1px solid;
-    @apply border-gray-300
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    @apply border
+    border-gray-300
     bg-gray-100
     mr-auto
     px-2;
   }
 
   #cancel-button:hover {
-    @apply bg-gray-300;
+    @apply border
+    border-gray-400
+    bg-gray-300;
   }
 
   #URLInput {
-    @apply w-full
+    border-top: 1px solid;
+    border-bottom: 1px solid;
+    @apply border-gray-300
+    w-full
     px-2;
+  }
+
+  #URLInput:focus {
+    z-index: 2;
+    outline: 1px solid;
+    margin: 1px 0px;
+    box-shadow: 0px 0px 5px rgb(59, 130, 246);
+    @apply border-none
+    outline-blue-400
+    w-full
+    px-2
   }
 
   #submit-button {
     color: white;
-    overflow: hidden;
-    border-left: 1px solid;
-    border-top-right-radius: 6px;
-    border-bottom-right-radius: 6px;
-    @apply border-gray-300
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    @apply border
+    border-blue-800
     bg-blue-700
     ml-auto
     px-2
   }
 
   #submit-button:hover {
-    @apply bg-blue-800;
+    @apply border
+    border-blue-900
+    bg-blue-800;
   }
 </style>
