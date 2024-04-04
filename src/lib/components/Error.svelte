@@ -7,7 +7,7 @@
   <h1 class="pb-2">{$readerModel.error}</h1>
   <Panel>
     <div class="danger-panel">
-      <div role="alert" class="pb-2">
+      <div role="alert">
         {$readerModel.errorMessage}
       </div>
     </div>
