@@ -34,13 +34,12 @@
   //
   // Case 4, The src changed and it is now empty:
   //  Reset the readerModel because we no longer have data.
-  //
-  // NOTE: If we were redirected to the error page we skip this.
   $: {
+    console.log("HERE");
     const newSrc = $url.searchParams.get("src");
     const newTab = $url.pathname.replaceAll("/", "");
 
-    if (newTab !== "error" && newSrc !== readerModel.rawSrc) {
+    if (newSrc !== readerModel.rawSrc) {
       // We have a local source
       if (uuid4Regex.test(newSrc)) {
         // We have a local source that does not match our currently loaded data.

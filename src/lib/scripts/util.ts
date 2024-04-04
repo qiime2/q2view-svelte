@@ -67,7 +67,7 @@ export function handleError(msg, error = "Something went wrong!") {
   readerModel.error = error;
   readerModel.errorMessage = msg;
   readerModel._dirty();
-  history.replaceState({}, "", "/error/");
+  history.replaceState({}, "", `/error/?src=${readerModel.urlSrc}`);
 }
 
 // TODO: Maybe we calculate this once then memoize it? Is it possible for it to
