@@ -48,6 +48,8 @@
     }
   }
 
+  // If we are navigating away from the error page then we want to clean out
+  // the errored state and push clean state
   function navLogoClicked() {
     if ($url.pathname.replaceAll("/", "") === "error") {
       $readerModel.clear();
