@@ -48,7 +48,7 @@
     }
   }
 
-  function buttonClicked() {
+  function navLogoClicked() {
     if ($url.pathname.replaceAll("/", "") === "error") {
       $readerModel.clear();
       history.pushState({}, "", "/");
@@ -60,7 +60,7 @@
 
 <nav id="navbar" style:padding-right={`${getScrollBarWidth()}px`} style:padding-left={`${getScrollBarWidth()}px`} use:melt={$root}>
   <div id="nav-container">
-    <button on:click={buttonClicked}>
+    <button on:click={navLogoClicked}>
       <img id="navlogo" src="/images/q2view.png" alt="QIIME 2 view logo" />
     </button>
     {#if $readerModel.name}
