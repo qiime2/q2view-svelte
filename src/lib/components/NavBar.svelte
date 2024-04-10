@@ -47,13 +47,20 @@
       positioned_container.style.height = `calc(100% - ${offset}px)`;
     }
   }
+
+  function buttonClicked() {
+    if ($url.pathname.replaceAll("/", "") === "error") {
+      $readerModel.clear();
+      history.pushState({}, "", "/");
+    } else {
+      history.pushState({}, "", "/" + window.location.search);
+    }
+  }
 </script>
 
 <nav id="navbar" style:padding-right={`${getScrollBarWidth()}px`} style:padding-left={`${getScrollBarWidth()}px`} use:melt={$root}>
   <div id="nav-container">
-    <button
-      on:click={() => history.pushState({}, "", "/" + window.location.search)}
-    >
+    <button on:click={buttonClicked}>
       <img id="navlogo" src="/images/q2view.png" alt="QIIME 2 view logo" />
     </button>
     {#if $readerModel.name}
