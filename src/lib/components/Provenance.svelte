@@ -31,7 +31,7 @@
     @apply absolute
     grid
     md:grid-cols-1
-    lg:grid-cols-[60%_40%]
+    lg:grid-cols-[70%_30%]
     gap-2
     w-full
     left-0;
