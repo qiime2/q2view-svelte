@@ -107,7 +107,7 @@ class ReaderModel {
       if (src instanceof File) {
         this._setLocalSrc(src);
       } else {
-        this._setRemoteSrc(src, tab);
+        this._setRemoteSrc(src);
       }
 
       let data = src instanceof File ? src : await this._readRemoteData(src);
@@ -115,6 +115,12 @@ class ReaderModel {
     } catch (err: any) {
       handleError(err);
       return;
+    }
+
+    if (src instanceof File) {
+      this._setLocalTab();
+    } else {
+      this._setRemoteTab(tab);
     }
 
     this._dirty();
@@ -137,27 +143,29 @@ class ReaderModel {
     this.urlSrc = this.uuid;
     this.name = src.name;
     this.sourceType = "local";
-
-    let tab = this._getTab();
-
     this.rawSrc = src;
+  }
+
+  _setLocalTab() {
+    let tab = this._getTab();
 
     // Pushes state because this change necesarily happened to move from the
     // root page to the new default page for the provided file
     history.pushState({}, "", `/${tab}/?src=${this.urlSrc}`);
   }
 
-  _setRemoteSrc(src: string, tab: string) {
+  _setRemoteSrc(src: string) {
     this.urlSrc = src;
     this.name = this.parseFileNameFromURL(src);
     this.sourceType = "remote";
+    this.rawSrc = src;
+  }
 
+  _setRemoteTab(tab: string) {
     // If we were not given a tab then revert to the default behavior
     if (!tab) {
       tab = this._getTab();
     }
-
-    this.rawSrc = src;
 
     // TODO: I think there is a bit of hairiness here. We only want to push
     // state if we are loading this file from the root of the page not if this
