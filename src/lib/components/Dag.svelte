@@ -145,10 +145,9 @@
 
     // Now expand the canvas post facto to give them space to move things around
     // TODO: Maybe don't expand the height a bunch now that it's full screen?
+    //
+    // screen.availHeight doesn't quite do it, but it's close. Maybe good enough
     const height = Math.max(displayHeight, screen.availHeight);
-    console.log(displayHeight);
-    console.log(screen.availHeight);
-    console.log(height);
     self.style.setProperty("height", `${height}px`);
   });
 </script>
