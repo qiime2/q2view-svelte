@@ -104,6 +104,9 @@ class ReaderModel {
 
   async readData(src: File | string, tab: string) {
     try {
+      // We deal with this before actually reading the data so we can persist
+      // this state on the error page. It makes it so if they reload the error
+      // page it tries to read the bad data again and produces the error again.
       if (src instanceof File) {
         this._setLocalSrc(src);
       } else {
@@ -117,6 +120,10 @@ class ReaderModel {
       return;
     }
 
+    // We set this after reading the data because sometimes which tab we go to
+    // is dependent on whether we read an artifact or a visualization and we
+    // don't have a great way of knowing that for certain until we've actually
+    // read it
     if (src instanceof File) {
       this._setLocalTab();
     } else {
