@@ -22,74 +22,76 @@
   }
 </script>
 
-<div style="text-align: center" class="py-4">
-  {#if inputMode === 0}
-    <p>
-      You can also provide a link to
-      a <a href="#" on:click|preventDefault={() => {inputMode = 1}} role="button" >
-        file on Dropbox</a> or
-      a <a href="#" on:click|preventDefault={() => {inputMode = 2}} role="button">
-        file from the web</a>.
-    </p>
-  {:else}
-    <div id="input">
-      <button id="cancel-button" on:click={() => {inputMode = 0}}>cancel</button>
-      {#if inputMode === 1}
-        <input id="URLInput" placeholder="Shared link to a .qza/.qzv file on Dropbox" />
-      {:else}
-        <input id="URLInput" placeholder="URL to a .qza/.qzv file on the web" />
-      {/if}
-      <button id="submit-button" on:click={() => resolveURL()}>Go!</button>
+<form>
+  <div style="text-align: center" class="py-4">
+    {#if inputMode === 0}
+      <p>
+        You can also provide a link to
+        a <a href="#" on:click|preventDefault={() => {inputMode = 1}} role="button" >
+          file on Dropbox</a> or
+        a <a href="#" on:click|preventDefault={() => {inputMode = 2}} role="button">
+          file from the web</a>.
+      </p>
+    {:else}
+      <div id="input">
+        <button id="cancel-button" type="button" on:click={() => {inputMode = 0}}>cancel</button>
+        {#if inputMode === 1}
+          <input id="URLInput" placeholder="Shared link to a .qza/.qzv file on Dropbox" />
+        {:else}
+          <input id="URLInput" placeholder="URL to a .qza/.qzv file on the web" />
+        {/if}
+        <button id="submit-button" type="submit" on:click={() => resolveURL()}>Go!</button>
+      </div>
+    {/if}
+  </div>
+  {#if inputMode === 1}
+    <div class="pb-4">
+      <h3>
+        Dropbox Instructions:
+      </h3>
+      <ol class="pl-10" style="list-style: decimal">
+        <li>
+          Find the file you would like to share.
+        </li>
+        <li>
+          Create a shared link to it.
+        </li>
+        <li>
+          Provide that link in the input form above and hit "Go!"
+        </li>
+      </ol>
+    </div>
+  {:else if inputMode === 2}
+    <div class="grid lg:grid-cols-2 pb-4">
+      <div>
+        <h3>
+          Web URL Instructions
+        </h3>
+        <p>Provide a link to your file in the input form above and hit "Go!"</p>
+        <p>Note: the server that is hosting your file must support CORS. See Required Headers for more information.</p>
+      </div>
+      <div>
+        <h3>
+          Known Supported Websites:
+        </h3>
+        <ul class="pl-10" style="list-style: disc">
+          <li>
+            docs.qiime2.org
+          </li>
+          <li>
+            forum.qiime2.org
+          </li>
+          <li>
+            websites hosted on Github Pages
+          </li>
+          <li>
+            &lt;your webserver here&gt; (see Required Headers)
+          </li>
+        </ul>
+      </div>
     </div>
   {/if}
-</div>
-{#if inputMode === 1}
-  <div class="pb-4">
-    <h3>
-      Dropbox Instructions:
-    </h3>
-    <ol class="pl-10" style="list-style: decimal">
-      <li>
-        Find the file you would like to share.
-      </li>
-      <li>
-        Create a shared link to it.
-      </li>
-      <li>
-        Provide that link in the input form above and hit "Go!"
-      </li>
-    </ol>
-  </div>
-{:else if inputMode === 2}
-  <div class="grid lg:grid-cols-2 pb-4">
-    <div>
-      <h3>
-        Web URL Instructions
-      </h3>
-      <p>Provide a link to your file in the input form above and hit "Go!"</p>
-      <p>Note: the server that is hosting your file must support CORS. See Required Headers for more information.</p>
-    </div>
-    <div>
-      <h3>
-        Known Supported Websites:
-      </h3>
-      <ul class="pl-10" style="list-style: disc">
-        <li>
-          docs.qiime2.org
-        </li>
-        <li>
-          forum.qiime2.org
-        </li>
-        <li>
-          websites hosted on Github Pages
-        </li>
-        <li>
-          &lt;your webserver here&gt; (see Required Headers)
-        </li>
-      </ul>
-    </div>
-  </div>
-{/if}
+</form>
 
 <style lang="postcss">
   #input {
