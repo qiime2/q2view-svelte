@@ -155,8 +155,7 @@
 
 <style lang="postcss">
   #cy {
-    @apply mr-2
-    border
+    @apply border
     border-gray-300
   }
 </style>

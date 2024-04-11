@@ -1,12 +1,13 @@
 <script lang="ts">
   import Panel from "$lib/components/Panel.svelte";
   import readerModel from "$lib/models/readerModel";
+  import { getScrollBarWidth } from "$lib/scripts/util";
 
   import JSONTree from "svelte-json-tree";
   import Dag from "./Dag.svelte";
 </script>
 
-<div class="grid md:grid-cols-1 lg:grid-cols-[60%_40%]">
+<div id="provenance" style:width={`calc(100% - ${getScrollBarWidth()}px)`}>
   {#key $readerModel.uuid}
     <Dag />
   {/key}
@@ -24,3 +25,15 @@
     {/if}
   </Panel>
 </div>
+
+<style lang="postcss">
+  #provenance {
+    @apply absolute
+    grid
+    md:grid-cols-1
+    lg:grid-cols-[60%_40%]
+    gap-2
+    w-full
+    left-0;
+  }
+</style>
