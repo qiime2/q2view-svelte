@@ -144,7 +144,12 @@
     cy.center();
 
     // Now expand the canvas post facto to give them space to move things around
-    self.style.setProperty("height", `calc(2 * ${displayHeight}px)`);
+    // TODO: Maybe don't expand the height a bunch now that it's full screen?
+    const height = Math.max(displayHeight, screen.availHeight);
+    console.log(displayHeight);
+    console.log(screen.availHeight);
+    console.log(height);
+    self.style.setProperty("height", `${height}px`);
   });
 </script>
 
