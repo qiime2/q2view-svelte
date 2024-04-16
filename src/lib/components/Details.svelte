@@ -26,6 +26,7 @@
 <Panel header="Citations">
   <label for="citation-style">
     Citation Format:
+    <!-- TODO: It takes a bit to react to changing this style. Feels a bit jank need some feedback -->
     <select bind:value={citationStyle} id="citation-style" on:change={() => formatterModel.formatCitations(citationStyle)}>
       <option value="apa">APA</option>
       <option value="asm">ASM</option>
