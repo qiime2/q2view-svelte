@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+const mlaTemplate = `<?xml version="1.0" encoding="utf-8"?>
 <style xmlns="http://purl.org/net/xbiblio/csl" class="in-text" version="1.0" demote-non-dropping-particle="never" page-range-format="minimal-two">
   <info>
     <title>Modern Language Association 8th edition</title>
@@ -293,4 +293,6 @@
       </group>
     </layout>
   </bibliography>
-</style>
+</style>`;
+
+export default mlaTemplate;

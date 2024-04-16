@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+const chicagoTemplate = `<?xml version="1.0" encoding="utf-8"?>
 <style xmlns="http://purl.org/net/xbiblio/csl" class="note" version="1.0" demote-non-dropping-particle="display-and-sort" page-range-format="chicago">
   <info>
     <title>Chicago Manual of Style 17th edition (full note)</title>
@@ -1427,4 +1427,6 @@
       </group>
     </layout>
   </bibliography>
-</style>
+</style>`;
+
+export default chicagoTemplate;

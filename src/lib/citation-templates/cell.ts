@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+const cellTemplate = `<?xml version="1.0" encoding="utf-8"?>
 <style xmlns="http://purl.org/net/xbiblio/csl" version="1.0" class="in-text" default-locale="en-US" demote-non-dropping-particle="sort-only" page-range-format="expanded">
   <info>
     <title>Cell</title>
@@ -113,4 +113,6 @@
       </group>
     </layout>
   </bibliography>
-</style>
+</style>`;
+
+export default cellTemplate;

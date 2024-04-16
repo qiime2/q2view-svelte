@@ -3,16 +3,21 @@
   import readerModel from "$lib/models/readerModel";
   import FormatterModel from "$lib/models/formatterModel";
   import ResultDetails from "$lib/components/ResultDetails.svelte";
-  import { onMount } from "svelte";
 
   let citationStyle: string = "bib";
   const formatterModel = new FormatterModel();
 
-  onMount(() => {
+  // If the user refreshes then we need to react to the citations being set
+  // when we are already on this page
+  //
+  // They will be undefined for a sec and it will flash "No Citations" then
+  // when they are actually loaded by the ReaderModel this willr react to that
+  $: {
     if ($readerModel.citations !== undefined) {
+      formatterModel.setFormatter($readerModel.citations);
       formatterModel.formatCitations(citationStyle);
     }
-  });
+  }
 </script>
 
 <Panel header="Details of {$readerModel.name}">
@@ -22,8 +27,9 @@
   <label for="citation-style">
     Citation Format:
     <select bind:value={citationStyle} id="citation-style" on:change={() => formatterModel.formatCitations(citationStyle)}>
-      <option selected={true} value="bib">BibTex</option>
+      <option value="apa">APA</option>
       <option value="asm">ASM</option>
+      <option selected={true} value="bib">BibTex</option>
       <option value="cell">Cell</option>
       <option value="chicago">Chicago</option>
       <option value="mla">MLA</option>
@@ -32,7 +38,7 @@
     </select>
   </label>
   {#if $readerModel.citations !== undefined}
-    <a href={formatterModel.getDownload()} download={`${$readerModel.metadata.uuid}.${$formatterModel.fileExt}`} style="float: right">Download</a>
+    <a href={$formatterModel.downloadableFile} download={`${$readerModel.metadata.uuid}.${$formatterModel.fileExt}`} style="float: right">Download</a>
     <pre id="json">{$formatterModel.formattedCitations}</pre>
   {:else}
     <pre id="json">No Citations</pre>

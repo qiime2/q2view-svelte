@@ -1,20 +1,20 @@
-import Citation from "citation-js";
-import readerModel from "$lib/models/readerModel";
+import Cite from "citation-js";
 
-// import asm from '/citation-templates/asm.csl';
-// import cell from '/citation-templates/cell.csl';
-// import chicago from '/citation-templates/chicago.csl';
-// import mla from '/citation-templates/mla.csl';
-// import nature from '/citation-templates/nature.csl';
+import asmTemplate from "$lib/citation-templates/asm";
+import cellTemplate from "$lib/citation-templates/cell";
+import chicagoTemplate from "$lib/citation-templates/chicago";
+import mlaTemplate from "$lib/citation-templates/mla";
+import natureTemplate from "$lib/citation-templates/nature";
 
 export default class FormatterModel {
   fileExt = "";
   fileContents = "";
   citationStyle = "";
+  downloadableFile = "";
   formattedCitations = "";
 
-  formatter = new Citation(readerModel.citations);
-  // register = Citation.CSL.register.addTemplate;
+  formatter = new Cite();
+  register = Cite.CSL.register.addTemplate;
 
   //***************************************************************************
   // Start boilerplate to make this a subscribable svelte store
@@ -42,33 +42,30 @@ export default class FormatterModel {
   //***************************************************************************
 
   constructor() {
-    // this.register("asm", "/citation-templates/asm.csl");
-    // this.register("cell", "/citation-templates/cell.csl");
-    // this.register("chicago", "/citation-templates/chicago.csl");
-    // this.register("mla", "/citaion-templates/mla.csl");
-    // this.register("nature", "/citation-templates/nature.csl");
-    // this.register('asm', asm);
-    // this.register('cell', cell);
-    // this.register('chicago', chicago);
-    // this.register('mla', mla);
-    // this.register('nature', nature);
+    this.register("asm", asmTemplate);
+    this.register("cell", cellTemplate);
+    this.register("chicago", chicagoTemplate);
+    this.register("mla", mlaTemplate);
+    this.register("nature", natureTemplate);
+  }
+
+  setFormatter(citations: string) {
+    this.formatter = new Cite(citations);
   }
 
   formatCitations(citationStyle: string) {
-    console.log(citationStyle);
     if (citationStyle === "bib") {
       this.formattedCitations = this.formatter.format("bibtex");
       this.fileContents = this.formattedCitations;
       this.fileExt = citationStyle;
     } else if (citationStyle === "ris") {
-      this.formattedCitations = this.formatter.format("ris");
+      this.formattedCitations = this.formatter.format(`${citationStyle}`);
       this.fileContents = this.formattedCitations;
       this.fileExt = citationStyle;
     } else {
       this.formattedCitations = this.formatter.format("bibliography", {
-        format: "html",
+        type: "json",
         template: citationStyle,
-        lang: "en-US"
       });
 
       this.fileContents = this.formatter.format("bibliography", {
@@ -80,10 +77,12 @@ export default class FormatterModel {
       this.fileExt = `${citationStyle}.txt`;
     }
 
+    this.downloadableFile = this._getDownload();
+    console.log(this.formattedCitations);
     this._dirty();
   }
 
-  getDownload() {
+  _getDownload() {
     const blob = new Blob([this.fileContents], { type: "text/plain" })
     return URL.createObjectURL(blob);
   }

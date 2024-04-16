@@ -34,7 +34,7 @@ class ReaderModel {
   zipReader: JSZip | null = null;
   port: string | null = null;
 
-  citations: string | null | undefined = undefined;
+  citations: string | undefined = undefined;
   metadata: object = {};
 
   session: string;

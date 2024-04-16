@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+const asmTemplate = `<?xml version="1.0" encoding="utf-8"?>
 <style xmlns="http://purl.org/net/xbiblio/csl" class="in-text" version="1.0" demote-non-dropping-particle="never" default-locale="en-US">
   <info>
     <title>American Society for Microbiology</title>
@@ -134,4 +134,6 @@
       <text macro="locators"/>
     </layout>
   </bibliography>
-</style>
+</style>`;
+
+export default asmTemplate;
