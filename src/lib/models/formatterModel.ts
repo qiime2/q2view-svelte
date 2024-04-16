@@ -78,7 +78,6 @@ export default class FormatterModel {
     }
 
     this.downloadableFile = this._getDownload();
-    console.log(this.formattedCitations);
     this._dirty();
   }
 
