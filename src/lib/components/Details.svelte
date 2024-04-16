@@ -29,6 +29,11 @@
 </Panel>
 
 <style lang="postcss">
+  #citation-style {
+    @apply border
+    border-gray-300;
+  }
+
   #json {
     @apply border
     border-gray-300
