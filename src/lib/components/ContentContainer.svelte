@@ -80,8 +80,6 @@
   #positioned-container {
     position: absolute;
     top: 50px;
-    /* left: calc(0% + 10px); */
-    /* width: calc(100% + 10px); */
     width: 100%;
     height: calc(100% - 50px);
     overflow: auto;
