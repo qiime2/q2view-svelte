@@ -28,6 +28,7 @@
   },
   "type": "module",
   "dependencies": {
+    "citation-js": "^0.7.10",
     "cytoscape": "^3.27.0",
     "js-yaml": "^3.14.1",
     "jszip": "^3.10.1",
