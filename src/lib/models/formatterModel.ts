@@ -71,7 +71,7 @@ export default class FormatterModel {
       this.fileContents = this.formatter.format("bibliography", {
         type: "string",
         template: citationStyle,
-        lang: "en-US"
+        lang: "en-US",
       });
 
       this.fileExt = `${citationStyle}.txt`;
@@ -83,7 +83,7 @@ export default class FormatterModel {
   }
 
   _getDownload() {
-    const blob = new Blob([this.fileContents], { type: "text/plain" })
+    const blob = new Blob([this.fileContents], { type: "text/plain" });
     return URL.createObjectURL(blob);
   }
 }
