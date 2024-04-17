@@ -72,17 +72,16 @@
         </li>
         {#if $readerModel.indexPath || $readerModel.rawSrc}
           <li>
-            <button class="nav-button" on:click={() => {
+            <button title="Unload File" id="close-button" on:click={() => {
                 readerModel.clear();
                 history.pushState({}, "", "/");
               }}>
-              <svg
-                fill="none"
+              <svg fill="none"
                 viewBox="0 0 20 20"
                 class="nav-thumbnail"
               >
-                <title>Unload File</title>
                 <path
+                  id="close-button-path"
                   stroke-width="3"
                   stroke="rgb(119, 119, 119)"
                   d="M2 18L18 2M18 18L2 2"
@@ -216,6 +215,16 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+
+  #close-button {
+    @apply w-full
+    h-full
+    p-3;
+  }
+
+  #close-button:hover #close-button-path {
+    stroke: red;
   }
 
   .nav-thumbnail {
