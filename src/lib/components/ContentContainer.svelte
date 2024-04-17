@@ -89,9 +89,9 @@
 
   #content-container {
     display: grid;
-    @apply mx-auto
-    px-10
-    max-w-7xl;
+    @apply max-w-7xl
+    mx-auto
+    px-10;
   }
 
   .tab {

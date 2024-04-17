@@ -181,8 +181,8 @@
 
   #nav-container {
     @apply flex
-    mx-auto
     max-w-7xl
+    mx-auto
     px-10;
   }
 
