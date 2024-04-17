@@ -224,9 +224,9 @@
   }
 
   :global(.nav-button) {
-    width: 100%;
-    @apply p-3
-    h-full;
+    @apply w-full
+    h-full
+    p-3;
   }
 
   :global(.nav-button:hover) {
@@ -234,9 +234,13 @@
   }
 
   :global(.selected-nav-button) {
-    width: 100%;
-    @apply p-3
+    @apply w-full
     h-full
+    p-3
     bg-gray-200;
+  }
+
+  :global(.selected-nav-button:hover) {
+    @apply bg-gray-300;
   }
 </style>
