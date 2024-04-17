@@ -141,7 +141,6 @@
     });
 
     // Now center the DAG in the small canvas
-    console.log(`CENTER: ${displayHeight} ${readerModel.height} ${self.style.width}`);
     cy.center();
 
     // Expand the height after centering on the previous height which will have
