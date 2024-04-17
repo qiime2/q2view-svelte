@@ -104,9 +104,7 @@
   }
 
   .hidden-tab {
-    /* If this is visibility: hidden as opposed to display: none then the
-       absolute positioned provenance tab will break the scrolling */
-    display: none;
+    visibility: hidden;
     overflow: hidden;
     grid-column: 1;
     grid-row: 1;
