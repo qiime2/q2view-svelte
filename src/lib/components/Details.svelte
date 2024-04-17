@@ -40,9 +40,9 @@
   </label>
   {#if $readerModel.citations !== undefined}
     <a href={$formatterModel.downloadableFile} download={`${$readerModel.metadata.uuid}.${$formatterModel.fileExt}`} style="float: right">Download</a>
-    <pre id="json">{$formatterModel.formattedCitations}</pre>
+    <pre id="citations">{$formatterModel.formattedCitations}</pre>
   {:else}
-    <pre id="json">No Citations</pre>
+    <pre id="citations">No Citations</pre>
   {/if}
 </Panel>
 
@@ -52,7 +52,7 @@
     border-gray-300;
   }
 
-  #json {
+  #citations {
     @apply border
     border-gray-300
     bg-gray-100
