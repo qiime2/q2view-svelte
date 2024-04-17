@@ -13,7 +13,8 @@
   import Provenance from "$lib/components/Provenance.svelte";
   import About from "$lib/components/About.svelte";
   import Error from "$lib/components/Error.svelte";
-  import { getScrollBarWidth } from "$lib/scripts/util";
+
+  $: console.log($url.pathname.replaceAll("/", ""));
 </script>
 
 <div id="positioned-container">
@@ -82,7 +83,8 @@
     top: 50px;
     height: calc(100% - 50px);
     overflow: auto;
-    @apply absolute;
+    @apply absolute
+    w-full;
   }
 
   #content-container {
@@ -107,6 +109,7 @@
     margin-top: 21px;
     @apply w-full
     mb-4
+    mx-auto
     px-4;
   }
 
@@ -116,5 +119,6 @@
     grid-column: 1;
     grid-row: 1;
     height: 0;
+    @apply mx-auto;
   }
 </style>
