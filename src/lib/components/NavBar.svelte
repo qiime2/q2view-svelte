@@ -60,7 +60,7 @@
   }
 </script>
 
-<nav id="navbar" style:padding-right={`${getScrollBarWidth()}px`} style:padding-left={`${getScrollBarWidth()}px`} use:melt={$root}>
+<nav id="navbar" use:melt={$root}>
   <div id="nav-container">
     <button on:click={navLogoClicked}>
       <img id="navlogo" src="/images/q2view.png" alt="QIIME 2 view logo" />

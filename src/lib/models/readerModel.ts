@@ -132,7 +132,7 @@ class ReaderModel {
       this._setRemoteTab(tab);
     }
 
-    this._dirty();
+     this._dirty();
   }
 
   async _readRemoteData(src: string) {

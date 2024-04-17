@@ -82,8 +82,8 @@
   #positioned-container {
     top: 50px;
     height: calc(100% - 50px);
-    overflow: auto;
     @apply absolute
+    overflow-auto
     w-full;
   }
 
@@ -109,7 +109,6 @@
     margin-top: 21px;
     @apply w-full
     mb-4
-    mx-auto
     px-4;
   }
 
