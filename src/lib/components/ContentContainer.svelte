@@ -95,20 +95,21 @@
   }
 
   .tab {
-    margin-top: 21px;
+    overflow: hidden;
     grid-column: 1;
     grid-row: 1;
-    visibility: visible;
-    overflow: hidden;
+    margin-top: 21px;
     padding-right: 10px;
     @apply mb-4;
   }
 
   .hidden-tab {
+    /* If this is visibility: hidden as opposed to display: none then the
+       absolute positioned provenance tab will break the scrolling */
     display: none;
+    overflow: hidden;
     grid-column: 1;
     grid-row: 1;
     height: 0;
-    overflow: hidden;
   }
 </style>
