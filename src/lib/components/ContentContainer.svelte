@@ -13,6 +13,7 @@
   import Provenance from "$lib/components/Provenance.svelte";
   import About from "$lib/components/About.svelte";
   import Error from "$lib/components/Error.svelte";
+  import { getScrollBarWidth } from "$lib/scripts/util";
 </script>
 
 <div id="positioned-container">
@@ -67,7 +68,7 @@
       </div>
       <div
         class={$url.pathname.replaceAll("/", "") === "provenance"
-          ? "tab"
+          ? "prov-tab"
           : "hidden-tab"}
       >
         <Provenance />
@@ -78,20 +79,15 @@
 
 <style lang="postcss">
   #positioned-container {
-    position: absolute;
     top: 50px;
-    width: 100%;
     height: calc(100% - 50px);
     overflow: auto;
-    /* Prevent content from repositioning in Chromium when a scrollbar appears */
-    scrollbar-gutter: stable both-edges;
+    @apply absolute;
   }
 
   #content-container {
     display: grid;
-    @apply max-w-7xl
-    mx-auto
-    px-10;
+    @apply w-full;
   }
 
   .tab {
@@ -99,8 +95,19 @@
     grid-column: 1;
     grid-row: 1;
     margin-top: 21px;
-    padding-right: 10px;
-    @apply mb-4;
+    @apply  max-w-7xl
+    mx-auto
+    mb-4;
+  }
+
+  .prov-tab {
+    overflow: hidden;
+    grid-column: 1;
+    grid-row: 1;
+    margin-top: 21px;
+    @apply w-full
+    mb-4
+    px-4;
   }
 
   .hidden-tab {
