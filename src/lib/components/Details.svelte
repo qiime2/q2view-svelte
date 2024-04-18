@@ -11,7 +11,7 @@
   // when we are already on this page
   //
   // They will be undefined for a sec and it will flash "No Citations" then
-  // when they are actually loaded by the ReaderModel this willr react to that
+  // when they are actually loaded by the ReaderModel this will react to that
   $: {
     if ($readerModel.citations !== undefined) {
       formatterModel.setFormatter($readerModel.citations);

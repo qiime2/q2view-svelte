@@ -7,7 +7,6 @@
   import url from "$lib/scripts/url-store";
 
   import NavButtons from "$lib/components/NavButtons.svelte";
-  import { getScrollBarWidth } from "$lib/scripts/util";
 
   import { createCollapsible, createDropdownMenu, melt } from "@melt-ui/svelte";
   import { slide, fly } from "svelte/transition";

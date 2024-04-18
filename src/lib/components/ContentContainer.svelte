@@ -13,9 +13,6 @@
   import Provenance from "$lib/components/Provenance.svelte";
   import About from "$lib/components/About.svelte";
   import Error from "$lib/components/Error.svelte";
-  import { getScrollBarWidth } from "$lib/scripts/util";
-
-  $: console.log($url.pathname.replaceAll("/", ""));
 </script>
 
 <div id="positioned-container">

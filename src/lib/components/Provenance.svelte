@@ -1,7 +1,6 @@
 <script lang="ts">
   import Panel from "$lib/components/Panel.svelte";
   import readerModel from "$lib/models/readerModel";
-  import { getScrollBarWidth } from "$lib/scripts/util";
 
   import JSONTree from "svelte-json-tree";
   import Dag from "./Dag.svelte";
