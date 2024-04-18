@@ -89,7 +89,7 @@
   #content-container {
     display: grid;
     @apply w-full
-    px-10;
+    px-2;
   }
 
   .tab {

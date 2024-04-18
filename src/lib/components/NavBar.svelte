@@ -182,7 +182,7 @@
     @apply flex
     max-w-7xl
     mx-auto
-    px-10;
+    px-2;
   }
 
   #navlogo {
