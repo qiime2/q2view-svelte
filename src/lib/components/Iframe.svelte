@@ -7,12 +7,13 @@
   id="iframe"
   frameborder="0"
   src={$readerModel.indexPath}
+  style:left={`calc(0% - ${getScrollBarWidth()}px)`}
+  style:width={`calc(100% + 2 * ${getScrollBarWidth()}px)`}
 />
 
 <!-- Position this manually so it takes up basically the entire viewport -->
 <style lang="postcss">
   #iframe {
-    left: 0px;
     margin-top: -21px;
     @apply absolute
     w-full

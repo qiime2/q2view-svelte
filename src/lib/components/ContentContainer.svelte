@@ -13,6 +13,7 @@
   import Provenance from "$lib/components/Provenance.svelte";
   import About from "$lib/components/About.svelte";
   import Error from "$lib/components/Error.svelte";
+  import { getScrollBarWidth } from "$lib/scripts/util";
 
   $: console.log($url.pathname.replaceAll("/", ""));
 </script>
@@ -80,6 +81,7 @@
 
 <style lang="postcss">
   #positioned-container {
+    scrollbar-gutter: stable both-edges;
     top: 50px;
     height: calc(100% - 50px);
     @apply absolute
@@ -108,8 +110,7 @@
     grid-row: 1;
     margin-top: 21px;
     @apply w-full
-    mb-4
-    px-4;
+    mb-4;
   }
 
   .hidden-tab {

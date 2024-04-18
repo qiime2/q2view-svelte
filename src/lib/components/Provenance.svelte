@@ -7,7 +7,7 @@
   import Dag from "./Dag.svelte";
 </script>
 
-<div id="provenance">
+<div id="provenance" style:padding-right={`calc(${getScrollBarWidth()}px)`}>
   {#key $readerModel.uuid}
     <Dag />
   {/key}
