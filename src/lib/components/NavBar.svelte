@@ -167,6 +167,7 @@
 
 <style lang="postcss">
   #navbar {
+    width: 100vw;
     box-shadow: rgb(153, 153, 153) 0px 1px 5px;
     background-color: #f8f8f8;
     @apply fixed
@@ -181,6 +182,7 @@
     @apply flex
     max-w-7xl
     mx-auto
+    px-10;
   }
 
   #navlogo {

@@ -88,7 +88,8 @@
 
   #content-container {
     display: grid;
-    @apply w-full;
+    @apply w-full
+    px-10;
   }
 
   .tab {
