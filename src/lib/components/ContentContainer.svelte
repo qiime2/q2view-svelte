@@ -117,7 +117,5 @@
     grid-column: 1;
     grid-row: 1;
     height: 0;
-    @apply w-full
-    mx-auto;
   }
 </style>
