@@ -57,8 +57,8 @@
     border-gray-300
     bg-gray-100
     overflow-x-auto
-    p-2
     text-xs
+    p-2
     mt-2;
   }
 </style>

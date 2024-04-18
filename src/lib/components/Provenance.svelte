@@ -7,7 +7,7 @@
   import Dag from "./Dag.svelte";
 </script>
 
-<div id="provenance" style:padding-right={`calc(${getScrollBarWidth()}px)`}>
+<div id="provenance">
   {#key $readerModel.uuid}
     <Dag />
   {/key}
@@ -31,6 +31,7 @@
     @apply grid
     md:grid-cols-1
     lg:grid-cols-[70%_30%]
-    gap-2;
+    gap-2
+    mx-4;
   }
 </style>
