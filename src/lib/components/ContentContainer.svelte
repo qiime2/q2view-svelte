@@ -20,6 +20,10 @@
     <div
       class={$url.pathname.replaceAll("/", "") === "" ? "tab" : "hidden-tab"}
     >
+      <div class="text-center bg-blue-300 mb-4 py-4 rounded-lg">
+        <h3>NOTICE:</h3>
+        We are currently beta testing a new version of q2view. If you would like to use the old version <a href="https://old-view.qiime2.org">click here</a>.
+      </div>
       <p class="pb-4">
         This interface can view .qza and .qzv files directly in your browser
         without uploading to a server.
