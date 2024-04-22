@@ -67,7 +67,7 @@
       </div>
       <div
         class={$url.pathname.replaceAll("/", "") === "provenance"
-          ? "prov-tab"
+          ? "tab"
           : "hidden-tab"}
       >
         <Provenance />
@@ -78,44 +78,37 @@
 
 <style lang="postcss">
   #positioned-container {
-    scrollbar-gutter: stable both-edges;
+    position: absolute;
     top: 50px;
+    width: 100%;
     height: calc(100% - 50px);
-    @apply absolute
-    overflow-auto
-    w-full;
+    overflow: auto;
+    /* Prevent content from repositioning in Chromium when a scrollbar appears */
+    scrollbar-gutter: stable both-edges;
   }
 
   #content-container {
     display: grid;
-    @apply w-full
-    px-2;
+    @apply mx-auto
+    px-10
+    max-w-7xl;
   }
 
   .tab {
-    overflow: hidden;
+    margin-top: 21px;
     grid-column: 1;
     grid-row: 1;
-    margin-top: 21px;
-    @apply  max-w-7xl
-    mx-auto
-    mb-4;
-  }
-
-  .prov-tab {
+    visibility: visible;
     overflow: hidden;
-    grid-column: 1;
-    grid-row: 1;
-    margin-top: 21px;
-    @apply w-full
-    mb-4;
+    padding-right: 10px;
+    @apply mb-4;
   }
 
   .hidden-tab {
-    visibility: hidden;
-    overflow: hidden;
     grid-column: 1;
     grid-row: 1;
     height: 0;
+    visibility: hidden;
+    overflow: hidden;
   }
 </style>
