@@ -4,6 +4,7 @@
   import FormatterModel from "$lib/models/formatterModel";
   import ResultDetails from "$lib/components/ResultDetails.svelte";
 
+  let citations: HTMLElement;
   const formatterModel = new FormatterModel();
 
   // If the user refreshes then we need to react to the citations being set
@@ -15,6 +16,20 @@
     if ($readerModel.citations !== undefined) {
       formatterModel.setFormatter($readerModel.citations);
       formatterModel.formatCitations();
+    }
+  }
+
+  $: {
+    if (citations !== undefined) {
+      let newInnerHTML = "";
+
+      if ($formatterModel.citationStyle === 'bib' || $formatterModel.citationStyle === 'ris') {
+        newInnerHTML = "<pre>" + formatterModel.formattedCitations + "</pre>";
+      } else {
+        newInnerHTML = formatterModel.formattedCitations;
+      }
+
+      citations.innerHTML = newInnerHTML;
     }
   }
 </script>
@@ -39,11 +54,7 @@
   </label>
   {#if $readerModel.citations !== undefined}
     <a href={$formatterModel.downloadableFile} download={`${$readerModel.metadata.uuid}.${$formatterModel.fileExt}`} style="float: right">Download</a>
-    {#if $formatterModel.citationStyle === "bib" || $formatterModel.citationStyle === "ris"}
-      <pre id="citations">{$formatterModel.formattedCitations}</pre>
-    {:else}
-      <div id="citations">{$formatterModel.formattedCitations}</div>
-    {/if  }
+    <div id="citations" bind:this={citations}></div>
   {:else}
     <pre id="citations">No Citations</pre>
   {/if}

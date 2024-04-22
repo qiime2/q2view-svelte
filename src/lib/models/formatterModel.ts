@@ -67,14 +67,16 @@ export default class FormatterModel {
       this.fileExt = this.citationStyle;
     } else {
       this.formattedCitations = this.formatter.format("bibliography", {
-        type: "json",
+        type: "html",
         template: this.citationStyle,
+        lang: "en-us",
+        format: "html"
       });
 
       this.fileContents = this.formatter.format("bibliography", {
         type: "string",
         template: this.citationStyle,
-        lang: "en-US",
+        lang: "en-US"
       });
 
       this.fileExt = `${this.citationStyle}.txt`;
