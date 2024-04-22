@@ -14,7 +14,7 @@
   // when they are actually loaded by the ReaderModel this will react to that
   $: {
     if ($readerModel.citations !== undefined) {
-      formatterModel.setFormatter($readerModel.citations);
+      formatterModel.setState($readerModel.citations);
       formatterModel.formatCitations();
     }
   }

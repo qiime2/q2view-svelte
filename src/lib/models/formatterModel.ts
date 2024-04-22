@@ -8,6 +8,7 @@ import natureTemplate from "$lib/citation-templates/nature";
 
 export default class FormatterModel {
   fileExt = "";
+  citations = "";
   fileContents = "";
   citationStyle = "";
   downloadableFile = "";
@@ -52,13 +53,14 @@ export default class FormatterModel {
     this.register("nature", natureTemplate);
   }
 
-  setFormatter(citations: string) {
+  setState(citations: string) {
+    this.citations = citations;
     this.formatter = new Cite(citations);
   }
 
   formatCitations() {
     if (this.citationStyle === "bib") {
-      this.formattedCitations = this.formatter.format("bibtex");
+      this.formattedCitations = this.citations;
       this.fileContents = this.formattedCitations;
       this.fileExt = this.citationStyle;
     } else if (this.citationStyle === "ris") {
