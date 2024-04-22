@@ -77,6 +77,21 @@
   }
 
   :global(.csl-entry) {
+    clear: both;
     @apply my-2;
+  }
+
+  :global(.csl-entry:has(> .csl-left-margin):has(> .csl-right-inline)) {
+    @apply flex
+    my-2;
+  }
+
+  :global(.csl-left-margin) {
+    @apply float-left
+    mr-1;
+  }
+
+  :global(.csl-right-inline) {
+    @apply float-right;
   }
 </style>
