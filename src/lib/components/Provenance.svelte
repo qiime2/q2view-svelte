@@ -29,8 +29,7 @@
   #provenance {
     @apply grid
     md:grid-cols-1
-    lg:grid-cols-[70%_30%]
-    gap-2
-    mx-4;
+    lg:grid-cols-[65%_35%]
+    gap-2;
   }
 </style>
