@@ -8,10 +8,12 @@ import natureTemplate from "$lib/citation-templates/nature";
 
 export default class FormatterModel {
   fileExt = "";
+  citations = "";
   fileContents = "";
-  citationStyle = "";
   downloadableFile = "";
   formattedCitations = "";
+
+  citationStyle = "bib";
 
   formatter = new Cite();
   register = Cite.CSL.register.addTemplate;
@@ -49,32 +51,35 @@ export default class FormatterModel {
     this.register("nature", natureTemplate);
   }
 
-  setFormatter(citations: string) {
+  setState(citations: string) {
+    this.citations = citations;
     this.formatter = new Cite(citations);
   }
 
-  formatCitations(citationStyle: string) {
-    if (citationStyle === "bib") {
-      this.formattedCitations = this.formatter.format("bibtex");
+  formatCitations() {
+    if (this.citationStyle === "bib") {
+      this.formattedCitations = this.citations;
       this.fileContents = this.formattedCitations;
-      this.fileExt = citationStyle;
-    } else if (citationStyle === "ris") {
-      this.formattedCitations = this.formatter.format(`${citationStyle}`);
+      this.fileExt = this.citationStyle;
+    } else if (this.citationStyle === "ris") {
+      this.formattedCitations = this.formatter.format(`${this.citationStyle}`);
       this.fileContents = this.formattedCitations;
-      this.fileExt = citationStyle;
+      this.fileExt = this.citationStyle;
     } else {
       this.formattedCitations = this.formatter.format("bibliography", {
-        type: "json",
-        template: citationStyle,
+        type: "html",
+        template: this.citationStyle,
+        lang: "en-us",
+        format: "html"
       });
 
       this.fileContents = this.formatter.format("bibliography", {
         type: "string",
-        template: citationStyle,
-        lang: "en-US",
+        template: this.citationStyle,
+        lang: "en-US"
       });
 
-      this.fileExt = `${citationStyle}.txt`;
+      this.fileExt = `${this.citationStyle}.txt`;
     }
 
     this.downloadableFile = this._getDownload();
