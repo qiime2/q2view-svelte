@@ -10,9 +10,10 @@ export default class FormatterModel {
   fileExt = "";
   citations = "";
   fileContents = "";
-  citationStyle = "";
   downloadableFile = "";
   formattedCitations = "";
+
+  citationStyle = "bib";
 
   formatter = new Cite();
   register = Cite.CSL.register.addTemplate;
@@ -43,9 +44,6 @@ export default class FormatterModel {
   //***************************************************************************
 
   constructor() {
-    // bib is the default citation style
-    this.citationStyle = "bib";
-
     this.register("asm", asmTemplate);
     this.register("cell", cellTemplate);
     this.register("chicago", chicagoTemplate);
