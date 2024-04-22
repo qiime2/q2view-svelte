@@ -75,4 +75,8 @@
     p-2
     mt-2;
   }
+
+  :global(.csl-entry) {
+    @apply my-2;
+  }
 </style>
