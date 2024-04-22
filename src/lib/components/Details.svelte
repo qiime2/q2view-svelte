@@ -4,7 +4,6 @@
   import FormatterModel from "$lib/models/formatterModel";
   import ResultDetails from "$lib/components/ResultDetails.svelte";
 
-  let citationStyle: string = "bib";
   const formatterModel = new FormatterModel();
 
   // If the user refreshes then we need to react to the citations being set
@@ -15,7 +14,7 @@
   $: {
     if ($readerModel.citations !== undefined) {
       formatterModel.setFormatter($readerModel.citations);
-      formatterModel.formatCitations(citationStyle);
+      formatterModel.formatCitations();
     }
   }
 </script>
@@ -27,7 +26,7 @@
   <label for="citation-style">
     Citation Format:
     <!-- TODO: It takes a bit of time to react to changing this style. Feels a bit jank need some feedback -->
-    <select bind:value={citationStyle} id="citation-style" on:change={() => formatterModel.formatCitations(citationStyle)}>
+    <select bind:value={formatterModel.citationStyle} id="citation-style" on:change={() => formatterModel.formatCitations()}>
       <option value="apa">APA</option>
       <option value="asm">ASM</option>
       <option selected={true} value="bib">BibTex</option>
@@ -40,7 +39,11 @@
   </label>
   {#if $readerModel.citations !== undefined}
     <a href={$formatterModel.downloadableFile} download={`${$readerModel.metadata.uuid}.${$formatterModel.fileExt}`} style="float: right">Download</a>
-    <pre id="citations">{$formatterModel.formattedCitations}</pre>
+    {#if $formatterModel.citationStyle === "bib" || $formatterModel.citationStyle === "ris"}
+      <pre id="citations">{$formatterModel.formattedCitations}</pre>
+    {:else}
+      <div id="citations">{$formatterModel.formattedCitations}</div>
+    {/if  }
   {:else}
     <pre id="citations">No Citations</pre>
   {/if}

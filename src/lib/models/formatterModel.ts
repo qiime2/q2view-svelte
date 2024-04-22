@@ -42,6 +42,9 @@ export default class FormatterModel {
   //***************************************************************************
 
   constructor() {
+    // bib is the default citation style
+    this.citationStyle = "bib";
+
     this.register("asm", asmTemplate);
     this.register("cell", cellTemplate);
     this.register("chicago", chicagoTemplate);
@@ -53,28 +56,28 @@ export default class FormatterModel {
     this.formatter = new Cite(citations);
   }
 
-  formatCitations(citationStyle: string) {
-    if (citationStyle === "bib") {
+  formatCitations() {
+    if (this.citationStyle === "bib") {
       this.formattedCitations = this.formatter.format("bibtex");
       this.fileContents = this.formattedCitations;
-      this.fileExt = citationStyle;
-    } else if (citationStyle === "ris") {
-      this.formattedCitations = this.formatter.format(`${citationStyle}`);
+      this.fileExt = this.citationStyle;
+    } else if (this.citationStyle === "ris") {
+      this.formattedCitations = this.formatter.format(`${this.citationStyle}`);
       this.fileContents = this.formattedCitations;
-      this.fileExt = citationStyle;
+      this.fileExt = this.citationStyle;
     } else {
       this.formattedCitations = this.formatter.format("bibliography", {
         type: "json",
-        template: citationStyle,
+        template: this.citationStyle,
       });
 
       this.fileContents = this.formatter.format("bibliography", {
         type: "string",
-        template: citationStyle,
+        template: this.citationStyle,
         lang: "en-US",
       });
 
-      this.fileExt = `${citationStyle}.txt`;
+      this.fileExt = `${this.citationStyle}.txt`;
     }
 
     this.downloadableFile = this._getDownload();
