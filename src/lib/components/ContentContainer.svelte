@@ -20,6 +20,14 @@
     <div
       class={$url.pathname.replaceAll("/", "") === "" ? "tab" : "hidden-tab"}
     >
+      <div id="beta-banner">
+        <h3>NOTICE:</h3>
+        <p  >
+          We are currently beta testing a new version of q2view. If you would
+          like to use the old version <a href="https://old-view.qiime2.org">
+          click here</a>.
+        </p>
+      </div>
       <p class="pb-4">
         This interface can view .qza and .qzv files directly in your browser
         without uploading to a server.
@@ -92,6 +100,15 @@
     @apply mx-auto
     px-10
     max-w-7xl;
+  }
+
+  #beta-banner {
+    box-shadow: rgb(153, 153, 153) 5px 5px 5px;
+    @apply text-center
+    bg-blue-300
+    mb-4
+    py-4
+    rounded-lg;
   }
 
   .tab {
