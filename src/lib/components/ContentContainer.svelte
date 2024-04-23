@@ -21,8 +21,7 @@
       class={$url.pathname.replaceAll("/", "") === "" ? "tab" : "hidden-tab"}
     >
       <div id="beta-banner">
-        <h3>NOTICE:</h3>
-        <p  >
+        <p>
           We are currently beta testing a new version of q2view. If you would
           like to use the old version <a href="https://old-view.qiime2.org">
           click here</a>.
@@ -103,9 +102,10 @@
   }
 
   #beta-banner {
-    box-shadow: rgb(153, 153, 153) 5px 5px 5px;
     @apply text-center
-    bg-blue-300
+    bg-blue-200
+    border
+    border-blue-300
     mb-4
     py-4
     rounded-lg;
