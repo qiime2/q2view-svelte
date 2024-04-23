@@ -45,7 +45,6 @@
   linter told me I needed one -->
 <div
   id="dropzone"
-  class="relative"
   class:isDragging
   class:isSelected
   on:dragover={onDragOver}
@@ -64,16 +63,14 @@
 <style lang="postcss">
   #dropzone {
     box-shadow: rgb(153, 153, 153) 5px 5px 5px;
-    @apply border-4
+    @apply relative
+      border-4
       border-dashed
       border-gray-300
       rounded-lg
       w-full
       p-12
       bg-gray-100
-      flex
-      flex-row
-      justify-center
       mb-4;
   }
 
