@@ -39,9 +39,16 @@
 {#await getGalleryCards()}
   <h3>Fetching Gallery...</h3>
 {:then galleryCards}
-  <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-    {#each galleryCards as galleryCard}
-      <GalleryCard {...galleryCard}/>
-    {/each}
-  </div>
+  {#if galleryCards.length === 0}
+    <h3>
+      No gallery entries found. Try refreshing the page. If that doesn't work
+      the gallery might be down.
+    </h3>
+  {:else}
+    <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      {#each galleryCards as galleryCard}
+        <GalleryCard {...galleryCard}/>
+      {/each}
+    </div>
+  {/if}
 {/await}
