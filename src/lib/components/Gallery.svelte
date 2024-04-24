@@ -1,6 +1,6 @@
 <script lang="ts">
   import GalleryCard from "./GalleryCard.svelte";
-  const GALLERY_URL = "https://qiime2.org/q2view-gallery";
+  const GALLERY_URL = "https://q2view-gallery.pages.dev";
 
   // TODO: Expect 404s and other such errors to happen here and handle them
   async function getGalleryCards() {
@@ -8,7 +8,7 @@
     let galleryEntries = [];
 
     try {
-      indexJSON = await (await fetch(GALLERY_URL + "/gallery")).json();
+      indexJSON = await (await fetch(GALLERY_URL + "/gallery/index.json")).json();
     } catch(error) {
       return galleryEntries;
     }
