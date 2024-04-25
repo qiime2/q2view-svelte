@@ -27,8 +27,7 @@
 
 <style lang="postcss">
   #provenance {
-    @apply grid
-    md:grid-cols-1
+    @apply lg:grid
     lg:grid-cols-[65%_35%]
     gap-2;
   }
