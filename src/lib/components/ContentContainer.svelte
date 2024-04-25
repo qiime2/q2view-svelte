@@ -75,7 +75,7 @@
       <!-- Extra class baggage to make this tab fullscreen -->
       <div
         class={$url.pathname.replaceAll("/", "") === "provenance"
-          ? "tab lg:pr-[{2 * getScrollBarWidth()}px] provenance"
+          ? `tab provenance`
           : "hidden-tab"}
       >
         <Provenance />

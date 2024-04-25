@@ -22,4 +22,3 @@
     <p>Click on an element of the Provenance Graph to learn more</p>
   {/if}
 </Panel>
-
