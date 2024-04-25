@@ -72,9 +72,10 @@
       >
         <Details />
       </div>
+      <!-- Extra class baggage to make this tab fullscreen -->
       <div
         class={$url.pathname.replaceAll("/", "") === "provenance"
-          ? "tab"
+          ? "tab lg:pr-[{2 * getScrollBarWidth()}px] provenance"
           : "hidden-tab"}
       >
         <Provenance />
@@ -119,6 +120,17 @@
     overflow: hidden;
     padding-right: 10px;
     @apply mb-4;
+  }
+
+  /* Hoist this up here because the absolurte will cause the scrollbar to persist
+     across tabs if we do not remove this class as needed */
+  .provenance {
+    left: 0%;
+    @apply lg:absolute
+    lg:grid
+    lg:grid-cols-[70%_30%]
+    w-full
+    gap-2;
   }
 
   .hidden-tab {
