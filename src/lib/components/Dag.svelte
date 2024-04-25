@@ -143,10 +143,9 @@
     // Now center the DAG in the small canvas
     cy.center();
 
-    // Expand the height after centering on the previous height which will have
-    // put the DAG at the top center of the screen
-    displayHeight *= 2;
-    self.style.setProperty("height", `${displayHeight}px`);
+    // Centering on the prior displayHeight should put the dag at top center.
+    // Now set the height appropriately based on the height of the dag.
+    self.style.setProperty("height", `max(calc(100vh - 100px), ${displayHeight}px)`);
   });
 </script>
 
