@@ -123,7 +123,7 @@
     @apply mb-4;
   }
 
-  /* Hoist this up here because the absolurte will cause the scrollbar to persist
+  /* Hoist this up here because the absolute will cause the scrollbar to persist
      across tabs if we do not remove this class as needed */
   .provenance {
     left: 0%;
