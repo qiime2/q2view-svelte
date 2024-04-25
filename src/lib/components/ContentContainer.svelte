@@ -118,6 +118,7 @@
     grid-row: 1;
     visibility: visible;
     overflow: hidden;
+    /* This padding is to accomodate the dropshadow on the DropZone */
     padding-right: 10px;
     @apply mb-4;
   }
