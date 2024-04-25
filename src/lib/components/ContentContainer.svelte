@@ -72,9 +72,10 @@
       >
         <Details />
       </div>
+      <!-- Extra class baggage to make this tab fullscreen -->
       <div
         class={$url.pathname.replaceAll("/", "") === "provenance"
-          ? "tab"
+          ? `tab provenance`
           : "hidden-tab"}
       >
         <Provenance />
@@ -117,8 +118,20 @@
     grid-row: 1;
     visibility: visible;
     overflow: hidden;
+    /* This padding is to accomodate the dropshadow on the DropZone */
     padding-right: 10px;
     @apply mb-4;
+  }
+
+  /* Hoist this up here because the absolute will cause the scrollbar to persist
+     across tabs if we do not remove this class as needed */
+  .provenance {
+    left: 0%;
+    @apply lg:absolute
+    lg:grid
+    lg:grid-cols-[70%_30%]
+    w-full
+    gap-2;
   }
 
   .hidden-tab {
