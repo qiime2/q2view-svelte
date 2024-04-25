@@ -70,13 +70,13 @@ export default class FormatterModel {
         type: "html",
         template: this.citationStyle,
         lang: "en-us",
-        format: "html"
+        format: "html",
       });
 
       this.fileContents = this.formatter.format("bibliography", {
         type: "string",
         template: this.citationStyle,
-        lang: "en-US"
+        lang: "en-US",
       });
 
       this.fileExt = `${this.citationStyle}.txt`;
