@@ -66,7 +66,7 @@
     </button>
     {#if $readerModel.name}
       <ul class="mx-auto flex">
-        <li class="hidden lg:block" id="file-text">
+        <li id="file-text">
           File: {$readerModel.name}
         </li>
         {#if $readerModel.indexPath || $readerModel.rawSrc}
@@ -215,6 +215,9 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    max-width: 500px;
+    @apply hidden
+    lg:block;
   }
 
   #close-button {
