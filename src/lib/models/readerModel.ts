@@ -466,8 +466,7 @@ class ReaderModel {
       this.getProvenanceAction(uuid)
         .then((action) => this._inputMapHelper(action, resolve))
         .catch(() => resolve({}));
-      }
-    );
+    });
   }
 
   _inputMapHelper(action, resolve) {
@@ -518,7 +517,10 @@ class ReaderModel {
                       this.seenInputExecutionIDs.add(
                         innerAction.execution.uuid,
                       );
-                      return this._inputMapHelper(Object.values(e)[0], innerAction);
+                      return this._inputMapHelper(
+                        Object.values(e)[0],
+                        innerAction,
+                      );
                     }
                   },
                 ),
@@ -552,12 +554,16 @@ class ReaderModel {
               [paramName]: artifactUUID,
             });
 
-            promises.push(this.getProvenanceAction(artifactUUID).then((innerAction) => {
-              if (!this.seenInputExecutionIDs.has(innerAction.execution.uuid)) {
-                this.seenInputExecutionIDs.add(innerAction.execution.uuid);
-                return this._inputMapHelper(artifactUUID, innerAction)
-              }
-            }))
+            promises.push(
+              this.getProvenanceAction(artifactUUID).then((innerAction) => {
+                if (
+                  !this.seenInputExecutionIDs.has(innerAction.execution.uuid)
+                ) {
+                  this.seenInputExecutionIDs.add(innerAction.execution.uuid);
+                  return this._inputMapHelper(artifactUUID, innerAction);
+                }
+              }),
+            );
             promises.push(this._inputMap(artifactUUID));
           }
         }
