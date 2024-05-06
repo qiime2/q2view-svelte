@@ -45,6 +45,8 @@ class ReaderModel {
   provData: Object | undefined = undefined;
   provTitle: string = "Details";
 
+  seenInputExecutionIDs = new Set();
+
   //***************************************************************************
   // Start boilerplate to make this a subscribable svelte store
   //***************************************************************************
@@ -98,6 +100,8 @@ class ReaderModel {
 
     this.provData = undefined;
     this.provTitle = "Details";
+
+    this.seenInputExecutionIDs = new Set();
 
     this._dirty();
   }
@@ -483,10 +487,15 @@ class ReaderModel {
         const inputName = Object.keys(inputMap)[0];
         if (typeof entry === "string") {
           inputs[action.execution.uuid].add(inputMap);
-          promises.push(this._inputMap(entry));
+          promises.push(
+            this.getProvenanceAction(entry).then((innerAction) => {
+              if (!this.seenInputExecutionIDs.has(innerAction.execution.uuid)) {
+                this.seenInputExecutionIDs.add(innerAction.execution.uuid);
+                return this._inputMap(entry, innerAction);
+              }
+            }),
+          );
         } else if (entry !== null) {
-          const seenExecutionIDs = new Set();
-
           for (const e of entry) {
             if (typeof e !== "string") {
               // If we are here, this was a collection and each e is a
@@ -504,8 +513,14 @@ class ReaderModel {
               promises.push(
                 this.getProvenanceAction(Object.values(e)[0]).then(
                   (innerAction) => {
-                    if (!seenExecutionIDs.has(innerAction.execution.uuid)) {
-                      seenExecutionIDs.add(innerAction.execution.uuid);
+                    if (
+                      !this.seenInputExecutionIDs.has(
+                        innerAction.execution.uuid,
+                      )
+                    ) {
+                      this.seenInputExecutionIDs.add(
+                        innerAction.execution.uuid,
+                      );
                       return this._inputMap(Object.values(e)[0], innerAction);
                     }
                   },
@@ -513,7 +528,16 @@ class ReaderModel {
               );
             } else {
               inputs[action.execution.uuid].add({ [inputName]: e });
-              promises.push(this._inputMap(e));
+              promises.push(
+                this.getProvenanceAction(e).then((innerAction) => {
+                  if (
+                    !this.seenInputExecutionIDs.has(innerAction.execution.uuid)
+                  ) {
+                    this.seenInputExecutionIDs.add(innerAction.execution.uuid);
+                    return this._inputMap(e, innerAction);
+                  }
+                }),
+              );
             }
           }
         } // else optional artifact
