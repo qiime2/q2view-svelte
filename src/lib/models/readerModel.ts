@@ -458,14 +458,18 @@ class ReaderModel {
     });
   }
 
-  _inputMap(uuid) {
+  _inputMap(uuid, action) {
     // Recurse up the prov tree and get mappings of execution id to the inputs
     // that execution took
     return new Promise((resolve, reject) => {
       // eslint-disable-line no-unused-vars
-      this.getProvenanceAction(uuid)
-        .then((action) => this._inputMapHelper(action, resolve))
-        .catch(() => resolve({}));
+      if (action === undefined) {
+        this.getProvenanceAction(uuid)
+          .then((action) => this._inputMapHelper(action, resolve))
+          .catch(() => resolve({}));
+      } else {
+        this._inputMapHelper(action, resolve);
+      }
     });
   }
 
@@ -479,8 +483,6 @@ class ReaderModel {
       action.action.type === "pipeline"
     ) {
 
-
-
       inputs[action.execution.uuid] = new Set();
       const promises = [];
       for (const inputMap of action.action.inputs) {
@@ -492,7 +494,7 @@ class ReaderModel {
             this.getProvenanceAction(entry).then((innerAction) => {
               if (!this.seenInputExecutionIDs.has(innerAction.execution.uuid)) {
                 this.seenInputExecutionIDs.add(innerAction.execution.uuid);
-                return this._inputMapHelper(entry, innerAction);
+                return this._inputMap(entry, innerAction);
               }
             }),
           );
@@ -522,7 +524,7 @@ class ReaderModel {
                       this.seenInputExecutionIDs.add(
                         innerAction.execution.uuid,
                       );
-                      return this._inputMapHelper(
+                      return this._inputMap(
                         Object.values(e)[0],
                         innerAction,
                       );
@@ -538,7 +540,7 @@ class ReaderModel {
                     !this.seenInputExecutionIDs.has(innerAction.execution.uuid)
                   ) {
                     this.seenInputExecutionIDs.add(innerAction.execution.uuid);
-                    return this._inputMapHelper(e, innerAction);
+                    return this._inputMap(e, innerAction);
                   }
                 }),
               );
@@ -565,7 +567,7 @@ class ReaderModel {
                   !this.seenInputExecutionIDs.has(innerAction.execution.uuid)
                 ) {
                   this.seenInputExecutionIDs.add(innerAction.execution.uuid);
-                  return this._inputMapHelper(artifactUUID, innerAction);
+                  return this._inputMap(artifactUUID, innerAction);
                 }
               }),
             );
