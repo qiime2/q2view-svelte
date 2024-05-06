@@ -471,11 +471,16 @@ class ReaderModel {
 
   _inputMapHelper(action, resolve) {
     const inputs = {};
+    const artifactsToAction = {};
+
     if (
       action.action.type === "method" ||
       action.action.type === "visualizer" ||
       action.action.type === "pipeline"
     ) {
+
+
+
       inputs[action.execution.uuid] = new Set();
       const promises = [];
       for (const inputMap of action.action.inputs) {
@@ -564,7 +569,6 @@ class ReaderModel {
                 }
               }),
             );
-            promises.push(this._inputMap(artifactUUID));
           }
         }
       }
