@@ -397,6 +397,8 @@ class ReaderModel {
   }
 
   _artifactMap(uuid) {
+    // Recurse up the prov tree and get all artifacts associated with the
+    // provenance mapped to the action that produced them
     return new Promise((resolve, reject) => {
       // eslint-disable-line no-unused-vars
       this.getProvenanceAction(uuid)
@@ -453,6 +455,8 @@ class ReaderModel {
   }
 
   _inputMap(uuid) {
+    // Recurse up the prov tree and get mappings of execution id to the inputs
+    // that execution took
     return new Promise((resolve, reject) => {
       // eslint-disable-line no-unused-vars
       this.getProvenanceAction(uuid)
@@ -472,6 +476,8 @@ class ReaderModel {
                 inputs[action.execution.uuid].add(inputMap);
                 promises.push(this._inputMap(entry));
               } else if (entry !== null) {
+                const seenExecutionIDs = new Set();
+
                 for (const e of entry) {
                   if (typeof e !== "string") {
                     // If we are here, this was a collection and each e is a
@@ -480,7 +486,13 @@ class ReaderModel {
                       [`${inputName}_${Object.keys(e)[0]}`]:
                         Object.values(e)[0],
                     });
-                    promises.push(this._inputMap(Object.values(e)[0]));
+
+                    promises.push(this.getProvenanceAction(Object.values(e)[0]).then((innerAction) => {
+                      if (!seenExecutionIDs.has(innerAction.execution.uuid)) {
+                        seenExecutionIDs.add(innerAction.execution.uuid);
+                        return this._inputMap(Object.values(e)[0]);
+                      }
+                    }));
                   } else {
                     inputs[action.execution.uuid].add({ [inputName]: e });
                     promises.push(this._inputMap(e));
@@ -506,7 +518,11 @@ class ReaderModel {
             }
             if (promises.length !== 0) {
               Promise.all(promises)
-                .then((iList) => Object.assign(inputs, ...iList))
+                .then((iList) => {
+                  iList = iList.filter((element) => element !== undefined)
+                  Object.assign(inputs, ...iList);
+                  return inputs;
+                })
                 .then(resolve);
             } else {
               resolve({}); // no artifacts involved
