@@ -458,19 +458,16 @@ class ReaderModel {
     });
   }
 
-  _inputMap(uuid, action) {
+  _inputMap(uuid) {
     // Recurse up the prov tree and get mappings of execution id to the inputs
     // that execution took
     return new Promise((resolve, reject) => {
       // eslint-disable-line no-unused-vars
-      if (action === undefined) {
-        this.getProvenanceAction(uuid)
-          .then((action) => this._inputMapHelper(action, resolve))
-          .catch(() => resolve({}));
-      } else {
-        this._inputMapHelper(action, resolve);
+      this.getProvenanceAction(uuid)
+        .then((action) => this._inputMapHelper(action, resolve))
+        .catch(() => resolve({}));
       }
-    });
+    );
   }
 
   _inputMapHelper(action, resolve) {
@@ -491,7 +488,7 @@ class ReaderModel {
             this.getProvenanceAction(entry).then((innerAction) => {
               if (!this.seenInputExecutionIDs.has(innerAction.execution.uuid)) {
                 this.seenInputExecutionIDs.add(innerAction.execution.uuid);
-                return this._inputMap(entry, innerAction);
+                return this._inputMapHelper(entry, innerAction);
               }
             }),
           );
@@ -521,7 +518,7 @@ class ReaderModel {
                       this.seenInputExecutionIDs.add(
                         innerAction.execution.uuid,
                       );
-                      return this._inputMap(Object.values(e)[0], innerAction);
+                      return this._inputMapHelper(Object.values(e)[0], innerAction);
                     }
                   },
                 ),
@@ -534,7 +531,7 @@ class ReaderModel {
                     !this.seenInputExecutionIDs.has(innerAction.execution.uuid)
                   ) {
                     this.seenInputExecutionIDs.add(innerAction.execution.uuid);
-                    return this._inputMap(e, innerAction);
+                    return this._inputMapHelper(e, innerAction);
                   }
                 }),
               );
@@ -554,6 +551,13 @@ class ReaderModel {
             inputs[action.execution.uuid].add({
               [paramName]: artifactUUID,
             });
+
+            promises.push(this.getProvenanceAction(artifactUUID).then((innerAction) => {
+              if (!this.seenInputExecutionIDs.has(innerAction.execution.uuid)) {
+                this.seenInputExecutionIDs.add(innerAction.execution.uuid);
+                return this._inputMapHelper(artifactUUID, innerAction)
+              }
+            }))
             promises.push(this._inputMap(artifactUUID));
           }
         }
