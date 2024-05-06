@@ -454,85 +454,100 @@ class ReaderModel {
     });
   }
 
-  _inputMap(uuid) {
+  _inputMap(uuid, action) {
     // Recurse up the prov tree and get mappings of execution id to the inputs
     // that execution took
     return new Promise((resolve, reject) => {
       // eslint-disable-line no-unused-vars
-      this.getProvenanceAction(uuid)
-        .then((action) => {
-          const inputs = {};
-          if (
-            action.action.type === "method" ||
-            action.action.type === "visualizer" ||
-            action.action.type === "pipeline"
-          ) {
-            inputs[action.execution.uuid] = new Set();
-            const promises = [];
-            for (const inputMap of action.action.inputs) {
-              const entry = Object.values(inputMap)[0];
-              const inputName = Object.keys(inputMap)[0];
-              if (typeof entry === "string") {
-                inputs[action.execution.uuid].add(inputMap);
-                promises.push(this._inputMap(entry));
-              } else if (entry !== null) {
-                const seenExecutionIDs = new Set();
-
-                for (const e of entry) {
-                  if (typeof e !== "string") {
-                    // If we are here, this was a collection and each e is a
-                    // key, value pair
-                    inputs[action.execution.uuid].add({
-                      [`${inputName}_${Object.keys(e)[0]}`]:
-                        Object.values(e)[0],
-                    });
-
-                    promises.push(this.getProvenanceAction(Object.values(e)[0]).then((innerAction) => {
-                      if (!seenExecutionIDs.has(innerAction.execution.uuid)) {
-                        seenExecutionIDs.add(innerAction.execution.uuid);
-                        return this._inputMap(Object.values(e)[0]);
-                      }
-                    }));
-                  } else {
-                    inputs[action.execution.uuid].add({ [inputName]: e });
-                    promises.push(this._inputMap(e));
-                  }
-                }
-              } // else optional artifact
-            }
-            for (const paramMap of action.action.parameters) {
-              const paramName = Object.keys(paramMap)[0];
-              const param = Object.values(paramMap)[0];
-              if (
-                param !== null &&
-                typeof param === "object" &&
-                Object.prototype.hasOwnProperty.call(param, "artifacts")
-              ) {
-                for (const artifactUUID of param.artifacts) {
-                  inputs[action.execution.uuid].add({
-                    [paramName]: artifactUUID,
-                  });
-                  promises.push(this._inputMap(artifactUUID));
-                }
-              }
-            }
-            if (promises.length !== 0) {
-              Promise.all(promises)
-                .then((iList) => {
-                  iList = iList.filter((element) => element !== undefined)
-                  Object.assign(inputs, ...iList);
-                  return inputs;
-                })
-                .then(resolve);
-            } else {
-              resolve({}); // no artifacts involved
-            }
-          } else {
-            resolve({});
-          }
-        })
-        .catch(() => resolve({}));
+      if (action === undefined) {
+        this.getProvenanceAction(uuid)
+          .then((action) => this._inputMapHelper(action, resolve))
+          .catch(() => resolve({}));
+      } else {
+        this._inputMapHelper(action, resolve);
+      }
     });
+  }
+
+  _inputMapHelper(action, resolve) {
+    const inputs = {};
+    if (
+      action.action.type === "method" ||
+      action.action.type === "visualizer" ||
+      action.action.type === "pipeline"
+    ) {
+      inputs[action.execution.uuid] = new Set();
+      const promises = [];
+      for (const inputMap of action.action.inputs) {
+        const entry = Object.values(inputMap)[0];
+        const inputName = Object.keys(inputMap)[0];
+        if (typeof entry === "string") {
+          inputs[action.execution.uuid].add(inputMap);
+          promises.push(this._inputMap(entry));
+        } else if (entry !== null) {
+          const seenExecutionIDs = new Set();
+
+          for (const e of entry) {
+            if (typeof e !== "string") {
+              // If we are here, this was a collection and each e is a
+              // key, value pair
+              inputs[action.execution.uuid].add({
+                [`${inputName}_${Object.keys(e)[0]}`]: Object.values(e)[0],
+              });
+
+              // TODO: This should prevent us from parsing the same prov tree
+              // for every element of the collection if the collection has
+              // a large number of artifacts that came from the same action.
+              // This does do some redundent work if the collection was completely
+              // ad hoc, but it saves substantial time if the collection was
+              // a single ResultCollection from another action
+              promises.push(
+                this.getProvenanceAction(Object.values(e)[0]).then(
+                  (innerAction) => {
+                    if (!seenExecutionIDs.has(innerAction.execution.uuid)) {
+                      seenExecutionIDs.add(innerAction.execution.uuid);
+                      return this._inputMap(Object.values(e)[0], innerAction);
+                    }
+                  },
+                ),
+              );
+            } else {
+              inputs[action.execution.uuid].add({ [inputName]: e });
+              promises.push(this._inputMap(e));
+            }
+          }
+        } // else optional artifact
+      }
+      for (const paramMap of action.action.parameters) {
+        const paramName = Object.keys(paramMap)[0];
+        const param = Object.values(paramMap)[0];
+        if (
+          param !== null &&
+          typeof param === "object" &&
+          Object.prototype.hasOwnProperty.call(param, "artifacts")
+        ) {
+          for (const artifactUUID of param.artifacts) {
+            inputs[action.execution.uuid].add({
+              [paramName]: artifactUUID,
+            });
+            promises.push(this._inputMap(artifactUUID));
+          }
+        }
+      }
+      if (promises.length !== 0) {
+        Promise.all(promises)
+          .then((iList) => {
+            iList = iList.filter((element) => element !== undefined);
+            Object.assign(inputs, ...iList);
+            return inputs;
+          })
+          .then(resolve);
+      } else {
+        resolve({}); // no artifacts involved
+      }
+    } else {
+      resolve({});
+    }
   }
 
   getProvenanceTree() {
