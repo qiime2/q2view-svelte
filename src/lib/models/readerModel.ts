@@ -432,11 +432,9 @@ class ReaderModel {
                 this.seenInputExecutionIDs.add(innerAction.execution.uuid);
                 return this._inputMap(entry, innerAction);
               } else {
-                return new Promise((resolve, reject) =>
-                  resolve({
-                    iList: {},
-                    aList: { [entry]: innerAction.execution.uuid },
-                  }),
+                return this._createArtifactMapPromise(
+                  entry,
+                  innerAction.execution.uuid,
                 );
               }
             }),
@@ -453,12 +451,6 @@ class ReaderModel {
                 [`${inputName}_${key}`]: value,
               });
 
-              // TODO: This should prevent us from parsing the same prov tree
-              // for every element of the collection if the collection has
-              // a large number of artifacts that came from the same action.
-              // This does do some redundent work if the collection was completely
-              // ad hoc, but it saves substantial time if the collection was
-              // a single ResultCollection from another action
               promises.push(
                 this.getProvenanceAction(value).then((innerAction) => {
                   if (
@@ -467,11 +459,9 @@ class ReaderModel {
                     this.seenInputExecutionIDs.add(innerAction.execution.uuid);
                     return this._inputMap(value, innerAction);
                   } else {
-                    return new Promise((resolve, reject) =>
-                      resolve({
-                        iList: {},
-                        aList: { [value]: innerAction.execution.uuid },
-                      }),
+                    return this._createArtifactMapPromise(
+                      value,
+                      innerAction.execution.uuid,
                     );
                   }
                 }),
@@ -486,11 +476,9 @@ class ReaderModel {
                     this.seenInputExecutionIDs.add(innerAction.execution.uuid);
                     return this._inputMap(e, innerAction);
                   } else {
-                    return new Promise((resolve, reject) =>
-                      resolve({
-                        iList: {},
-                        aList: { [e]: innerAction.execution.uuid },
-                      }),
+                    return this._createArtifactMapPromise(
+                      e,
+                      innerAction.execution.uuid,
                     );
                   }
                 }),
@@ -520,11 +508,9 @@ class ReaderModel {
                   this.seenInputExecutionIDs.add(innerAction.execution.uuid);
                   return this._inputMap(artifactUUID, innerAction);
                 } else {
-                  return new Promise((resolve, reject) =>
-                    resolve({
-                      iList: {},
-                      aList: { [artifactUUID]: innerAction.execution.uuid },
-                    }),
+                  return this._createArtifactMapPromise(
+                    artifactUUID,
+                    innerAction.execution.uuid,
                   );
                 }
               }),
@@ -555,6 +541,15 @@ class ReaderModel {
     } else {
       resolve({ iList: inputs, aList: artifactsToAction });
     }
+  }
+
+  _createArtifactMapPromise(key, value) {
+    return new Promise((resolve, reject) =>
+      resolve({
+        iList: {},
+        aList: { [key]: value },
+      }),
+    );
   }
 
   getProvenanceTree() {
