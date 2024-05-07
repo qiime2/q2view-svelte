@@ -570,10 +570,6 @@ class ReaderModel {
         let actions = result["iList"];
         let artifacts = result["aList"];
 
-        console.log("HERE");
-        console.log(actions);
-        console.log(artifacts);
-
         const findMaxDepth = (uuid) => {
           if (
             artifacts[uuid] === null ||
