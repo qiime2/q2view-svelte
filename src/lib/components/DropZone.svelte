@@ -25,6 +25,11 @@
     }
   }
 
+  function fileChange(event) {
+    // Reset to null so using the same file multiple times works
+    event.target.value = null;
+  }
+
   $: if (files) {
     if (files.length < 1) {
       // Do nothing.
@@ -53,7 +58,7 @@
   role="button"
   tabindex="0"
 >
-  <input id="dropinput" bind:files type="file" accept=".qza, .qzv"/>
+  <input id="dropinput" bind:files on:change={(event) => fileChange(event)} type="file" accept=".qza, .qzv"/>
   <div class="text-xl text-gray-700 text-center">
     <h1 class="mt-2.5 mb-1 text-4xl">Drag and drop or click here</h1>
     to view a QIIME 2 Artifact or Visualization (.qza/.qzv) from your computer.
