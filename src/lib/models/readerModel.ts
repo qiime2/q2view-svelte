@@ -521,18 +521,12 @@ class ReaderModel {
       if (promises.length !== 0) {
         Promise.all(promises)
           .then((results) => {
-            let iRet = { ...inputs };
-            let aRet = { ...artifactsToAction };
-
             for (const result of results) {
-              let iList = result["iList"];
-              let aList = result["aList"];
-
-              iRet = { ...iRet, ...iList };
-              aRet = { ...aRet, ...aList };
+              Object.assign(inputs, result["iList"]);
+              Object.assign(artifactsToAction, result["aList"]);
             }
 
-            return { iList: iRet, aList: aRet };
+            return { iList: inputs, aList: artifactsToAction };
           })
           .then(resolve);
       } else {
