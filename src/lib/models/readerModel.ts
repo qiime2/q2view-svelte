@@ -11,13 +11,6 @@ import { handleError, readBlobAsText } from "$lib/scripts/util";
 import extmap from "$lib/scripts/extmap";
 import schema from "$lib/scripts/yaml-schema";
 
-interface ResultDetails {
-  name: string | null;
-  uuid: string;
-  type: string;
-  format: string | null;
-}
-
 class ReaderModel {
   error = "";
   errorMessage = "";
