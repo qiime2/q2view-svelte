@@ -555,7 +555,8 @@ class ReaderModel {
         const findMaxDepth = (uuid) => {
           if (
             artifacts[uuid] === null ||
-            typeof actions[artifacts[uuid]] === "undefined"
+            typeof actions[artifacts[uuid]] === "undefined" ||
+            actions[artifacts[uuid]].size === 0
           ) {
             return 0;
           }
