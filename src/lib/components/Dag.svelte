@@ -63,6 +63,10 @@
   };
 
   function setSelection(type, uuid) {
+    if (uuid in readerModel.collectionMapping) {
+      uuid = readerModel.collectionMapping[uuid][0];
+    }
+
     let selectionData = null;
     if (type === "action") {
       readerModel.provTitle = "Action Details";
@@ -77,6 +81,8 @@
   };
 
   function _setSelection(data) {
+
+
     readerModel.provData = data;
     readerModel._dirty();
   }
@@ -118,6 +124,10 @@
         // selected node clicked on. I don"t really know how it works
         // lol
         if (node.isParent()) {
+          console.log(node)
+          console.log(node.children())
+          console.log(node.children()[0])
+          console.log(node.children()[0].data())
           setSelection("action", node.children()[0].data("id"));
         } else {
           setSelection("artifact", node.data("id"));

@@ -41,6 +41,11 @@ class ReaderModel {
   actionsToInputs = {};
   artifactsToActions = {};
 
+  collectionMapping = {};
+  inCollection = new Set();
+  // Need to map the
+  // collectionMap = {};
+
   //***************************************************************************
   // Start boilerplate to make this a subscribable svelte store
   //***************************************************************************
@@ -97,6 +102,9 @@ class ReaderModel {
 
     this.actionsToInputs = {};
     this.artifactsToActions = {};
+
+    this.collectionMapping = {};
+    this.inCollection = new Set();
 
     this._dirty();
   }
@@ -401,8 +409,8 @@ class ReaderModel {
     // eslint-disable-line no-unused-vars
     if (action === undefined) {
       await this.getProvenanceAction(uuid).then(async (action) => {
-        await this._inputMapHelper(uuid, action)
-      })
+        await this._inputMapHelper(uuid, action);
+      });
     } else {
       await this._inputMapHelper(uuid, action);
     }
@@ -434,11 +442,13 @@ class ReaderModel {
           for (const e of entry) {
             if (typeof e !== "string") {
               // If we are here, this was a collection and each e is a
-              // key, value pair
+              // key, value pair. This collection could have been an output
+              // from another action, and it could be going multiple different
+              // places
               const key = Object.keys(e)[0];
               const value = Object.values(e)[0];
 
-              await this._getMappings(`${inputName}-${key}`, value, action)
+              await this._getMappings(`${inputName}-${key}`, value, action);
             } else {
               await this._getMappings(inputName, e, action);
             }
@@ -480,7 +490,8 @@ class ReaderModel {
     const findMaxDepth = (uuid) => {
       if (
         this.artifactsToActions[uuid] === null ||
-        typeof this.actionsToInputs[this.artifactsToActions[uuid]] === "undefined" ||
+        typeof this.actionsToInputs[this.artifactsToActions[uuid]] ===
+          "undefined" ||
         this.actionsToInputs[this.artifactsToActions[uuid]].size === 0
       ) {
         return 0;
@@ -488,9 +499,9 @@ class ReaderModel {
       return (
         1 +
         Math.max(
-          ...Array.from(this.actionsToInputs[this.artifactsToActions[uuid]]).map((mapping) =>
-            findMaxDepth(Object.values(mapping)[0]),
-          ),
+          ...Array.from(
+            this.actionsToInputs[this.artifactsToActions[uuid]],
+          ).map((mapping) => findMaxDepth(Object.values(mapping)[0])),
         )
       );
     };
@@ -500,15 +511,11 @@ class ReaderModel {
     let edges = [];
     const actionNodes = [];
 
-    const collectionMapping = {};
-
     for (const actionUUID of Object.keys(this.actionsToInputs)) {
       // console.log(actionUUID);
       for (const mapping of this.actionsToInputs[actionUUID]) {
         // console.log(mapping);
-        // const inputName = Object.keys(mapping)[0];
-        // const inputUuid = Object.values(mapping)[0];
-        // const inputSrc = artifacts[inputUuid];
+        let inputName = Object.keys(mapping)[0];
 
         // // This artifact comes from inputSrc-inputName. Map inputSrc-inputName
         // // to all inputUuids from that same src for each collection. Also need to indicate
@@ -517,21 +524,33 @@ class ReaderModel {
         // // Collection elements were given the name <input-name>-<key> the
         // // only way a - can appear in the name is via this mechanism because
         // // we do not al
-        // if (inputName.includes('-')) {
+        if (inputName.includes("-")) {
+          inputName = inputName.split("-")[0];
 
-        // }
+          const inputUuid = Object.values(mapping)[0];
+          const inputSrc = this.artifactsToActions[inputUuid];
 
-        // console.log(`inputName: ${inputName}\ninputUuid: ${inputUuid}\ninputSrc: ${inputSrc}\n`);
+          const collectionID = `${inputSrc}:${actionUUID}:${inputName}`;
 
-        edges.push({
-          data: {
-            id: `${Object.keys(mapping)[0]}_${Object.values(mapping)[0]
+          if (!(collectionID in this.collectionMapping)) {
+            this.collectionMapping[collectionID] = [inputUuid];
+          } else {
+            this.collectionMapping[collectionID].push(inputUuid);
+          }
+
+          this.inCollection.add(inputUuid);
+        } else {
+          edges.push({
+            data: {
+              id: `${Object.keys(mapping)[0]}_${
+                Object.values(mapping)[0]
               }to${actionUUID}`,
-            param: Object.keys(mapping)[0],
-            source: Object.values(mapping)[0],
-            target: actionUUID,
-          },
-        });
+              param: Object.keys(mapping)[0],
+              source: Object.values(mapping)[0],
+              target: actionUUID,
+            },
+          });
+        }
       }
     }
 
@@ -545,11 +564,43 @@ class ReaderModel {
     }
 
     for (const artifactUUID of Object.keys(this.artifactsToActions)) {
+      if (!this.inCollection.has(artifactUUID)) {
+        nodes.push({
+          data: {
+            id: artifactUUID,
+            type: "single",
+            parent: this.artifactsToActions[artifactUUID],
+            row: findMaxDepth(artifactUUID),
+          },
+        });
+      }
+    }
+
+    for (const collectionID of Object.keys(this.collectionMapping)) {
+      const representative = this.collectionMapping[collectionID][0];
+      console.log(representative);
+      console.log(this.artifactsToActions[representative]);
+
+      const split = collectionID.split(":");
+      const source = split[0];
+      const target = split[1];
+      const param = split[2];
+
       nodes.push({
         data: {
-          id: artifactUUID,
-          parent: this.artifactsToActions[artifactUUID],
-          row: findMaxDepth(artifactUUID),
+          id: collectionID,
+          type: "collection",
+          parent: this.artifactsToActions[representative],
+          row: findMaxDepth(representative),
+        },
+      });
+
+      edges.push({
+        data: {
+          id: `${param}_${source}to${target}`,
+          param: param,
+          source: source,
+          target: target,
         },
       });
     }
