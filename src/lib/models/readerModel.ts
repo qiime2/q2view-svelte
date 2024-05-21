@@ -512,18 +512,9 @@ class ReaderModel {
     const actionNodes = [];
 
     for (const actionUUID of Object.keys(this.actionsToInputs)) {
-      // console.log(actionUUID);
       for (const mapping of this.actionsToInputs[actionUUID]) {
-        // console.log(mapping);
         let inputName = Object.keys(mapping)[0];
 
-        // // This artifact comes from inputSrc-inputName. Map inputSrc-inputName
-        // // to all inputUuids from that same src for each collection. Also need to indicate
-        // // this action in there somehow.
-
-        // // Collection elements were given the name <input-name>-<key> the
-        // // only way a - can appear in the name is via this mechanism because
-        // // we do not al
         if (inputName.includes("-")) {
           inputName = inputName.split("-")[0];
 
@@ -578,8 +569,6 @@ class ReaderModel {
 
     for (const collectionID of Object.keys(this.collectionMapping)) {
       const representative = this.collectionMapping[collectionID][0];
-      console.log(representative);
-      console.log(this.artifactsToActions[representative]);
 
       const split = collectionID.split(":");
       const source = split[0];
@@ -598,7 +587,7 @@ class ReaderModel {
       edges.push({
         data: {
           id: `${param}_${source}to${target}`,
-          param: param,
+          param: `${param}-collection`,
           source: source,
           target: target,
         },
