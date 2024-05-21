@@ -81,8 +81,6 @@
   };
 
   function _setSelection(data) {
-
-
     readerModel.provData = data;
     readerModel._dirty();
   }
