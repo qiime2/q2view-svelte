@@ -588,7 +588,7 @@ class ReaderModel {
         data: {
           id: `${param}_${source}to${target}`,
           param: `${param}-collection`,
-          source: source,
+          source: collectionID,
           target: target,
         },
       });
