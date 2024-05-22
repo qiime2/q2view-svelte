@@ -516,7 +516,10 @@ class ReaderModel {
         let inputName = Object.keys(mapping)[0];
 
         if (inputName.includes("-")) {
-          inputName = inputName.split("-")[0];
+          const splitName = inputName.split("-");
+
+          inputName = splitName[0];
+          const inputKey = splitName[1];
 
           const inputUuid = Object.values(mapping)[0];
           const inputSrc = this.artifactsToActions[inputUuid];
@@ -524,9 +527,9 @@ class ReaderModel {
           const collectionID = `${inputSrc}:${actionUUID}:${inputName}`;
 
           if (!(collectionID in this.collectionMapping)) {
-            this.collectionMapping[collectionID] = [inputUuid];
+            this.collectionMapping[collectionID] = [[inputKey, inputUuid]];
           } else {
-            this.collectionMapping[collectionID].push(inputUuid);
+            this.collectionMapping[collectionID].push([inputKey, inputUuid]);
           }
 
           this.inCollection.add(inputUuid);
@@ -568,7 +571,7 @@ class ReaderModel {
     }
 
     for (const collectionID of Object.keys(this.collectionMapping)) {
-      const representative = this.collectionMapping[collectionID][0];
+      const representative = this.collectionMapping[collectionID][0][1];
 
       const split = collectionID.split(":");
       const source = split[0];

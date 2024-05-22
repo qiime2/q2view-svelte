@@ -66,7 +66,7 @@
     let selectionData = null;
     if (type === "action") {
       if (uuid in readerModel.collectionMapping) {
-        uuid = readerModel.collectionMapping[uuid][0];
+        uuid = readerModel.collectionMapping[uuid][0][1];
       }
 
       readerModel.provTitle = "Action Details";
@@ -75,13 +75,15 @@
       readerModel.provTitle = "Result Details";
 
       if (uuid in readerModel.collectionMapping) {
-        selectionData = {};
+        selectionData = [];
+        const keys = [];
 
         for (const artifact of readerModel.collectionMapping[uuid]) {
-          selectionData[artifact] = readerModel.getProvenanceArtifact(artifact);
+          keys.push(artifact[0]);
+          selectionData.push(readerModel.getProvenanceArtifact(artifact[1]));
         }
 
-        Promise.all(Object.values(selectionData)).then((data) => _setSelection(data));
+        Promise.all(selectionData).then((data) => _setSelection(undefined, data, keys));
         return;
       } else {
         selectionData = readerModel.getProvenanceArtifact(uuid);
@@ -92,7 +94,15 @@
           .catch(() => _setSelection(undefined));
   };
 
-  function _setSelection(data) {
+  function _setSelection(data, data2, keys) {
+    if (data === undefined) {
+      data = {}
+      // data = Object.fromEntries(keys.map((key, index) => [key, data[index]]));
+      for (let idx = 0; idx < data2.length; idx++) {
+        data[keys[idx]] = data2[idx];
+      }
+    }
+
     readerModel.provData = data;
     readerModel._dirty();
   }
