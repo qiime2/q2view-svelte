@@ -513,6 +513,7 @@ class ReaderModel {
     let edges = [];
     const actionNodes = [];
 
+    // Add all edges for single Results and collate collections
     for (const actionUUID of Object.keys(this.actionsToInputs)) {
       for (const mapping of this.actionsToInputs[actionUUID]) {
         let inputName = Object.keys(mapping)[0];
@@ -520,7 +521,7 @@ class ReaderModel {
         // The only way we can have a - in the name is if this is a collection
         // element, we sort those out here where we have all the information
         // we need handy in one place. We add the nodes and edges for
-        // collections separately from the single artifact nodes and edges
+        // collections separately from the single Result nodes and edges
         if (inputName.includes("-")) {
           const splitName = inputName.split("-");
 
@@ -559,6 +560,7 @@ class ReaderModel {
       }
     }
 
+    // Add all action nodes
     for (const actionUUID of Object.values(this.artifactsToActions)) {
       // These don't need to be sorted.
       if (actionUUID !== null) {
@@ -568,6 +570,7 @@ class ReaderModel {
       }
     }
 
+    // Add all nodes for individual Results
     for (const artifactUUID of Object.keys(this.artifactsToActions)) {
       if (!this.inCollection.has(artifactUUID)) {
         nodes.push({
@@ -580,6 +583,7 @@ class ReaderModel {
       }
     }
 
+    // Add all nodes and edges for collections
     for (const collectionID of Object.keys(this.collectionMapping)) {
       // Use the uuid of the first artifact in the collection to represent the
       // collection here
