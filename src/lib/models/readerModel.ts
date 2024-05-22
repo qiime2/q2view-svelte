@@ -450,7 +450,7 @@ class ReaderModel {
               const key = Object.keys(e)[0];
               const value = Object.values(e)[0];
 
-              await this._getMappings(`${inputName}-${key}`, value, action);
+              await this._getMappings(`${key}:${inputName}`, value, action);
             } else {
               await this._getMappings(inputName, e, action);
             }
@@ -522,11 +522,11 @@ class ReaderModel {
         // element, we sort those out here where we have all the information
         // we need handy in one place. We add the nodes and edges for
         // collections separately from the single Result nodes and edges
-        if (inputName.includes("-")) {
-          const splitName = inputName.split("-");
+        if (inputName.includes(":")) {
+          const splitName = inputName.split(":");
 
-          inputName = splitName[0];
-          const inputKey = splitName[1];
+          inputName = splitName[1];
+          const inputKey = splitName[0];
 
           const inputUuid = Object.values(mapping)[0];
           const inputSrc = this.artifactsToActions[inputUuid];
