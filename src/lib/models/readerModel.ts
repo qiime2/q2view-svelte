@@ -517,6 +517,10 @@ class ReaderModel {
       for (const mapping of this.actionsToInputs[actionUUID]) {
         let inputName = Object.keys(mapping)[0];
 
+        // The only way we can have a - in the name is if this is a collection
+        // element, we sort those out here where we have all the information
+        // we need handy in one place. We add the nodes and edges for
+        // collections separately from the single artifact nodes and edges
         if (inputName.includes("-")) {
           const splitName = inputName.split("-");
 
