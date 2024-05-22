@@ -62,19 +62,36 @@
     ]
   };
 
-  function setSelection(type, uuid) {
-    let selectionData = null;
-    if (type === "action") {
-      readerModel.provTitle = "Action Details";
-      selectionData = readerModel.getProvenanceAction(uuid);
-    } else {
-      readerModel.provTitle = "Result Details";
-      selectionData = readerModel.getProvenanceArtifact(uuid);
+  async function setActionSelection(uuid: string) {
+    if (uuid in readerModel.collectionMapping) {
+      // If our uuid is a collectionID we get the uuid of the first element of
+      // the collection to actually get the provenance action.
+      uuid = readerModel.collectionMapping[uuid][0]['uuid'];
     }
 
-    selectionData.then((data) => _setSelection(data))
-          .catch(() => _setSelection(undefined));
-  };
+    readerModel.provTitle = "Action Details";
+    const selectionData = await readerModel.getProvenanceAction(uuid);
+
+    _setSelection(selectionData);
+  }
+
+  async function setResultSelection(uuid: string) {
+    readerModel.provTitle = "Result Details";
+    const selectionData = await readerModel.getProvenanceArtifact(uuid);
+
+    _setSelection(selectionData);
+  }
+
+  async function setCollectionSelection(uuid: string) {
+    const selectionData = {};
+    readerModel.provTitle = "Collection Details";
+
+    for (const artifact of readerModel.collectionMapping[uuid]) {
+      selectionData[artifact['key']] = await readerModel.getProvenanceArtifact(artifact['uuid']);
+    }
+
+    _setSelection(selectionData);
+  }
 
   function _setSelection(data) {
     readerModel.provData = data;
@@ -114,13 +131,20 @@
           node = elem.source();
         }
 
-        // This is getting the information to draw the details of the
-        // selected node clicked on. I don"t really know how it works
-        // lol
         if (node.isParent()) {
-          setSelection("action", node.children()[0].data("id"));
+          // If our node is a parent then it must be an action node with artifact
+          // nodes as its children. We get the action provenance from whichever
+          // of its children happens to be first. It doesn't matter which because
+          // the data for the action itself won't change regardless.
+          setActionSelection(node.children()[0].data("id"));
         } else {
-          setSelection("artifact", node.data("id"));
+          const uuid = node.data("id");
+
+          if (uuid in readerModel.collectionMapping) {
+            setCollectionSelection(uuid);
+          } else {
+            setResultSelection(uuid);
+          }
         }
 
         const edges = node.edgesTo("node");

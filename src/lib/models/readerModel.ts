@@ -38,7 +38,13 @@ class ReaderModel {
   provData: Object | undefined = undefined;
   provTitle: string = "Details";
 
-  seenInputExecutionIDs = new Set();
+  actionsToInputs = {};
+  artifactsToActions = {};
+
+  collectionMapping = {};
+  inCollection = new Set();
+  // Need to map the
+  // collectionMap = {};
 
   //***************************************************************************
   // Start boilerplate to make this a subscribable svelte store
@@ -94,7 +100,13 @@ class ReaderModel {
     this.provData = undefined;
     this.provTitle = "Details";
 
-    this.seenInputExecutionIDs = new Set();
+    this.actionsToInputs = {};
+    this.artifactsToActions = {};
+
+    // Takes a collection and maps
+    // <output-action>:<input-action>:<output-name>: [{key: ,uuid: }, ...]
+    this.collectionMapping = {};
+    this.inCollection = new Set();
 
     this._dirty();
   }
@@ -393,96 +405,54 @@ class ReaderModel {
     return `/_/${this.session}/${this.uuid}/${relpath}`;
   }
 
-  _inputMap(uuid, action) {
+  async _inputMap(uuid, action) {
     // Recurse up the prov tree and get mappings of execution id to the inputs
     // that execution took
-    return new Promise((resolve, reject) => {
-      // eslint-disable-line no-unused-vars
-      if (action === undefined) {
-        this.getProvenanceAction(uuid)
-          .then((action) => this._inputMapHelper(uuid, action, resolve))
-          .catch(() => resolve({ iList: {}, aList: {} }));
-      } else {
-        this._inputMapHelper(uuid, action, resolve);
-      }
-    });
+    // eslint-disable-line no-unused-vars
+    if (action === undefined) {
+      await this.getProvenanceAction(uuid).then(async (action) => {
+        await this._inputMapHelper(uuid, action);
+      });
+    } else {
+      await this._inputMapHelper(uuid, action);
+    }
   }
 
-  _inputMapHelper(uuid, action, resolve) {
-    const inputs = {};
-
-    const artifactsToAction = {};
-    artifactsToAction[uuid] = action.execution.uuid;
+  // TODO: This can recurse through the tree but screw recursively constructing
+  // the actual data structures as we return up the call stack. I should put
+  // the data structures on the object and just slap things into them as needed
+  async _inputMapHelper(uuid, action) {
+    this.artifactsToActions[uuid] = action.execution.uuid;
 
     if (
       action.action.type === "method" ||
       action.action.type === "visualizer" ||
       action.action.type === "pipeline"
     ) {
-      inputs[action.execution.uuid] = new Set();
-      const promises = [];
+      if (!(action.execution.uuid in this.actionsToInputs)) {
+        this.actionsToInputs[action.execution.uuid] = new Set();
+      }
+
       for (const inputMap of action.action.inputs) {
         const entry = Object.values(inputMap)[0];
         const inputName = Object.keys(inputMap)[0];
+
         if (typeof entry === "string") {
-          inputs[action.execution.uuid].add(inputMap);
-          promises.push(
-            this.getProvenanceAction(entry).then((innerAction) => {
-              if (!this.seenInputExecutionIDs.has(innerAction.execution.uuid)) {
-                this.seenInputExecutionIDs.add(innerAction.execution.uuid);
-                return this._inputMap(entry, innerAction);
-              } else {
-                return this._createArtifactMapPromise(
-                  entry,
-                  innerAction.execution.uuid,
-                );
-              }
-            }),
-          );
+          await this._getMappings(inputName, entry, action);
         } else if (entry !== null) {
+          // TODO: Refactor how this works for collections
           for (const e of entry) {
             if (typeof e !== "string") {
               // If we are here, this was a collection and each e is a
-              // key, value pair
+              // key, value pair. This collection could have been an output
+              // from another action, and it could be going multiple different
+              // places
               const key = Object.keys(e)[0];
               const value = Object.values(e)[0];
 
-              inputs[action.execution.uuid].add({
-                [`${inputName}_${key}`]: value,
-              });
-
-              promises.push(
-                this.getProvenanceAction(value).then((innerAction) => {
-                  if (
-                    !this.seenInputExecutionIDs.has(innerAction.execution.uuid)
-                  ) {
-                    this.seenInputExecutionIDs.add(innerAction.execution.uuid);
-                    return this._inputMap(value, innerAction);
-                  } else {
-                    return this._createArtifactMapPromise(
-                      value,
-                      innerAction.execution.uuid,
-                    );
-                  }
-                }),
-              );
+              await this._getMappings(`${key}:${inputName}`, value, action);
             } else {
-              inputs[action.execution.uuid].add({ [inputName]: e });
-              promises.push(
-                this.getProvenanceAction(e).then((innerAction) => {
-                  if (
-                    !this.seenInputExecutionIDs.has(innerAction.execution.uuid)
-                  ) {
-                    this.seenInputExecutionIDs.add(innerAction.execution.uuid);
-                    return this._inputMap(e, innerAction);
-                  } else {
-                    return this._createArtifactMapPromise(
-                      e,
-                      innerAction.execution.uuid,
-                    );
-                  }
-                }),
-              );
+              await this._getMappings(inputName, e, action);
             }
           }
         } // else optional artifact
@@ -490,147 +460,178 @@ class ReaderModel {
       for (const paramMap of action.action.parameters) {
         const paramName = Object.keys(paramMap)[0];
         const param = Object.values(paramMap)[0];
+
         if (
           param !== null &&
           typeof param === "object" &&
           Object.prototype.hasOwnProperty.call(param, "artifacts")
         ) {
           for (const artifactUUID of param.artifacts) {
-            inputs[action.execution.uuid].add({
-              [paramName]: artifactUUID,
-            });
-
-            promises.push(
-              this.getProvenanceAction(artifactUUID).then((innerAction) => {
-                if (
-                  !this.seenInputExecutionIDs.has(innerAction.execution.uuid)
-                ) {
-                  this.seenInputExecutionIDs.add(innerAction.execution.uuid);
-                  return this._inputMap(artifactUUID, innerAction);
-                } else {
-                  return this._createArtifactMapPromise(
-                    artifactUUID,
-                    innerAction.execution.uuid,
-                  );
-                }
-              }),
-            );
+            await this._getMappings(paramName, artifactUUID, action);
           }
         }
       }
-      if (promises.length !== 0) {
-        Promise.all(promises)
-          .then((results) => {
-            for (const result of results) {
-              Object.assign(inputs, result["iList"]);
-              Object.assign(artifactsToAction, result["aList"]);
-            }
-
-            return { iList: inputs, aList: artifactsToAction };
-          })
-          .then(resolve);
-      } else {
-        resolve({ iList: inputs, aList: artifactsToAction }); // no artifacts involved
-      }
-    } else {
-      resolve({ iList: inputs, aList: artifactsToAction });
     }
   }
 
-  _createArtifactMapPromise(key, value) {
-    return new Promise((resolve, reject) =>
-      resolve({
-        iList: {},
-        aList: { [key]: value },
-      }),
-    );
+  async _getMappings(key, uuid, action) {
+    this.actionsToInputs[action.execution.uuid].add({ [key]: uuid });
+
+    await this.getProvenanceAction(uuid).then(async (innerAction) => {
+      if (!(innerAction.execution.uuid in this.actionsToInputs)) {
+        await this._inputMap(uuid, innerAction);
+      } else {
+        this.artifactsToActions[uuid] = innerAction.execution.uuid;
+      }
+    });
   }
 
-  getProvenanceTree() {
-    return Promise.all([this._inputMap(this.uuid, undefined)]).then(
-      ([result]) => {
-        let actions = result["iList"];
-        let artifacts = result["aList"];
+  async getProvenanceTree() {
+    await this._inputMap(this.uuid, undefined);
 
-        const findMaxDepth = (uuid) => {
-          if (
-            artifacts[uuid] === null ||
-            typeof actions[artifacts[uuid]] === "undefined" ||
-            actions[artifacts[uuid]].size === 0
-          ) {
-            return 0;
-          }
-          return (
-            1 +
-            Math.max(
-              ...Array.from(actions[artifacts[uuid]]).map((mapping) =>
-                findMaxDepth(Object.values(mapping)[0]),
-              ),
-            )
-          );
-        };
+    const findMaxDepth = (uuid) => {
+      if (
+        this.artifactsToActions[uuid] === null ||
+        typeof this.actionsToInputs[this.artifactsToActions[uuid]] ===
+          "undefined" ||
+        this.actionsToInputs[this.artifactsToActions[uuid]].size === 0
+      ) {
+        return 0;
+      }
+      return (
+        1 +
+        Math.max(
+          ...Array.from(
+            this.actionsToInputs[this.artifactsToActions[uuid]],
+          ).map((mapping) => findMaxDepth(Object.values(mapping)[0])),
+        )
+      );
+    };
 
-        let height = findMaxDepth(this.uuid);
-        let nodes = [];
-        let edges = [];
-        const actionNodes = [];
+    let height = findMaxDepth(this.uuid);
+    let nodes = [];
+    let edges = [];
+    const actionNodes = [];
 
-        for (const actionUUID of Object.keys(actions)) {
-          for (const mapping of actions[actionUUID]) {
-            edges.push({
-              data: {
-                id: `${Object.keys(mapping)[0]}_${
-                  Object.values(mapping)[0]
-                }to${actionUUID}`,
-                param: Object.keys(mapping)[0],
-                source: Object.values(mapping)[0],
-                target: actionUUID,
-              },
+    // Add all edges for single Results and collate collections
+    for (const actionUUID of Object.keys(this.actionsToInputs)) {
+      for (const mapping of this.actionsToInputs[actionUUID]) {
+        let inputName = Object.keys(mapping)[0];
+
+        // The only way we can have a - in the name is if this is a collection
+        // element, we sort those out here where we have all the information
+        // we need handy in one place. We add the nodes and edges for
+        // collections separately from the single Result nodes and edges
+        if (inputName.includes(":")) {
+          const splitName = inputName.split(":");
+
+          const inputKey = splitName[0];
+          inputName = splitName[1];
+
+          const inputUuid = Object.values(mapping)[0];
+          const inputSrc = this.artifactsToActions[inputUuid];
+
+          const collectionID = `${inputSrc}:${actionUUID}:${inputName}`;
+
+          if (!(collectionID in this.collectionMapping)) {
+            this.collectionMapping[collectionID] = [
+              { key: inputKey, uuid: inputUuid },
+            ];
+          } else {
+            this.collectionMapping[collectionID].push({
+              key: inputKey,
+              uuid: inputUuid,
             });
           }
-        }
 
-        for (const actionUUID of Object.values(artifacts)) {
-          // These don't need to be sorted.
-          if (actionUUID !== null) {
-            actionNodes.push({
-              data: { id: actionUUID },
-            });
-          }
-        }
-
-        for (const artifactUUID of Object.keys(artifacts)) {
-          nodes.push({
+          this.inCollection.add(inputUuid);
+        } else {
+          edges.push({
             data: {
-              id: artifactUUID,
-              parent: artifacts[artifactUUID],
-              row: findMaxDepth(artifactUUID),
+              id: `${Object.keys(mapping)[0]}_${
+                Object.values(mapping)[0]
+              }to${actionUUID}`,
+              param: Object.keys(mapping)[0],
+              source: Object.values(mapping)[0],
+              target: actionUUID,
             },
           });
         }
+      }
+    }
 
-        for (let i = 0; i < height; i += 1) {
-          const currNodes = nodes.filter((v) => v.data.row === i);
-          const sorted = currNodes.sort((a, b) => {
-            if (a.data.parent < b.data.parent) {
-              return -1;
-            } else if (a.data.parent > b.data.parent) {
-              return 1;
-            }
-            return 0;
-          });
+    // Add all action nodes
+    for (const actionUUID of Object.values(this.artifactsToActions)) {
+      // These don't need to be sorted.
+      if (actionUUID !== null) {
+        actionNodes.push({
+          data: { id: actionUUID },
+        });
+      }
+    }
 
-          for (const n of currNodes) {
-            n.data.col = sorted.indexOf(n);
-          }
+    // Add all nodes for individual Results
+    for (const artifactUUID of Object.keys(this.artifactsToActions)) {
+      if (!this.inCollection.has(artifactUUID)) {
+        nodes.push({
+          data: {
+            id: artifactUUID,
+            parent: this.artifactsToActions[artifactUUID],
+            row: findMaxDepth(artifactUUID),
+          },
+        });
+      }
+    }
+
+    // Add all nodes and edges for collections
+    for (const collectionID of Object.keys(this.collectionMapping)) {
+      // Use the uuid of the first artifact in the collection to represent the
+      // collection here
+      const representative = this.collectionMapping[collectionID][0]["uuid"];
+
+      const split = collectionID.split(":");
+      const source = split[0];
+      const target = split[1];
+      const param = split[2];
+
+      nodes.push({
+        data: {
+          id: collectionID,
+          parent: this.artifactsToActions[representative],
+          row: findMaxDepth(representative),
+        },
+      });
+
+      edges.push({
+        data: {
+          id: `${param}_${source}to${target}`,
+          param: param,
+          source: collectionID,
+          target: target,
+        },
+      });
+    }
+
+    for (let i = 0; i < height; i += 1) {
+      const currNodes = nodes.filter((v) => v.data.row === i);
+      const sorted = currNodes.sort((a, b) => {
+        if (a.data.parent < b.data.parent) {
+          return -1;
+        } else if (a.data.parent > b.data.parent) {
+          return 1;
         }
+        return 0;
+      });
 
-        nodes = [...actionNodes, ...nodes];
-        let elements = nodes.concat(edges);
+      for (const n of currNodes) {
+        n.data.col = sorted.indexOf(n);
+      }
+    }
 
-        return [height, elements];
-      },
-    );
+    nodes = [...actionNodes, ...nodes];
+    let elements = nodes.concat(edges);
+
+    return [height, elements];
   }
 
   getProvenanceAction(uuid) {
