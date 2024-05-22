@@ -129,7 +129,6 @@ class ReaderModel {
     } catch (err: any) {
       // If we encountered an error we completely clear out our data
       this.clear();
-      this._dirty();
 
       handleError(err);
       return;
