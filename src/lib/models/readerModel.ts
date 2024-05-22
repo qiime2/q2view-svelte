@@ -570,23 +570,13 @@ class ReaderModel {
       }
     }
 
-    const seen = {};
-
     for (const collectionID of Object.keys(this.collectionMapping)) {
       const representative = this.collectionMapping[collectionID][0][1];
 
       const split = collectionID.split(":");
       const source = split[0];
       const target = split[1];
-      let param = `${split[2]}-collection`;
-      let key = `${source}${param}`;
-
-      if (!(key in seen)) {
-        seen[key] = 1;
-      } else {
-        seen[key]++;
-        param = param.concat(`-${seen[key]}`);
-      }
+      const param = split[2];
 
       nodes.push({
         data: {
@@ -600,7 +590,7 @@ class ReaderModel {
       edges.push({
         data: {
           id: `${param}_${source}to${target}`,
-          param: `${param}`,
+          param: param,
           source: collectionID,
           target: target,
         },
