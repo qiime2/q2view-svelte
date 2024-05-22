@@ -571,6 +571,8 @@ class ReaderModel {
     }
 
     for (const collectionID of Object.keys(this.collectionMapping)) {
+      // Use the uuid of the first artifact in the collection to represent the
+      // collection here
       const representative = this.collectionMapping[collectionID][0][1];
 
       const split = collectionID.split(":");
