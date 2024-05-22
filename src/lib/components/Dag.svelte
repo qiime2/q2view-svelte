@@ -62,7 +62,7 @@
     ]
   };
 
-  function setSelection(type, uuid) {
+  async function setSelection(type, uuid) {
     let selectionData = null;
     if (type === "action") {
       if (uuid in readerModel.collectionMapping) {
@@ -70,39 +70,25 @@
       }
 
       readerModel.provTitle = "Action Details";
-      selectionData = readerModel.getProvenanceAction(uuid);
+      selectionData = await readerModel.getProvenanceAction(uuid);
     } else {
       readerModel.provTitle = "Result Details";
 
       if (uuid in readerModel.collectionMapping) {
-        selectionData = [];
-        const keys = [];
+        selectionData = {};
 
         for (const artifact of readerModel.collectionMapping[uuid]) {
-          keys.push(artifact[0]);
-          selectionData.push(readerModel.getProvenanceArtifact(artifact[1]));
+          selectionData[artifact[0]] = await readerModel.getProvenanceArtifact(artifact[1]);
         }
-
-        Promise.all(selectionData).then((data) => _setSelection(undefined, data, keys));
-        return;
       } else {
-        selectionData = readerModel.getProvenanceArtifact(uuid);
+        selectionData = await readerModel.getProvenanceArtifact(uuid);
       }
     }
 
-    selectionData.then((data) => _setSelection(data))
-          .catch(() => _setSelection(undefined));
-  };
+    _setSelection(selectionData);
+  }
 
-  function _setSelection(data, data2, keys) {
-    if (data === undefined) {
-      data = {}
-      // data = Object.fromEntries(keys.map((key, index) => [key, data[index]]));
-      for (let idx = 0; idx < data2.length; idx++) {
-        data[keys[idx]] = data2[idx];
-      }
-    }
-
+  function _setSelection(data) {
     readerModel.provData = data;
     readerModel._dirty();
   }
@@ -129,7 +115,7 @@
       elements: readerModel.elements
     });
 
-    cy.on("select", "node, edge", (event) => {
+    cy.on("select", "node, edge", async (event) => {
       if (!lock) {
         selectedExists = true;
         lock = true;
@@ -144,9 +130,9 @@
         // selected node clicked on. I don"t really know how it works
         // lol
         if (node.isParent()) {
-          setSelection("action", node.children()[0].data("id"));
+          await setSelection("action", node.children()[0].data("id"));
         } else {
-          setSelection("artifact", node.data("id"));
+          await setSelection("artifact", node.data("id"));
         }
 
         const edges = node.edgesTo("node");
