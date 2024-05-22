@@ -529,9 +529,14 @@ class ReaderModel {
           const collectionID = `${inputSrc}:${actionUUID}:${inputName}`;
 
           if (!(collectionID in this.collectionMapping)) {
-            this.collectionMapping[collectionID] = [{'key': inputKey, 'uuid': inputUuid}];
+            this.collectionMapping[collectionID] = [
+              { key: inputKey, uuid: inputUuid },
+            ];
           } else {
-            this.collectionMapping[collectionID].push({'key': inputKey, 'uuid': inputUuid});
+            this.collectionMapping[collectionID].push({
+              key: inputKey,
+              uuid: inputUuid,
+            });
           }
 
           this.inCollection.add(inputUuid);
@@ -574,7 +579,7 @@ class ReaderModel {
     for (const collectionID of Object.keys(this.collectionMapping)) {
       // Use the uuid of the first artifact in the collection to represent the
       // collection here
-      const representative = this.collectionMapping[collectionID][0]['uuid'];
+      const representative = this.collectionMapping[collectionID][0]["uuid"];
 
       const split = collectionID.split(":");
       const source = split[0];
