@@ -104,7 +104,7 @@ class ReaderModel {
     this.artifactsToActions = {};
 
     // Takes a collection and maps
-    // <output-action>:<input-action>:<output-name>: [[key, uuid], ...]
+    // <output-action>:<input-action>:<output-name>: [{key: ,uuid: }, ...]
     this.collectionMapping = {};
     this.inCollection = new Set();
 
@@ -529,9 +529,9 @@ class ReaderModel {
           const collectionID = `${inputSrc}:${actionUUID}:${inputName}`;
 
           if (!(collectionID in this.collectionMapping)) {
-            this.collectionMapping[collectionID] = [[inputKey, inputUuid]];
+            this.collectionMapping[collectionID] = [{'key': inputKey, 'uuid': inputUuid}];
           } else {
-            this.collectionMapping[collectionID].push([inputKey, inputUuid]);
+            this.collectionMapping[collectionID].push({'key': inputKey, 'uuid': inputUuid});
           }
 
           this.inCollection.add(inputUuid);
@@ -574,7 +574,7 @@ class ReaderModel {
     for (const collectionID of Object.keys(this.collectionMapping)) {
       // Use the uuid of the first artifact in the collection to represent the
       // collection here
-      const representative = this.collectionMapping[collectionID][0][1];
+      const representative = this.collectionMapping[collectionID][0]['uuid'];
 
       const split = collectionID.split(":");
       const source = split[0];

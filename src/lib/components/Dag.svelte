@@ -66,7 +66,7 @@
     if (uuid in readerModel.collectionMapping) {
       // If our uuid is a collectionID we get the uuid of the first element of
       // the collection to actually get the provenance action.
-      uuid = readerModel.collectionMapping[uuid][0][1];
+      uuid = readerModel.collectionMapping[uuid][0]['uuid'];
     }
 
     readerModel.provTitle = "Action Details";
@@ -87,7 +87,7 @@
     readerModel.provTitle = "Collection Details";
 
     for (const artifact of readerModel.collectionMapping[uuid]) {
-      selectionData[artifact[0]] = await readerModel.getProvenanceArtifact(artifact[1]);
+      selectionData[artifact['key']] = await readerModel.getProvenanceArtifact(artifact['uuid']);
     }
 
     _setSelection(selectionData);
