@@ -562,7 +562,6 @@ class ReaderModel {
         nodes.push({
           data: {
             id: artifactUUID,
-            type: "single",
             parent: this.artifactsToActions[artifactUUID],
             row: findMaxDepth(artifactUUID),
           },
@@ -583,7 +582,6 @@ class ReaderModel {
       nodes.push({
         data: {
           id: collectionID,
-          type: "collection",
           parent: this.artifactsToActions[representative],
           row: findMaxDepth(representative),
         },
