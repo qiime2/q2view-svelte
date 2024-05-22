@@ -120,7 +120,7 @@
       elements: readerModel.elements
     });
 
-    cy.on("select", "node, edge", async (event) => {
+    cy.on("select", "node, edge", (event) => {
       if (!lock) {
         selectedExists = true;
         lock = true;
@@ -136,14 +136,14 @@
           // nodes as its children. We get the action provenance from whichever
           // of its children happens to be first. It doesn't matter which because
           // the data for the action itself won't change regardless.
-          await setActionSelection(node.children()[0].data("id"));
+          setActionSelection(node.children()[0].data("id"));
         } else {
           const uuid = node.data("id");
 
           if (uuid in readerModel.collectionMapping) {
-            await setCollectionSelection(uuid);
+            setCollectionSelection(uuid);
           } else {
-            await setResultSelection(uuid);
+            setResultSelection(uuid);
           }
         }
 
