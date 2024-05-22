@@ -525,8 +525,8 @@ class ReaderModel {
         if (inputName.includes(":")) {
           const splitName = inputName.split(":");
 
-          inputName = splitName[1];
           const inputKey = splitName[0];
+          inputName = splitName[1];
 
           const inputUuid = Object.values(mapping)[0];
           const inputSrc = this.artifactsToActions[inputUuid];
