@@ -445,10 +445,8 @@ class ReaderModel {
               // key, value pair. This collection could have been an output
               // from another action, and it could be going multiple different
               // places
-              const key = Object.keys(e)[0];
-              const value = Object.values(e)[0];
 
-              await this._getMappings(`${key}:${inputName}`, value, action);
+              await this._getMappings(`${Object.keys(e)[0]}:${inputName}`, Object.values(e)[0], action);
             } else {
               await this._getMappings(inputName, e, action);
             }
