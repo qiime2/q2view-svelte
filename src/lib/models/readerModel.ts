@@ -592,9 +592,6 @@ class ReaderModel {
       const target = split[1];
       const param = split[2];
 
-      console.log(this.collectionMapping[collectionID])
-      console.log(representative)
-
       // Use the uuid of the first artifact in the collection to represent the
       // collection here
       if (this.collectionMapping[collectionID].length === 1) {
@@ -650,7 +647,6 @@ class ReaderModel {
       }
     }
 
-    console.log(nodes)
     nodes = [...actionNodes, ...nodes];
     let elements = nodes.concat(edges);
 
