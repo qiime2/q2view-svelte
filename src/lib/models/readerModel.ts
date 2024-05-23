@@ -43,8 +43,6 @@ class ReaderModel {
 
   collectionMapping = {};
   inCollection = new Set();
-  // Need to map the
-  // collectionMap = {};
 
   //***************************************************************************
   // Start boilerplate to make this a subscribable svelte store
