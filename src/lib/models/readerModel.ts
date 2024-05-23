@@ -41,10 +41,10 @@ class ReaderModel {
   actionsToInputs = {};
   artifactsToActions = {};
 
+  // Takes a collection and maps
+  // <output-action>:<input-action>:<output-name>: [{key: ,uuid: }, ...]
   collectionMapping = {};
   inCollection = new Set();
-  // Need to map the
-  // collectionMap = {};
 
   //***************************************************************************
   // Start boilerplate to make this a subscribable svelte store
@@ -103,8 +103,6 @@ class ReaderModel {
     this.actionsToInputs = {};
     this.artifactsToActions = {};
 
-    // Takes a collection and maps
-    // <output-action>:<input-action>:<output-name>: [{key: ,uuid: }, ...]
     this.collectionMapping = {};
     this.inCollection = new Set();
 
@@ -447,10 +445,11 @@ class ReaderModel {
               // key, value pair. This collection could have been an output
               // from another action, and it could be going multiple different
               // places
-              const key = Object.keys(e)[0];
-              const value = Object.values(e)[0];
-
-              await this._getMappings(`${key}:${inputName}`, value, action);
+              await this._getMappings(
+                `${Object.keys(e)[0]}:${inputName}`,
+                Object.values(e)[0],
+                action,
+              );
             } else {
               await this._getMappings(inputName, e, action);
             }
@@ -585,8 +584,6 @@ class ReaderModel {
 
     // Add all nodes and edges for collections
     for (const collectionID of Object.keys(this.collectionMapping)) {
-      // Use the uuid of the first artifact in the collection to represent the
-      // collection here
       const representative = this.collectionMapping[collectionID][0]["uuid"];
 
       const split = collectionID.split(":");
@@ -594,22 +591,43 @@ class ReaderModel {
       const target = split[1];
       const param = split[2];
 
-      nodes.push({
-        data: {
-          id: collectionID,
-          parent: this.artifactsToActions[representative],
-          row: findMaxDepth(representative),
-        },
-      });
+      // Use the uuid of the first artifact in the collection to represent the
+      // collection here
+      if (this.collectionMapping[collectionID].length === 1) {
+        nodes.push({
+          data: {
+            id: representative,
+            parent: this.artifactsToActions[representative],
+            row: findMaxDepth(representative),
+          },
+        });
 
-      edges.push({
-        data: {
-          id: `${param}_${source}to${target}`,
-          param: param,
-          source: collectionID,
-          target: target,
-        },
-      });
+        edges.push({
+          data: {
+            id: `${param}_${source}to${target}`,
+            param: param,
+            source: representative,
+            target: target,
+          },
+        });
+      } else {
+        nodes.push({
+          data: {
+            id: collectionID,
+            parent: this.artifactsToActions[representative],
+            row: findMaxDepth(representative),
+          },
+        });
+
+        edges.push({
+          data: {
+            id: `${param}_${source}to${target}`,
+            param: param,
+            source: collectionID,
+            target: target,
+          },
+        });
+      }
     }
 
     for (let i = 0; i < height; i += 1) {
