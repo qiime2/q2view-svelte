@@ -41,6 +41,8 @@ class ReaderModel {
   actionsToInputs = {};
   artifactsToActions = {};
 
+  // Takes a collection and maps
+  // <output-action>:<input-action>:<output-name>: [{key: ,uuid: }, ...]
   collectionMapping = {};
   inCollection = new Set();
 
@@ -101,8 +103,6 @@ class ReaderModel {
     this.actionsToInputs = {};
     this.artifactsToActions = {};
 
-    // Takes a collection and maps
-    // <output-action>:<input-action>:<output-name>: [{key: ,uuid: }, ...]
     this.collectionMapping = {};
     this.inCollection = new Set();
 
