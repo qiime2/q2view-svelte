@@ -110,6 +110,8 @@ class ReaderModel {
   }
 
   async readData(src: File | string, tab: string) {
+    // loading.start()
+
     try {
       // We deal with this before actually reading the data so we can persist
       // this state on the error page. It makes it so if they reload the error
@@ -142,10 +144,12 @@ class ReaderModel {
       this._setRemoteTab(tab);
     }
 
+    // loading.end()
     this._dirty();
   }
 
   async _readRemoteData(src: string) {
+    // Loading.state('Reading Remote Data');
     const sourceURL = new URL(src);
 
     // Handle potential DropBox URL weirdness to do with search params
@@ -231,6 +235,8 @@ class ReaderModel {
   }
 
   async initModelFromData(data: File | Blob) {
+    // Loading data
+    // Loading.state('Loading data');
     const jsZip = new JSZip();
     const zip = await jsZip.loadAsync(data);
     const error = new Error("Not a valid QIIME 2 archive.");
@@ -289,9 +295,11 @@ class ReaderModel {
     }
 
     // Set Citations
+    // Loading.state('Getting Citations');
     const citations = await this._getCitations();
     this.citations = this._dedup(citations);
 
+    // Loading.state('Getting Provenance');
     const provData = await this.getProvenanceTree();
     this.height = provData[0];
     this.elements = provData[1];
