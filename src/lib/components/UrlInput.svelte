@@ -9,8 +9,7 @@
     // This shouldn"t happen. If the user is able to click the button a URLInput
     if (inputElement === null) {
       alert("Something went wrong, please refresh the page and try again.");
-    }
-    else {
+    } else {
       let inputURL = inputElement.value;
 
       if (inputURL) {
@@ -22,14 +21,17 @@
   }
 </script>
 
+
 <form>
   <div style="text-align: center" class="py-4">
     {#if inputMode === 0}
       <p>
         You can also provide a link to
         a <a href="#" on:click|preventDefault={() => {inputMode = 1}} role="button" >
-          file on Dropbox</a> or
-        a <a href="#" on:click|preventDefault={() => {inputMode = 2}} role="button">
+          file on Dropbox</a>,
+        a <a href="#" on:click|preventDefault={() => {inputMode = 2}} role="button" >
+          file on Zenodo</a>, or
+        a <a href="#" on:click|preventDefault={() => {inputMode = 3}} role="button">
           file from the web</a>.
       </p>
     {:else}
@@ -37,7 +39,9 @@
         <button id="cancel-button" type="button" on:click={() => {inputMode = 0}}>cancel</button>
         {#if inputMode === 1}
           <input id="URLInput" placeholder="Shared link to a .qza/.qzv file on Dropbox" />
-        {:else}
+        {:else if inputMode === 2}
+          <input id="URLInput" placeholder="Shared link to a .qza/.qzv file on Zenodo" />
+        {:else if inputMode === 3}
           <input id="URLInput" placeholder="URL to a .qza/.qzv file on the web" />
         {/if}
         <button id="submit-button" type="submit" on:click={() => resolveURL()}>Go!</button>
@@ -61,11 +65,40 @@
         </li>
       </ol>
     </div>
+  <!--
+    TODO
+
+    We need to be able to take something along the following with or without
+    the ?download
+
+    https://zenodo.org/records/5535616/files/gg-classifier.qza?download=1
+
+    and turn it into
+
+    https://zenodo.org/api/records/5535616/files/gg-classifier.qza/content
+  -->
   {:else if inputMode === 2}
+    <div class="pb-4">
+      <h3>
+        Zenodo Instructions:
+      </h3>
+      <ol class="pl-10" style="list-style: decimal">
+        <li>
+          Find the file you would like on Zenodo.
+        </li>
+        <li>
+          Get its download link.
+        </li>
+        <li>
+          Provide that link in the input form above and hit "Go!"
+        </li>
+      </ol>
+    </div>
+  {:else if inputMode === 3}
     <div class="grid lg:grid-cols-2 pb-4">
       <div>
         <h3>
-          Web URL Instructions
+          Web URL Instructions:
         </h3>
         <p>Provide a link to your file in the input form above and hit "Go!"</p>
         <p>Note: the server that is hosting your file must support CORS. See Required Headers for more information.</p>
