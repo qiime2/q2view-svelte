@@ -238,7 +238,16 @@ class ReaderModel {
   }
 
   private parseFileNameFromURL(url: string): string {
-    let fileName = new URL(url).pathname.split("/").pop();
+    const sourceURL = new URL(url);
+
+    let splits = sourceURL.pathname.split("/");
+    let fileName = splits.pop();
+
+    // If we have a zenodo api url it will end with /content which we don't
+    // want to use as the filename
+    if (sourceURL.hostname === "zenodo.org" && fileName === "content") {
+      fileName = splits.pop();
+    }
 
     if (fileName === undefined) {
       throw Error(`Could not get filename from the URL ${url}`);
