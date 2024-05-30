@@ -111,22 +111,27 @@ class ReaderModel {
 
   async readData(src: File | string, tab: string) {
     try {
-      // We deal with this before actually reading the data so we can persist
-      // this state on the error page. It makes it so if they reload the error
-      // page it tries to read the bad data again and produces the error again.
-      if (!(src instanceof File)) {
-        this._setRemoteSrc(src);
-      }
-
       let data = src instanceof File ? src : await this._readRemoteData(src);
       await this.initModelFromData(data);
 
       if (src instanceof File) {
         this._setLocalSrc(src);
+      } else {
+        this._setRemoteSrc(src);
       }
     } catch (err: any) {
+      const uuid = this.uuid;
+
       // If we encountered an error we completely clear out our data
       this.clear();
+
+      // Try to persist this. Very real chance if this is a file we don't have
+      // a uuid yet, but that's fine
+      if (src instanceof File) {
+        this.urlSrc = uuid;
+      } else {
+        this.urlSrc = src;
+      }
 
       handleError(err);
       return;
