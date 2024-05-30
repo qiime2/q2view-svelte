@@ -65,18 +65,6 @@
         </li>
       </ol>
     </div>
-  <!--
-    TODO
-
-    We need to be able to take something along the following with or without
-    the ?download
-
-    https://zenodo.org/records/5535616/files/gg-classifier.qza?download=1
-
-    and turn it into
-
-    https://zenodo.org/api/records/5535616/files/gg-classifier.qza/content
-  -->
   {:else if inputMode === 2}
     <div class="pb-4">
       <h3>
