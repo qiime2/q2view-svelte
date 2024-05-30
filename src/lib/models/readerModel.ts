@@ -161,11 +161,11 @@ class ReaderModel {
       const path = `${sourceURL.pathname}?${sourceURL.searchParams}`;
       src = `https://dl.dropboxusercontent.com${path}`;
     } else if (sourceURL.hostname === "zenodo.org") {
-      if (!sourceURL.pathname.startsWith('/api')) {
+      if (!sourceURL.pathname.startsWith("/api")) {
         sourceURL.pathname = `/api${sourceURL.pathname}`;
       }
 
-      if (!sourceURL.pathname.endsWith('/content')) {
+      if (!sourceURL.pathname.endsWith("/content")) {
         sourceURL.pathname = `${sourceURL.pathname}/content`;
       }
 
