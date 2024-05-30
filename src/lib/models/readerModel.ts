@@ -145,7 +145,7 @@ class ReaderModel {
     this._dirty();
   }
 
-  // TODO: If you load a zenodo link the copy paste the view link it does not load the result from zeonodo correctly
+  // TODO: If you load a zenodo link then copy paste the view link it does not load the result from zeonodo correctly
   // This may or may not also apply to dropbox need to test that on both old and new view
   async _readRemoteData(src: string) {
     const sourceURL = new URL(src);
@@ -155,9 +155,15 @@ class ReaderModel {
       sourceURL.searchParams.set("dl", "1");
       const path = `${sourceURL.pathname}?${sourceURL.searchParams}`;
       src = `https://dl.dropboxusercontent.com${path}`;
-    } else if (sourceURL.hostname === "zenodo.org" &&
-               !sourceURL.pathname.startsWith('/api')) {
-      sourceURL.pathname = `/api${sourceURL.pathname}/content`;
+    } else if (sourceURL.hostname === "zenodo.org") {
+      if (!sourceURL.pathname.startsWith('/api')) {
+        sourceURL.pathname = `/api${sourceURL.pathname}`;
+      }
+
+      if (!sourceURL.pathname.endsWith('/content')) {
+        sourceURL.pathname = `${sourceURL.pathname}/content`;
+      }
+
       src = sourceURL.href;
     }
 
