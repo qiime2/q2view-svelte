@@ -113,22 +113,27 @@ class ReaderModel {
     // loading.start()
 
     try {
-      // We deal with this before actually reading the data so we can persist
-      // this state on the error page. It makes it so if they reload the error
-      // page it tries to read the bad data again and produces the error again.
-      if (!(src instanceof File)) {
-        this._setRemoteSrc(src);
-      }
-
       let data = src instanceof File ? src : await this._readRemoteData(src);
       await this.initModelFromData(data);
 
       if (src instanceof File) {
         this._setLocalSrc(src);
+      } else {
+        this._setRemoteSrc(src);
       }
     } catch (err: any) {
+      const uuid = this.uuid;
+
       // If we encountered an error we completely clear out our data
       this.clear();
+
+      // Try to persist this. Very real chance if this is a file we don't have
+      // a uuid yet, but that's fine
+      if (src instanceof File) {
+        this.urlSrc = uuid;
+      } else {
+        this.urlSrc = src;
+      }
 
       handleError(err);
       return;
@@ -152,11 +157,22 @@ class ReaderModel {
     // Loading.state('Reading Remote Data');
     const sourceURL = new URL(src);
 
-    // Handle potential DropBox URL weirdness to do with search params
     if (sourceURL.hostname === "www.dropbox.com") {
+      // Handle potential DropBox URL weirdness to do with search params
       sourceURL.searchParams.set("dl", "1");
       const path = `${sourceURL.pathname}?${sourceURL.searchParams}`;
       src = `https://dl.dropboxusercontent.com${path}`;
+    } else if (sourceURL.hostname === "zenodo.org") {
+      // Handle translating a regular zenodo download link to a zenodo API link
+      if (!sourceURL.pathname.startsWith("/api")) {
+        sourceURL.pathname = `/api${sourceURL.pathname}`;
+      }
+
+      if (!sourceURL.pathname.endsWith("/content")) {
+        sourceURL.pathname = `${sourceURL.pathname}/content`;
+      }
+
+      src = sourceURL.href;
     }
 
     return await this._getRemoteFile(src);
@@ -225,7 +241,18 @@ class ReaderModel {
   }
 
   private parseFileNameFromURL(url: string): string {
-    let fileName = new URL(url).pathname.split("/").pop();
+    const sourceURL = new URL(url);
+
+    // Casting this to URL then splitting it like this makes sure we avoid the
+    // hostname and any searchparams
+    let splits = sourceURL.pathname.split("/");
+    let fileName = splits.pop();
+
+    // If we have a zenodo api url it will end with /content which we don't
+    // want to use as the filename
+    if (sourceURL.hostname === "zenodo.org" && fileName === "content") {
+      fileName = splits.pop();
+    }
 
     if (fileName === undefined) {
       throw Error(`Could not get filename from the URL ${url}`);
