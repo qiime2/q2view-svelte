@@ -240,6 +240,8 @@ class ReaderModel {
   private parseFileNameFromURL(url: string): string {
     const sourceURL = new URL(url);
 
+    // Casting this to URL then splitting it like this makes sure we avoid the
+    // hostname and any searchparams
     let splits = sourceURL.pathname.split("/");
     let fileName = splits.pop();
 
