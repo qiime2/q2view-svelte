@@ -145,7 +145,7 @@ class ReaderModel {
     this._dirty();
   }
 
-  // TODO: If you load a zenodo link then copy paste the view link it does not load the result from zeonodo correctly
+  // TODO: If you load a zenodo link then copy paste the view link it does not load the result from zenodo correctly
   // This may or may not also apply to dropbox need to test that on both old and new view
   async _readRemoteData(src: string) {
     const sourceURL = new URL(src);
