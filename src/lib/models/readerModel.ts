@@ -153,12 +153,13 @@ class ReaderModel {
   async _readRemoteData(src: string) {
     const sourceURL = new URL(src);
 
-    // Handle potential DropBox URL weirdness to do with search params
     if (sourceURL.hostname === "www.dropbox.com") {
+      // Handle potential DropBox URL weirdness to do with search params
       sourceURL.searchParams.set("dl", "1");
       const path = `${sourceURL.pathname}?${sourceURL.searchParams}`;
       src = `https://dl.dropboxusercontent.com${path}`;
     } else if (sourceURL.hostname === "zenodo.org") {
+      // Handle translating a regular zenodo download link to a zenodo API link
       if (!sourceURL.pathname.startsWith("/api")) {
         sourceURL.pathname = `/api${sourceURL.pathname}`;
       }
