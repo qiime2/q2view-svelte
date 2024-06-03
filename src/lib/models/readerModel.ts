@@ -10,6 +10,7 @@ import JSZip from "jszip";
 import { handleError, readBlobAsText } from "$lib/scripts/util";
 import extmap from "$lib/scripts/extmap";
 import schema from "$lib/scripts/yaml-schema";
+import loading from "$lib/scripts/loading";
 
 class ReaderModel {
   error = "";
@@ -109,7 +110,10 @@ class ReaderModel {
     this._dirty();
   }
 
-  async readData(src: File | string, tab: string) {
+  async readData(src: File | string, tab: string = "") {
+    this.clear();
+    loading.setLoading(true, "Loading started");
+
     try {
       let data = src instanceof File ? src : await this._readRemoteData(src);
       await this.initModelFromData(data);
@@ -147,10 +151,14 @@ class ReaderModel {
       this._setRemoteTab(tab);
     }
 
+    loading.setLoading(false);
     this._dirty();
   }
 
   async _readRemoteData(src: string) {
+    loading.setMessage(
+      "Reading remote data (this can take a while if the file is large)",
+    );
     const sourceURL = new URL(src);
 
     if (sourceURL.hostname === "www.dropbox.com") {
@@ -184,7 +192,7 @@ class ReaderModel {
   _setLocalTab() {
     let tab = this._getTab();
 
-    // Pushes state because this change necesarily happened to move from the
+    // Pushes state because this change necessarily happened to move from the
     // root page to the new default page for the provided file
     history.pushState({}, "", `/${tab}/?src=${this.urlSrc}`);
   }
@@ -258,6 +266,8 @@ class ReaderModel {
   }
 
   async initModelFromData(data: File | Blob) {
+    loading.setMessage("Loading file data");
+
     const jsZip = new JSZip();
     const zip = await jsZip.loadAsync(data);
     const error = new Error("Not a valid QIIME 2 archive.");
@@ -316,9 +326,12 @@ class ReaderModel {
     }
 
     // Set Citations
+    loading.setMessage("Loading Citations");
     const citations = await this._getCitations();
     this.citations = this._dedup(citations);
 
+    // Set Provenance
+    loading.setMessage("Loading Provenance");
     const provData = await this.getProvenanceTree();
     this.height = provData[0];
     this.elements = provData[1];
