@@ -156,7 +156,9 @@ class ReaderModel {
   }
 
   async _readRemoteData(src: string) {
-    loading.setMessage("Reading remote data (this can take a while if the file is large)");
+    loading.setMessage(
+      "Reading remote data (this can take a while if the file is large)",
+    );
     const sourceURL = new URL(src);
 
     if (sourceURL.hostname === "www.dropbox.com") {
@@ -329,7 +331,7 @@ class ReaderModel {
     this.citations = this._dedup(citations);
 
     // Set Provenance
-    loading.setMessage("Loading Provenance")
+    loading.setMessage("Loading Provenance");
     const provData = await this.getProvenanceTree();
     this.height = provData[0];
     this.elements = provData[1];
