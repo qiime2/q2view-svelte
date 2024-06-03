@@ -4,7 +4,7 @@
 // then provides various bits of information about the provided .qza/.qzv on
 // request.
 // *****************************************************************************
-import yaml, { load } from "js-yaml";
+import yaml from "js-yaml";
 import JSZip from "jszip";
 
 import { handleError, readBlobAsText } from "$lib/scripts/util";
