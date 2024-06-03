@@ -1,6 +1,5 @@
 <script lang="ts">
   import loading from '$lib/scripts/loading'
-
 </script>
 
 <h1>
