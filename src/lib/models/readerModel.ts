@@ -156,7 +156,7 @@ class ReaderModel {
   }
 
   async _readRemoteData(src: string) {
-    loading.setMessage("Reading Remote Data");
+    loading.setMessage("Reading remote data (this can take a while if the file is large)");
     const sourceURL = new URL(src);
 
     if (sourceURL.hostname === "www.dropbox.com") {
