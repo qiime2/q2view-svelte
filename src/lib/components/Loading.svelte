@@ -6,16 +6,22 @@
 <h1>
   LOADING: {$loading.message}
 </h1>
-<div class="loader"></div>
+<div id="loader"></div>
 
 <style lang="postcss">
-  .loader {
-    border: 16px solid #f3f3f3; /* Light grey */
-    border-top: 16px solid #3498db; /* Blue */
+  #loader {
+    position: absolute;
+    border: 16px solid;
+    border-top: 16px solid;
     border-radius: 50%;
     width: 120px;
     height: 120px;
     animation: spin 2s linear infinite;
+    left: calc(50% - 60px);
+    padding-top: 10px;
+
+    @apply border-t-blue-300
+    border-gray-300;
   }
 
   @keyframes spin {
