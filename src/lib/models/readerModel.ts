@@ -4,12 +4,13 @@
 // then provides various bits of information about the provided .qza/.qzv on
 // request.
 // *****************************************************************************
-import yaml from "js-yaml";
+import yaml, { load } from "js-yaml";
 import JSZip from "jszip";
 
 import { handleError, readBlobAsText } from "$lib/scripts/util";
 import extmap from "$lib/scripts/extmap";
 import schema from "$lib/scripts/yaml-schema";
+import loading from "$lib/scripts/loading";
 
 class ReaderModel {
   error = "";
@@ -109,9 +110,10 @@ class ReaderModel {
     this._dirty();
   }
 
-  async readData(src: File | string, tab: string = '') {
+  async readData(src: File | string, tab: string = "") {
     this.clear();
     // loading.start()
+    loading.setLoading(true);
 
     try {
       let data = src instanceof File ? src : await this._readRemoteData(src);
@@ -151,6 +153,7 @@ class ReaderModel {
     }
 
     // loading.end()
+    loading.setLoading(false);
     this._dirty();
   }
 

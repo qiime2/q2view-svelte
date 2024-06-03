@@ -2,6 +2,7 @@
   import "../../app.css";
 
   import readerModel from "$lib/models/readerModel";
+  import loading from "$lib/scripts/loading"
 
   import { onMount } from "svelte";
   import url from "$lib/scripts/url-store";
@@ -47,11 +48,16 @@
     }
   }
 
-  // If we are navigating away from the error page then we want to clean out
-  // the errored state and push clean state
   function navLogoClicked() {
-    if ($url.pathname.replaceAll("/", "") === "error") {
-      $readerModel.clear();
+    if ($loading.status === "LOADING") {
+      // If we are in the loading state go back to root and reload to force the
+      // loading to stop
+      history.pushState({}, "", "/");
+      location.reload();
+    } else if ($url.pathname.replaceAll("/", "") === "error") {
+      // If we are navigating away from the error page then we want to clean out
+      // the errored state and push clean state
+      readerModel.clear();
       history.pushState({}, "", "/");
     } else {
       history.pushState({}, "", "/" + window.location.search);

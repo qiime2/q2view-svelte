@@ -14,7 +14,6 @@
 
       if (inputURL) {
         inputMode = 0;
-        readerModel.clear();
         history.pushState({}, "", "/?src="+inputURL);
       }
     }

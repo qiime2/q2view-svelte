@@ -4,6 +4,7 @@
   import readerModel from "$lib/models/readerModel";
 
   import url from "$lib/scripts/url-store";
+  import loading from "$lib/scripts/loading";
 
   import Iframe from "$lib/components/Iframe.svelte";
   import Gallery from "$lib/components/Gallery.svelte";
@@ -13,12 +14,15 @@
   import Provenance from "$lib/components/Provenance.svelte";
   import About from "$lib/components/About.svelte";
   import Error from "$lib/components/Error.svelte";
+  import Loading from "$lib/components/Loading.svelte";
+
+  let loadingComponent: undefined | HTMLElement;
 </script>
 
 <div id="positioned-container">
   <div id="content-container">
     <div
-      class={$url.pathname.replaceAll("/", "") === "" ? "tab" : "hidden-tab"}
+      class={$url.pathname.replaceAll("/", "") === "" && $loading.status !== "LOADING" ? "tab" : "hidden-tab"}
     >
       <div id="beta-banner">
         <p>
@@ -42,22 +46,27 @@
       <Gallery />
     </div>
     <div
-      class={$url.pathname.replaceAll("/", "") === "about"
+      class={$url.pathname.replaceAll("/", "") === "about" && $loading.status !== "LOADING"
         ? "tab"
         : "hidden-tab"}
     >
       <About />
     </div>
     <div
-      class={$url.pathname.replaceAll("/", "") === "error"
+      class={$url.pathname.replaceAll("/", "") === "error" && $loading.status !== "LOADING"
         ? "tab"
         : "hidden-tab"}
     >
       <Error />
     </div>
+    {#if $loading.status === "LOADING"}
+      <div class="tab" bind:this={loadingComponent}>
+        <Loading />
+      </div>
+    {/if}
     {#if $readerModel.indexPath}
       <div
-        class={$url.pathname.replaceAll("/", "") === "visualization"
+        class={$url.pathname.replaceAll("/", "") === "visualization" && $loading.status !== "LOADING"
           ? "tab"
           : "hidden-tab"}
       >
@@ -66,7 +75,7 @@
     {/if}
     {#if $readerModel.rawSrc}
       <div
-        class={$url.pathname.replaceAll("/", "") === "details"
+        class={$url.pathname.replaceAll("/", "") === "details" && $loading.status !== "LOADING"
           ? "tab"
           : "hidden-tab"}
       >
@@ -74,7 +83,7 @@
       </div>
       <!-- Extra class baggage to make this tab fullscreen -->
       <div
-        class={$url.pathname.replaceAll("/", "") === "provenance"
+        class={$url.pathname.replaceAll("/", "") === "provenance" && $loading.status !== "LOADING"
           ? `tab provenance`
           : "hidden-tab"}
       >
