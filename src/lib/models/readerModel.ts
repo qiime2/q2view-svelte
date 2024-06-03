@@ -109,7 +109,8 @@ class ReaderModel {
     this._dirty();
   }
 
-  async readData(src: File | string, tab: string) {
+  async readData(src: File | string, tab: string = '') {
+    this.clear();
     // loading.start()
 
     try {
