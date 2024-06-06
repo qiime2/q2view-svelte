@@ -328,7 +328,9 @@ class ReaderModel {
     // Set Citations
     loading.setMessage("Loading Citations");
     const citations = await this._getCitations();
-    this.citations = this._dedup(citations);
+    if (citations !== null) {
+      this.citations = this._dedup(citations);
+    }
 
     // Set Provenance
     loading.setMessage("Loading Provenance");
