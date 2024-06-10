@@ -453,9 +453,11 @@ class ReaderModel {
     // that execution took
     // eslint-disable-line no-unused-vars
     if (action === undefined) {
-      await this.getProvenanceAction(uuid).then(async (action) => {
-        await this._inputMapHelper(uuid, action);
-      });
+      await this.getProvenanceAction(uuid)
+        .then(async (action) => {
+          await this._inputMapHelper(uuid, action);
+        })
+        .catch(() => (this.artifactsToActions[uuid] = null));
     } else {
       await this._inputMapHelper(uuid, action);
     }
@@ -521,13 +523,15 @@ class ReaderModel {
   async _getMappings(key, uuid, action) {
     this.actionsToInputs[action.execution.uuid].add({ [key]: uuid });
 
-    await this.getProvenanceAction(uuid).then(async (innerAction) => {
-      if (!(innerAction.execution.uuid in this.actionsToInputs)) {
-        await this._inputMap(uuid, innerAction);
-      } else {
-        this.artifactsToActions[uuid] = innerAction.execution.uuid;
-      }
-    });
+    await this.getProvenanceAction(uuid)
+      .then(async (innerAction) => {
+        if (!(innerAction.execution.uuid in this.actionsToInputs)) {
+          await this._inputMap(uuid, innerAction);
+        } else {
+          this.artifactsToActions[uuid] = innerAction.execution.uuid;
+        }
+      })
+      .catch(() => (this.artifactsToActions[uuid] = null));
   }
 
   async getProvenanceTree() {
