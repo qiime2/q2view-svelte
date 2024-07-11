@@ -1,4 +1,5 @@
 > This README is for developers and people interested in learning more about q2view. If you just need the functionality, q2view is already compiled and hosted at [https://view.qiime2.org](https://view.qiime2.org)
+> The live version of the app officially supports the latest versions of Google Chrome and Firefox.
 
 # q2view
 
@@ -12,8 +13,6 @@ This interface uses the [Service Worker API](https://developer.mozilla.org/en-US
 to "hoist" the contents of a `.qzv`'s `/data` directory into the interface
 allowing relative links within a visualization to work via standard HTTP
 requests.
-
-We officially support the latest versions of Google Chrome and Firefox.
 
 To host the app locally, first install the dependencies (while in root of the repo):
 ```
