@@ -13,6 +13,8 @@ to "hoist" the contents of a `.qzv`'s `/data` directory into the interface
 allowing relative links within a visualization to work via standard HTTP
 requests.
 
+We officially support the latest versions of Google Chrome and Firefox.
+
 To host the app locally, first install the dependencies (while in root of the repo):
 ```
 npm install
