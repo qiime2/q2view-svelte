@@ -4,6 +4,7 @@
 // then provides various bits of information about the provided .qza/.qzv on
 // request.
 // *****************************************************************************
+import yaml from "js-yaml";
 import JSZip from "jszip";
 
 import { handleError, readBlobAsText } from "$lib/scripts/util";
@@ -135,7 +136,7 @@ class ReaderModel {
       } else {
         this.urlSrc = src;
       }
-
+      console.log(err)
       loading.setLoading(false);
       handleError(err);
       return;
