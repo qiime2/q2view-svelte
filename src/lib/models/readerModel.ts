@@ -237,7 +237,6 @@ class ReaderModel {
   async _getRemoteFile(url: string): Promise<Blob> {
     try {
       return await fetch(url).then((response) => {
-        console.log(response)
         if (!response.ok) {
           throw Error(`Network error, recieved ${response.status} from server.`);
         }
