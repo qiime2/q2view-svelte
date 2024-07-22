@@ -5,9 +5,10 @@
 
 This HTML 5 interface provides a way to view `.qza`/`.qzv` files produced by
 QIIME 2. It provides:
-  - Inspection of basic metadata
-  - Viewing of complex web-based visualizations
-  - Inspection of provenance
+
+- Inspection of basic metadata
+- Viewing of complex web-based visualizations
+- Inspection of provenance
 
 This interface uses the [Service Worker API](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API)
 to "hoist" the contents of a `.qzv`'s `/data` directory into the interface
@@ -15,13 +16,17 @@ allowing relative links within a visualization to work via standard HTTP
 requests.
 
 To host the app locally, first install the dependencies (while in root of the repo):
+
 ```
 npm install
 ```
+
 Then run:
+
 ```
 npm run dev
 ```
+
 This will host the app on localhost:5173 by default
 **Important:** HTTPS is required (by service worker API) when not hosting
 from `localhost`.
