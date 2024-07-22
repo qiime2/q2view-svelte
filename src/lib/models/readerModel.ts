@@ -235,13 +235,19 @@ class ReaderModel {
   }
 
   async _getRemoteFile(url: string): Promise<Blob> {
-    return await fetch(url).then((response) => {
-      if (!response.ok) {
-        throw Error(`Network error, recieved ${response.status} from server.`);
-      }
+    try {
+      return await fetch(url).then((response) => {
+        console.log(response)
+        if (!response.ok) {
+          throw Error(`Network error, recieved ${response.status} from server.`);
+        }
 
-      return response.blob();
-    });
+        return response.blob();
+      });
+    } catch(error) {
+      loading.setLoading(false);
+      throw error;
+    }
   }
 
   private parseFileNameFromURL(url: string): string {
