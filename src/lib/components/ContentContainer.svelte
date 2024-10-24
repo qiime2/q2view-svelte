@@ -24,6 +24,11 @@
     <div
       class={$url.pathname.replaceAll("/", "") === "" && $loading.status !== "LOADING" ? "tab" : "hidden-tab"}
     >
+      <div id="notice-banner">
+        <p>
+          NOTE: the q2view gallery is currently under maintenance, and may not load/work correctly,
+        </p>
+      </div>
       <div id="beta-banner">
         <p>
           We are currently beta testing a new version of q2view. If you would
@@ -116,6 +121,18 @@
     bg-blue-200
     border
     border-blue-300
+    mb-4
+    py-4
+    rounded-lg;
+  }
+
+  /* If we need to slap an alert notice at the top of the page use this
+     class */
+  #notice-banner {
+    @apply text-center
+    bg-red-200
+    border
+    border-red-300
     mb-4
     py-4
     rounded-lg;
