@@ -24,11 +24,6 @@
     <div
       class={$url.pathname.replaceAll("/", "") === "" && $loading.status !== "LOADING" ? "tab" : "hidden-tab"}
     >
-      <div id="notice-banner">
-        <p>
-          NOTE: the q2view gallery is currently under maintenance, and may not load/work correctly,
-        </p>
-      </div>
       <div id="beta-banner">
         <p>
           We are currently beta testing a new version of q2view. If you would
