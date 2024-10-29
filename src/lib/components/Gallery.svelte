@@ -36,6 +36,7 @@
 
 <h2>Gallery</h2>
 <p class="pb-4">Don&apos;t have a QIIME 2 result of your own to view? Try one of these!</p>
+<input id="searchInput" placeholder="search"/>
 {#await getGalleryCards()}
   <h3>Fetching Gallery...</h3>
 {:then galleryCards}
@@ -52,3 +53,16 @@
     </div>
   {/if}
 {/await}
+
+<style lang="postcss">
+    #searchInput {
+        @apply border
+        border-solid
+        rounded
+        border-gray-300
+        mr-auto
+        mt-auto
+        pl-2
+        mb-4;
+    }
+</style>
