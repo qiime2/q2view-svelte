@@ -3,6 +3,9 @@
   const GALLERY_URL = "https://q2view-gallery.pages.dev/gallery/";
 
   let galleryEntries: Array<Object> = [];
+  let filteredGalleryEntries: Array<Object> = [];
+
+  let searchFilter: string = "";
 
   // TODO: Expect 404s and other such errors to happen here and handle them
   async function getGalleryEntries() {
@@ -28,12 +31,21 @@
 
       galleryEntries.push(galleryJSON);
     }
+
+    filteredGalleryEntries.push(...galleryEntries);
+  }
+
+  function applySearchFilter() {
+    const searchBar = document.getElementById("searchInput") as HTMLInputElement;
+    const searchFilter = searchBar.value.toLowerCase();
+
+    filteredGalleryEntries = galleryEntries.filter((e) => String(e["title" as keyof Object].toLowerCase()).startsWith(searchFilter));
   }
 </script>
 
 <h2>Gallery</h2>
 <p class="pb-4">Don&apos;t have a QIIME 2 result of your own to view? Try one of these!</p>
-<input id="searchInput" placeholder="search"/>
+<input id="searchInput" placeholder="search" value={searchFilter} on:input={applySearchFilter}/>
 {#await getGalleryEntries()}
   <h3>Fetching Gallery...</h3>
 {:then}
@@ -44,7 +56,7 @@
     </h3>
   {:else}
     <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-      {#each galleryEntries as galleryEntry}
+      {#each filteredGalleryEntries as galleryEntry}
         <GalleryCard {...galleryEntry}/>
       {/each}
     </div>
