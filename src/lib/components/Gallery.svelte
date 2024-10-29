@@ -2,16 +2,15 @@
   import GalleryCard from "$lib/components/GalleryCard.svelte";
   const GALLERY_URL = "https://q2view-gallery.pages.dev/gallery/";
 
+  let galleryEntries: Array<Object> = [];
+
   // TODO: Expect 404s and other such errors to happen here and handle them
-  async function getGalleryCards() {
+  async function getGalleryEntries() {
     let indexJSON;
-    let galleryEntries = [];
 
     try {
       indexJSON = await (await fetch(GALLERY_URL + "index.json")).json();
-    } catch(error) {
-      return galleryEntries;
-    }
+    } catch(error) {}
 
     for(const galleryEntry of indexJSON) {
       let galleryJSON = Object();
@@ -29,26 +28,24 @@
 
       galleryEntries.push(galleryJSON);
     }
-
-    return galleryEntries;
   }
 </script>
 
 <h2>Gallery</h2>
 <p class="pb-4">Don&apos;t have a QIIME 2 result of your own to view? Try one of these!</p>
 <input id="searchInput" placeholder="search"/>
-{#await getGalleryCards()}
+{#await getGalleryEntries()}
   <h3>Fetching Gallery...</h3>
-{:then galleryCards}
-  {#if galleryCards.length === 0}
+{:then}
+  {#if galleryEntries.length === 0}
     <h3>
       No gallery entries found. Try refreshing the page. If that doesn't work
       the gallery might be down.
     </h3>
   {:else}
     <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-      {#each galleryCards as galleryCard}
-        <GalleryCard {...galleryCard}/>
+      {#each galleryEntries as galleryEntry}
+        <GalleryCard {...galleryEntry}/>
       {/each}
     </div>
   {/if}
