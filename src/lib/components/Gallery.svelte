@@ -1,5 +1,5 @@
 <script lang="ts">
-  import GalleryCard from "./GalleryCard.svelte";
+  import GalleryCard from "$lib/components/GalleryCard.svelte";
   const GALLERY_URL = "https://q2view-gallery.pages.dev/gallery/";
 
   // TODO: Expect 404s and other such errors to happen here and handle them
