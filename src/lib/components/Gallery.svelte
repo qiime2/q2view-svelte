@@ -30,6 +30,10 @@
       galleryEntries.push(galleryJSON);
     }
 
+    galleryEntries.sort(function(a: Object, b: Object) {
+      return a["title" as keyof Object] > b["title" as keyof Object] ? 1 : -1;
+    });
+
     filteredGalleryEntries.push(...galleryEntries);
   }
 
