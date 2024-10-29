@@ -5,8 +5,6 @@
   let galleryEntries: Array<Object> = [];
   let filteredGalleryEntries: Array<Object> = [];
 
-  let searchFilter: string = "";
-
   // TODO: Expect 404s and other such errors to happen here and handle them
   async function getGalleryEntries() {
     let indexJSON;
@@ -45,7 +43,7 @@
 
 <h2>Gallery</h2>
 <p class="pb-4">Don&apos;t have a QIIME 2 result of your own to view? Try one of these!</p>
-<input id="searchInput" placeholder="search" value={searchFilter} on:input={applySearchFilter}/>
+<input id="searchInput" placeholder="search" on:input={applySearchFilter}/>
 {#await getGalleryEntries()}
   <h3>Fetching Gallery...</h3>
 {:then}
