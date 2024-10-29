@@ -1,9 +1,17 @@
 <script lang="ts">
   import GalleryCard from "$lib/components/GalleryCard.svelte";
+    import { filter } from "jszip";
   const GALLERY_URL = "https://q2view-gallery.pages.dev/gallery/";
 
   let galleryEntries: Array<Object> = [];
   let filteredGalleryEntries: Array<Object> = [];
+
+  let currentPage: number = 1;
+  let numPages: number;
+  let cardsPerPage: number  = 3;
+
+  let startIdx: number;
+  let endIdx: number;
 
   // TODO: Expect 404s and other such errors to happen here and handle them
   async function getGalleryEntries() {
@@ -35,6 +43,10 @@
     });
 
     filteredGalleryEntries.push(...galleryEntries);
+
+    numPages = Math.ceil(filteredGalleryEntries.length / cardsPerPage);
+    startIdx = 0;
+    endIdx = cardsPerPage;
   }
 
   function applySearchFilter() {
@@ -44,6 +56,34 @@
     filteredGalleryEntries = galleryEntries.filter(
       (e) => String(e["title" as keyof Object].toLowerCase()).startsWith(searchFilter)
     );
+  }
+
+  function changeCardsPerPage(event: Event) {
+    const inputElement = document.getElementById(
+      "setCardsPerPage",
+    ) as HTMLInputElement;
+
+    const currentVal = parseInt(inputElement.value);
+
+    // If we have something less than 1 (should only ever be 0) or a NaN
+    // then set this back to what it was before
+    if (currentVal < 1 || currentVal !== currentVal) {
+      inputElement.value = String(cardsPerPage);
+    } else {
+      cardsPerPage = currentVal;
+    }
+
+    numPages = Math.ceil(filteredGalleryEntries.length / cardsPerPage);
+
+    if (numPages === 0) {
+      numPages = 1;
+    }
+
+    // The num_pages could drop below the current page we're on. We don't
+    // want to leave ourselves on some weird empty non page
+    if (currentPage > numPages) {
+      currentPage = numPages;
+    }
   }
 </script>
 
@@ -60,22 +100,80 @@
     </h3>
   {:else}
     <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-      {#each filteredGalleryEntries as galleryEntry}
+      {#each filteredGalleryEntries.slice((currentPage - 1) * cardsPerPage, currentPage * cardsPerPage) as galleryEntry}
         <GalleryCard {...galleryEntry}/>
       {/each}
     </div>
   {/if}
 {/await}
+<div id="pageControls">
+  <div></div>
+  <div class="mx-auto">
+    <button
+      on:click={() => {
+          if (currentPage > 1) {
+              currentPage--;
+          }
+      }}
+    >
+      <svg fill="none"
+        width="10"
+        height="10">
+        <path
+          stroke-width="3"
+          stroke="rgb(119, 119, 119)"
+          d="m8 0L3 5a0,2 0 0 1 1,1M3 5L8 10"/>
+      </svg>
+    </button>
+    {currentPage}/{numPages}
+    <button
+      on:click={() => {
+        if (currentPage < numPages) {
+          currentPage++;
+        }
+      }}
+    >
+      <svg fill="none"
+        width="10"
+        height="10">
+        <path
+          stroke-width="3"
+          stroke="rgb(119, 119, 119)"
+          d="m3 0L8 5a0,2 0 0 1 1,1M8 5L3 10"/>
+      </svg>
+    </button>
+  </div>
+  <div class="ml-auto">
+    <span class="font-bold">Per Page:&nbsp;</span>
+    <input
+      id="setCardsPerPage"
+      type="number"
+      value={cardsPerPage}
+      min="1"
+      on:change={changeCardsPerPage}
+    />
+  </div>
+</div>
 
 <style lang="postcss">
-    #searchInput {
-        @apply border
-        border-solid
-        rounded
-        border-gray-300
-        mr-auto
-        mt-auto
-        pl-2
-        mb-4;
-    }
+  input {
+    @apply border
+    border-solid
+    rounded
+    border-gray-300
+    mr-auto
+    mt-auto
+    pl-2
+    mb-4;
+  }
+
+  #pageControls {
+    @apply grid
+    grid-cols-3
+    pt-4;
+  }
+
+  button:hover {
+    @apply bg-gray-300;
+  }
 </style>
