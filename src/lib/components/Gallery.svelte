@@ -41,7 +41,9 @@
     const searchBar = document.getElementById("searchInput") as HTMLInputElement;
     const searchFilter = searchBar.value.toLowerCase();
 
-    filteredGalleryEntries = galleryEntries.filter((e) => String(e["title" as keyof Object].toLowerCase()).startsWith(searchFilter));
+    filteredGalleryEntries = galleryEntries.filter(
+      (e) => String(e["title" as keyof Object].toLowerCase()).startsWith(searchFilter)
+    );
   }
 </script>
 
