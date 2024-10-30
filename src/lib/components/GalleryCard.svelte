@@ -25,6 +25,7 @@
 <style lang='postcss'>
   .gallery-card {
     position: relative;
+    height: 420px;
     @apply border
     border-gray-300
     rounded-lg
