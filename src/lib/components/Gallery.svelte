@@ -116,15 +116,17 @@
       }}
     >
       <svg fill="none"
-        width="10"
-        height="10">
+        width="20"
+        height="20">
         <path
-          stroke-width="3"
+          stroke-width="5"
           stroke="rgb(119, 119, 119)"
-          d="m8 0L3 5a0,2 0 0 1 1,1M3 5L8 10"/>
+          d="m16 0L6 10a0,2 0 0 1 1,1M6 10L16 20"/>
       </svg>
     </button>
-    {currentPage}/{numPages}
+    <div style="font-size: 27px; display: inline;">
+      {currentPage}/{numPages}
+    </div>
     <button
       on:click={() => {
         if (currentPage < numPages) {
@@ -133,16 +135,16 @@
       }}
     >
       <svg fill="none"
-        width="10"
-        height="10">
+        width="20"
+        height="20">
         <path
-          stroke-width="3"
+          stroke-width="5"
           stroke="rgb(119, 119, 119)"
-          d="m3 0L8 5a0,2 0 0 1 1,1M8 5L3 10"/>
+          d="m6 0L18 10a0,2 0 0 1 1,1M16 10L6 20"/>
       </svg>
     </button>
   </div>
-  <div class="ml-auto">
+  <div class="ml-auto" style="font-size: 20px">
     <span class="font-bold">Per Page:&nbsp;</span>
     <input
       id="setCardsPerPage"
