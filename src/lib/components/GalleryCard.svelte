@@ -14,18 +14,18 @@
 <div class="gallery-card">
   <h3 style="font-size: 24px;" class="pb-2">{title}</h3>
   <img src={img} alt={title} class="pb-2">
-  <p style="font-size: 14px">{desc}</p>
-  <p style="font-size: 14px">
-    <button class="gallery-button" on:click={galleryButton}>
-      Try it!
-    </button>
-  </p>
+  <p class="description">{desc}</p>
+  <button class="gallery-button" on:click={galleryButton}>
+    Try it!
+  </button>
 </div>
 
 <style lang='postcss'>
   .gallery-card {
     position: relative;
     height: 420px;
+    display: flex;
+    flex-direction: column;
     @apply border
     border-gray-300
     rounded-lg
@@ -33,10 +33,17 @@
     pb-11;
   }
 
+  .description {
+    font-size: 14px;
+    flex: 1;
+    overflow: hidden;
+  }
+
   .gallery-button {
     position: absolute;
     bottom: 8px;
     right: 8px;
+    font-size: 14px;
     @apply bg-blue-700
     text-white
     rounded-md
