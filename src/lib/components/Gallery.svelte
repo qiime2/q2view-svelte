@@ -1,6 +1,5 @@
 <script lang="ts">
   import GalleryCard from "$lib/components/GalleryCard.svelte";
-    import { filter } from "jszip";
   const GALLERY_URL = "https://q2view-gallery.pages.dev/gallery/";
 
   let galleryEntries: Array<Object> = [];
