@@ -7,7 +7,9 @@
 
   let currentPage: number = 1;
   let numPages: number;
-  let cardsPerPage: number  = 3;
+  // A 1440p screen fits two rows well. A 1080p screen JUST ABOUT fits one row.
+  // There are 3 cards per row.
+  let cardsPerPage: number = screen.height >= 1440 ? 6 : 3;
 
   let startIdx: number;
   let endIdx: number;
