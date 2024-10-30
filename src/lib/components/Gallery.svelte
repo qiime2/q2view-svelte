@@ -122,7 +122,7 @@
         height="20">
         <path
           stroke-width="5"
-          stroke="rgb(119, 119, 119)"
+          stroke="rgb(156, 163, 175)"
           d="m16 0L6 10a0,2 0 0 1 1,1M6 10L16 20"/>
       </svg>
     </button>
@@ -141,13 +141,13 @@
         height="20">
         <path
           stroke-width="5"
-          stroke="rgb(119, 119, 119)"
+          stroke="rgb(156, 163, 175)"
           d="m6 0L18 10a0,2 0 0 1 1,1M16 10L6 20"/>
       </svg>
     </button>
   </div>
   <div class="ml-auto" style="font-size: 20px">
-    <span class="font-bold">Per Page:&nbsp;</span>
+    <span>Per Page:&nbsp;</span>
     <input
       id="setCardsPerPage"
       type="number"
