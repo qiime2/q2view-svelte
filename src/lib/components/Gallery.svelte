@@ -100,7 +100,7 @@
       the gallery might be down.
     </h3>
   {:else}
-    <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 sm:grid-rows-{cardsPerPage} md:grid-rows-{Math.ceil(cardsPerPage / 2)} lg:grid-rows-{Math.ceil(cardsPerPage / 3)} gap-4">
       {#each filteredGalleryEntries.slice((currentPage - 1) * cardsPerPage, currentPage * cardsPerPage) as galleryEntry}
         <GalleryCard {...galleryEntry}/>
       {/each}
