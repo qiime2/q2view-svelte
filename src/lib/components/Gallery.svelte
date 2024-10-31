@@ -73,11 +73,15 @@
     } else {
       cardsPerPage = currentVal;
     }
+  }
 
-    numPages = Math.ceil(filteredGalleryEntries.length / cardsPerPage);
+  $: {
+    const _num_pages = Math.ceil(filteredGalleryEntries.length / cardsPerPage);
 
-    if (numPages === 0) {
+    if (_num_pages === 0) {
       numPages = 1;
+    } else {
+      numPages = _num_pages;
     }
 
     // The num_pages could drop below the current page we're on. We don't
