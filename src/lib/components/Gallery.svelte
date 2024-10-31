@@ -89,9 +89,26 @@
 </script>
 
 <h2>Gallery</h2>
-<p class="pb-4">Don&apos;t have a QIIME 2 result of your own to view? Try one of these!</p>
+<p class="pb-2">Don&apos;t have a QIIME 2 result of your own to view? Try one of these!</p>
+<input id="searchInput" placeholder="search" on:input={applySearchFilter}/>
+{#await getGalleryEntries()}
+  <h3>Fetching Gallery...</h3>
+{:then}
+  {#if galleryEntries.length === 0}
+    <h3>
+      No gallery entries found. Try refreshing the page. If that doesn't work
+      the gallery might be down.
+    </h3>
+  {:else}
+    <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      {#each filteredGalleryEntries.slice((currentPage - 1) * cardsPerPage, currentPage * cardsPerPage) as galleryEntry}
+        <GalleryCard {...galleryEntry}/>
+      {/each}
+    </div>
+  {/if}
+{/await}
 <div id="pageControls">
-  <input id="searchInput" placeholder="search" on:input={applySearchFilter}/>
+  <div></div>
   <div class="mx-auto">
     <button
       on:click={() => {
@@ -140,22 +157,6 @@
     />
   </div>
 </div>
-{#await getGalleryEntries()}
-  <h3>Fetching Gallery...</h3>
-{:then}
-  {#if galleryEntries.length === 0}
-    <h3>
-      No gallery entries found. Try refreshing the page. If that doesn't work
-      the gallery might be down.
-    </h3>
-  {:else}
-    <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-      {#each filteredGalleryEntries.slice((currentPage - 1) * cardsPerPage, currentPage * cardsPerPage) as galleryEntry}
-        <GalleryCard {...galleryEntry}/>
-      {/each}
-    </div>
-  {/if}
-{/await}
 
 <style lang="postcss">
   input {
@@ -170,7 +171,6 @@
   }
 
   #pageControls {
-    border-top: 2px solid #d1d5db;
     @apply grid
     grid-cols-3
     pt-4;
