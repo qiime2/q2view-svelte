@@ -170,6 +170,7 @@
   }
 
   #pageControls {
+    border-top: 2px solid #d1d5db;
     @apply grid
     grid-cols-3
     pt-4;
