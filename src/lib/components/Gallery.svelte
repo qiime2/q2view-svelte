@@ -1,5 +1,6 @@
 <script lang="ts">
   import GalleryCard from "$lib/components/GalleryCard.svelte";
+  import { onMount } from 'svelte';
   const GALLERY_URL = "https://q2view-gallery.pages.dev/gallery/";
 
   let galleryEntries: Array<Object> = [];
@@ -13,6 +14,38 @@
 
   let startIdx: number;
   let endIdx: number;
+
+  // We need to derive the number of columns from the screen width and then
+  // derive the number of rows from a combination of the number of columns and
+  // the number of cards per page. I wanted to do this in a more clever way
+  // using tailwind breakpoints, but I wasn't sure how (or if that is even
+  // possible), so I ended up using this instead.
+  let numCols: number;
+  let numRows: number;
+
+  const LARGE_BREAKPOINT = 1024;
+  const MEDIUM_BREAKPOINT = 768;
+
+  onMount(() => {
+    function handleResize() {
+      if (window.innerWidth >= LARGE_BREAKPOINT) {
+        numCols = 3;
+      } else if (window.innerWidth >= MEDIUM_BREAKPOINT) {
+        numCols = 2;
+      } else {
+        numCols = 1;
+      }
+
+      numRows = Math.ceil(cardsPerPage / numCols);
+    }
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  });
 
   // TODO: Expect 404s and other such errors to happen here and handle them
   async function getGalleryEntries() {
@@ -104,7 +137,9 @@
       the gallery might be down.
     </h3>
   {:else}
-    <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 sm:grid-rows-{cardsPerPage} md:grid-rows-{Math.ceil(cardsPerPage / 2)} lg:grid-rows-{Math.ceil(cardsPerPage / 3)} gap-4">
+    <div class="grid gap-4"
+         style="grid-template-columns: repeat({numCols}, minmax(0, 1fr));
+                grid-template-rows: repeat({numRows}, minmax(0, 1fr));">
       {#each filteredGalleryEntries.slice((currentPage - 1) * cardsPerPage, currentPage * cardsPerPage) as galleryEntry}
         <GalleryCard {...galleryEntry}/>
       {/each}
