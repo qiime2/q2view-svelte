@@ -1,6 +1,4 @@
 <script lang="ts">
-  import readerModel from "$lib/models/readerModel";
-
   let inputMode = 0;
 
   function resolveURL() {

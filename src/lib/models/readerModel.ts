@@ -136,7 +136,7 @@ class ReaderModel {
       } else {
         this.urlSrc = src;
       }
-      console.log(err)
+      console.log(err);
       loading.setLoading(false);
       handleError(err);
       return;
