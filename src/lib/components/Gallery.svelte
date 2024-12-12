@@ -47,7 +47,6 @@
     };
   });
 
-  // TODO: Expect 404s and other such errors to happen here and handle them
   async function getGalleryEntries() {
     let indexJSON;
 
