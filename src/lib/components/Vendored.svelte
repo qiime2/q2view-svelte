@@ -1,23 +1,48 @@
 <script>
-  let a = 0;
-  let b = 0;
-  let total = 0;
+  import NavBar from "$lib/components/NavBar.svelte";
+  import ContentContainer from "$lib/components/ContentContainer.svelte";
 
-  async function add() {
-    const response = await fetch('/api/add', {
-      method: 'POST',
-      body: JSON.stringify({ a, b }),
-      headers: {
-        'content-type': 'application/json'
+  import url from "$lib/scripts/url-store";
+
+  import "../../app.css";
+  import readerModel from "$lib/models/readerModel";
+
+  import { onMount } from "svelte";
+  import { checkBrowserCompatibility } from "$lib/scripts/util";
+
+  async function getFileFromServer() {
+    try {
+      const fileName = $url.searchParams.get('file');
+
+      if (fileName === null) {
+        throw new Error('File searchParam not found. No file to load.');
       }
-    });
 
-    total = await response.json();
+      const response = await fetch(`http://localhost:8000/${fileName}`, {
+        method: 'GET',
+      });
+
+      if (!response.ok) {
+        throw new Error(`Received network response ${response}. Not OK.`);
+      }
+
+      const blob = await response.blob();
+      const file = new File([blob], fileName, { type: blob.type });
+      readerModel.readData(file);
+    } catch (error) {
+      console.error(`There was a problem with the fetch operation: ${error}`);
+    }
   }
+
+  // Currently at least we are still using the service worker here
+  onMount(() => {
+    checkBrowserCompatibility();
+    readerModel.attachToServiceWorker();
+    fetch("/_/wakeup");
+  });
+
+  getFileFromServer();
 </script>
 
-<input type="number" bind:value={a}> +
-<input type="number" bind:value={b}> =
-{total}
-
-<button on:click={add}>Calculate</button>
+<NavBar />
+<ContentContainer />
