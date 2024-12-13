@@ -18,7 +18,7 @@
         throw new Error('File searchParam not found. No file to load.');
       }
 
-      const response = await fetch(`http://localhost:8000/${fileName}`, {
+      const response = await fetch(`${window.location.origin}/${fileName}`, {
         method: 'GET',
       });
 
