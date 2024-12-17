@@ -18,7 +18,7 @@
         throw new Error('File searchParam not found. No file to load.');
       }
 
-      const response = await fetch(`${window.location.origin}/${fileName}`, {
+      const response = await fetch(`${window.location.origin}${fileName}`, {
         method: 'GET',
       });
 
@@ -37,8 +37,6 @@
   // Currently at least we are still using the service worker here
   onMount(() => {
     checkBrowserCompatibility();
-    readerModel.attachToServiceWorker();
-    fetch("/_/wakeup");
   });
 
   getFileFromServer();
