@@ -1,5 +1,5 @@
 <script lang="ts">
-  import Main from "$lib/components/Main.svelte";
+  import Vendored from "$lib/components/Vendored.svelte"
 </script>
 
-<Main />
+<Vendored />
