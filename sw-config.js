@@ -16,7 +16,7 @@ const config = {
       fallback: "index.html"
     }),
     files: {
-      routes: "routes-sw"
+      routes: "src/routes-sw"
     }
   }
 };

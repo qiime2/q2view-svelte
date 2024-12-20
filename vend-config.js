@@ -17,7 +17,7 @@ const config = {
       pages: "vendored"
     }),
     files: {
-      routes: "routes-vend",
+      routes: "src/routes-vend",
       serviceWorker: ""
     }
   }
