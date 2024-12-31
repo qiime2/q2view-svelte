@@ -76,7 +76,7 @@
         <li id="file-text">
           File: {$readerModel.name}
         </li>
-        {#if !env.PUBLIC_VENDORED && ($readerModel.indexPath || $readerModel.rawSrc)}
+        {#if $readerModel.indexPath || $readerModel.rawSrc}
           <li>
             <button title="Unload File" id="close-button" on:click={() => {
                 readerModel.clear();
