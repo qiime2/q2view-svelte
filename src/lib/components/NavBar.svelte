@@ -19,6 +19,7 @@
   });
 
   const observer = new ResizeObserver(updateNavDropdownHeight);
+  const logoTarget = env.PUBLIC_VENDORED ? '/visualization/' : '/';
 
   const {
     elements: { root, content, trigger: triggerCollapsible },
@@ -53,15 +54,15 @@
     if ($loading.status === "LOADING") {
       // If we are in the loading state go back to root and reload to force the
       // loading to stop
-      history.pushState({}, "", "/");
+      history.pushState({}, "", logoTarget);
       location.reload();
     } else if ($url.pathname.replaceAll("/", "") === "error") {
       // If we are navigating away from the error page then we want to clean out
       // the errored state and push clean state
       readerModel.clear();
-      history.pushState({}, "", "/");
+      history.pushState({}, "", logoTarget);
     } else {
-      history.pushState({}, "", "/" + window.location.search);
+      history.pushState({}, "", logoTarget + window.location.search);
     }
   }
 </script>
@@ -76,7 +77,7 @@
         <li id="file-text">
           File: {$readerModel.name}
         </li>
-        {#if $readerModel.indexPath || $readerModel.rawSrc}
+        {#if !env.PUBLIC_VENDORED && ($readerModel.indexPath || $readerModel.rawSrc)}
           <li>
             <button title="Unload File" id="close-button" on:click={() => {
                 readerModel.clear();

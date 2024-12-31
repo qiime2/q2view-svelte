@@ -6,6 +6,8 @@
   import url from "$lib/scripts/url-store";
   import loading from "$lib/scripts/loading";
 
+  import { env } from "$env/dynamic/public";
+
   import Iframe from "$lib/components/Iframe.svelte";
   import Gallery from "$lib/components/Gallery.svelte";
   import Details from "$lib/components/Details.svelte";
@@ -21,23 +23,25 @@
 
 <div id="positioned-container">
   <div id="content-container">
-    <div
-      class={$url.pathname.replaceAll("/", "") === "" && $loading.status !== "LOADING" ? "tab" : "hidden-tab"}
-    >
-      <p class="pb-4">
-        This interface can view .qza and .qzv files directly in your browser
-        without uploading to a server.
-        <a
-          href="#"
-          on:click={() =>
-            history.pushState({}, "", "/about/" + window.location.search)}
-          >Click here to learn more.
-        </a>
-      </p>
-      <DropZone />
-      <UrlInput />
-      <Gallery />
-    </div>
+    {#if !env.PUBLIC_VENDORED}
+      <div
+        class={$url.pathname.replaceAll("/", "") === "" && $loading.status !== "LOADING" ? "tab" : "hidden-tab"}
+      >
+        <p class="pb-4">
+          This interface can view .qza and .qzv files directly in your browser
+          without uploading to a server.
+          <a
+            href="#"
+            on:click={() =>
+              history.pushState({}, "", "/about/" + window.location.search)}
+            >Click here to learn more.
+          </a>
+        </p>
+        <DropZone />
+        <UrlInput />
+        <Gallery />
+      </div>
+    {/if}
     <div
       class={$url.pathname.replaceAll("/", "") === "about" && $loading.status !== "LOADING"
         ? "tab"
