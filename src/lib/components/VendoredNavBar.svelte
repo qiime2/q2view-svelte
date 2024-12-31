@@ -11,7 +11,6 @@
 
   import { createCollapsible, createDropdownMenu, melt } from "@melt-ui/svelte";
   import { slide, fly } from "svelte/transition";
-  import { env } from "$env/dynamic/public";
 
   onMount(() => {
     const nav_dropdown = document.getElementById("nav-dropdown") as Element;
@@ -53,15 +52,15 @@
     if ($loading.status === "LOADING") {
       // If we are in the loading state go back to root and reload to force the
       // loading to stop
-      history.pushState({}, "", "/");
+      history.pushState({}, "", "/visualization/");
       location.reload();
     } else if ($url.pathname.replaceAll("/", "") === "error") {
       // If we are navigating away from the error page then we want to clean out
       // the errored state and push clean state
       readerModel.clear();
-      history.pushState({}, "", "/");
+      history.pushState({}, "", "/visualization/");
     } else {
-      history.pushState({}, "", "/" + window.location.search);
+      history.pushState({}, "", "/visualization/" + window.location.search);
     }
   }
 </script>
