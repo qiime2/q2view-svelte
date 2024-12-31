@@ -14,13 +14,13 @@ const config = {
     // See https://kit.svelte.dev/docs/adapters for more information about adapters.
     adapter: adapter({
       fallback: "index.html",
-      pages: "vendored"
+      pages: "vendored",
     }),
     files: {
       routes: "src/routes-vend",
-      serviceWorker: ""
-    }
-  }
+      serviceWorker: "",
+    },
+  },
 };
 
 export default config;

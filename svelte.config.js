@@ -1,5 +1,5 @@
-import sw_config from "./sw-config.js"
-import vend_config from "./vend-config.js"
+import sw_config from "./sw-config.js";
+import vend_config from "./vend-config.js";
 
 let config;
 
