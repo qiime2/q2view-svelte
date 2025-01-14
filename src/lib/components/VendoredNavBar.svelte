@@ -18,6 +18,7 @@
   });
 
   const observer = new ResizeObserver(updateNavDropdownHeight);
+  const logoTarget = readerModel.indexPath ? "/visualization/" : "/details/";
 
   const {
     elements: { root, content, trigger: triggerCollapsible },
@@ -52,15 +53,15 @@
     if ($loading.status === "LOADING") {
       // If we are in the loading state go back to root and reload to force the
       // loading to stop
-      history.pushState({}, "", "/");
+      history.pushState({}, "", logoTarget);
       location.reload();
     } else if ($url.pathname.replaceAll("/", "") === "error") {
       // If we are navigating away from the error page then we want to clean out
       // the errored state and push clean state
       readerModel.clear();
-      history.pushState({}, "", "/");
+      history.pushState({}, "", logoTarget);
     } else {
-      history.pushState({}, "", "/" + window.location.search);
+      history.pushState({}, "", logoTarget + window.location.search);
     }
   }
 </script>
@@ -75,26 +76,6 @@
         <li id="file-text">
           File: {$readerModel.name}
         </li>
-        {#if $readerModel.indexPath || $readerModel.rawSrc}
-          <li>
-            <button title="Unload File" id="close-button" on:click={() => {
-                readerModel.clear();
-                history.pushState({}, "", "/");
-              }}>
-              <svg fill="none"
-                viewBox="0 0 20 20"
-                class="nav-thumbnail"
-              >
-                <path
-                  id="close-button-path"
-                  stroke-width="3"
-                  stroke="rgb(119, 119, 119)"
-                  d="M2 18L18 2M18 18L2 2"
-                />
-              </svg>
-            </button>
-          </li>
-        {/if}
       </ul>
     {/if}
     <ul class="hidden lg:flex">

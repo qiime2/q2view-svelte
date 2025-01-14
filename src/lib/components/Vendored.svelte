@@ -1,6 +1,6 @@
 <script>
-  import NavBar from "./VendoredNavBar.svelte";
-  import ContentContainer from "./VendoredContentContainer.svelte";
+  import NavBar from "$lib/components/VendoredNavBar.svelte";
+  import ContentContainer from "$lib/components/VendoredContentContainer.svelte";
 
   import url from "$lib/scripts/url-store";
 
