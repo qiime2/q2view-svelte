@@ -34,7 +34,6 @@
     }
   }
 
-  // Currently at least we are still using the service worker here
   onMount(() => {
     checkBrowserCompatibility();
   });
