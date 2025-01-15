@@ -1,6 +1,6 @@
 <script>
-  import NavBar from "$lib/components/VendoredNavBar.svelte";
-  import ContentContainer from "$lib/components/VendoredContentContainer.svelte";
+  import NavBar from "$lib/components/NavBar.svelte";
+  import ContentContainer from "$lib/components/ContentContainer.svelte";
 
   import url from "$lib/scripts/url-store";
 
@@ -41,5 +41,5 @@
   getFileFromServer();
 </script>
 
-<NavBar />
-<ContentContainer />
+<NavBar vendored={true}/>
+<ContentContainer vendored={true}/>
