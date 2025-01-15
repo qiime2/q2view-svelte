@@ -10,6 +10,19 @@
   import { onMount } from "svelte";
   import { checkBrowserCompatibility } from "$lib/scripts/util";
 
+  // For the vendored view, we want the server to give us a session id to use
+  // as a token to verify that we are allowed to access files
+  function getVendoredSession() {
+    const vendoredSession = $url.searchParams.get('session');
+
+    if (vendoredSession === null) {
+      throw new Error('Session searchParam not found.');
+    }
+
+    readerModel.session = vendoredSession;
+    readerModel._dirty();
+  }
+
   async function getFileFromServer() {
     try {
       const fileName = $url.searchParams.get('file');
@@ -38,6 +51,7 @@
     checkBrowserCompatibility();
   });
 
+  getVendoredSession();
   getFileFromServer();
 </script>
 
