@@ -51,6 +51,8 @@
   }
 
   function navLogoClicked() {
+    // It's easiest to just calculate this here. If we do it at the top of the
+    // page then we will likely do it before index path is set.
     let logoTarget = vendored ? ($readerModel.indexPath ? "/visualization/" : "/details/") : "/";
 
     if ($loading.status === "LOADING") {
